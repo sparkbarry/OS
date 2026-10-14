@@ -1,0 +1,1 @@
+savedcmd_lab3.ko := ld -r -EL  -maarch64elf -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T /usr/src/linux-headers-7.0.0-31-generic/scripts/module.lds -o lab3.ko lab3.o lab3.mod.o .module-common.o
