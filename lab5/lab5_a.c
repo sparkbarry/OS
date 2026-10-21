@@ -109,9 +109,6 @@ int main(int argc, char *argv[])
             printf("%f\n", value);
             fflush(stdout);
         }
-        while (waitpid(p, NULL, 0) == -1 && errno == EINTR)
-        {
-        }
     }
     else
     {
