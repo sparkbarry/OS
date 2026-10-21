@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/wait.h>
 #include <stdatomic.h>
 #include <sys/mman.h>
 
@@ -109,12 +108,6 @@ int main(int argc, char *argv[])
             printf("%f\n", value);
             fflush(stdout);
         }
-    }
-    else
-    {
-        munmap(buffer, BUF_SZ * sizeof(double));
-        munmap(queue, sizeof(struct counters));
-        return 1;
     }
 
     munmap(buffer, BUF_SZ * sizeof(double));

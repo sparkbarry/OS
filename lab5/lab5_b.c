@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <errno.h>
-#include <sys/wait.h>
 
 #define INIT_VALUE ('C' + 'Y' / 10.0)
 
@@ -75,7 +74,6 @@ int main(int argc, char *argv[])
     {
         // Parent process only reads from the pipe
         close(fd[1]);
-        int failed = 0;
         for (int k = 0; k < n; k = k + 1)
         {
             float value;
@@ -92,31 +90,15 @@ int main(int argc, char *argv[])
                 if (result <= 0)
                 {
                     printf("Pipe read failed\n");
-                    failed = 1;
-                    break;
+                    goto OUT;
                 }
                 received = received + result;
-            }
-            if (failed)
-            {
-                break;
             }
             printf("%f\n", value);
             fflush(stdout);
         }
+OUT:
         close(fd[0]);
-        int status;
-        while (waitpid(p, &status, 0) == -1)
-        {
-            if (errno != EINTR)
-            {
-                return 1;
-            }
-        }
-        if (failed || !WIFEXITED(status) || WEXITSTATUS(status) != 0)
-        {
-            return 1;
-        }
     }
     else
     {
