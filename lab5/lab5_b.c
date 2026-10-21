@@ -1,97 +1,113 @@
-/* CS6233 Lab 5. Initials C, Y: 67 + 89 / 10.0 = 75.9. */
-#define _POSIX_C_SOURCE 200809L
-#define INIT_VALUE ('C' + 'Y' / 10.0)
 
-#include <errno.h>
-#include <limits.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <unistd.h>
+#include <time.h>
+#include <errno.h>
 #include <sys/wait.h>
 
-static void fail(const char *what) { perror(what); exit(EXIT_FAILURE); }
+#define INIT_VALUE ('C' + 'Y' / 10.0)
 
-static void pause_ms(long ms) {
-    struct timespec delay = {ms / 1000, (ms % 1000) * 1000000L};
-    while (nanosleep(&delay, &delay) == -1)
-        if (errno != EINTR) fail("nanosleep");
-}
-
-static void parameters(int argc, char **argv, int *n, double *d) {
-    char *end;
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s n d (integer n > 1, finite double d)\n", argv[0]);
-        exit(EXIT_FAILURE);
-    }
-    errno = 0;
-    long count = strtol(argv[1], &end, 10);
-    if (errno || end == argv[1] || *end || count <= 1 || count > INT_MAX) {
-        fprintf(stderr, "Invalid n: expected an integer from 2 to INT_MAX.\n");
-        exit(EXIT_FAILURE);
-    }
-    errno = 0;
-    *d = strtod(argv[2], &end);
-    if (errno || end == argv[2] || *end || !isfinite(*d)) {
-        fprintf(stderr, "Invalid d: expected a finite double.\n");
-        exit(EXIT_FAILURE);
-    }
-    *n = (int)count;
-}
-
-static int finish(pid_t child) {
-    int status;
-    while (waitpid(child, &status, 0) == -1)
-        if (errno != EINTR) fail("waitpid");
-    return WIFEXITED(status) && WEXITSTATUS(status) == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
-}
-
-/* A pipe is a byte stream: a read/write can be interrupted or partial. */
-static void transfer(int fd, void *data, size_t size, int writing) {
-    char *bytes = data;
-    size_t done = 0;
-    while (done < size) {
-        ssize_t count = writing ? write(fd, bytes + done, size - done)
-                                : read(fd, bytes + done, size - done);
-        if (count == -1) {
-            if (errno == EINTR) continue;
-            fail(writing ? "write" : "read");
+// ms -> seconds and nanoseconds
+void pause_ms(int ms){
+    struct timespec delay;
+    delay.tv_sec = ms / 1000;
+    delay.tv_nsec = (ms % 1000) * 1000000L;
+    while (nanosleep(&delay, &delay) == -1){
+        if (errno != EINTR){
+            perror("nanosleep");
+            exit(1);
         }
-        if (count == 0) {
-            fprintf(stderr, "Unexpected end of pipe.\n");
-            exit(EXIT_FAILURE);
-        }
-        done += (size_t)count;
     }
 }
 
-int main(int argc, char **argv) {
-    int n, channel[2];
-    double d;
-    parameters(argc, argv, &n, &d);
-    if (pipe(channel) == -1) fail("pipe");
-    pid_t child = fork();
-    if (child == -1) { close(channel[0]); close(channel[1]); fail("fork"); }
-    if (child == 0) {
-        close(channel[0]);
-        /* n and d are inherited from the parent at fork(). */
-        srand((unsigned)time(NULL) ^ (unsigned)getpid());
-        for (int k = 0; k < n; ++k) {
-            if (k != 0) pause_ms(rand() % 7000);
-            float value = (float)(INIT_VALUE + (double)k * d);
-            transfer(channel[1], &value, sizeof(value), 1);
+int main(int argc, char* argv[]){
+    if (argc != 3){
+        printf("Usage: %s n d\n", argv[0]);
+        return 1;
+    }
+    int n = atoi(argv[1]);
+    double d = atof(argv[2]);
+    if (n <= 1){
+        printf("n must be bigger than 1\n");
+        return 1;
+    }
+
+    int fd[2];
+    if (pipe(fd) == -1){
+        perror("pipe");
+        return 1;
+    }
+
+    pid_t p = fork();
+    if (p == 0){
+        // Child process only writes to the pipe
+        close(fd[0]);
+        srand(time(NULL));
+        for (int k = 0; k < n; k = k + 1){
+            if (k > 0){
+                pause_ms(rand() % 7000);
+            }
+            float value = INIT_VALUE + k * d;
+
+            // One float fits in an atomic write to this blocking pipe
+            ssize_t result;
+            do{
+                result = write(fd[1], &value, sizeof(value));
+            }while (result == -1 && errno == EINTR);
+            if (result != sizeof(value)){
+                perror("write");
+                close(fd[1]);
+                return 1;
+            }
         }
-        close(channel[1]);
-        _exit(EXIT_SUCCESS);
+        close(fd[1]);
     }
-    close(channel[1]);
-    for (int k = 0; k < n; ++k) {
-        float value;
-        transfer(channel[0], &value, sizeof(value), 0);
-        printf("%.6f\n", (double)value);
-        fflush(stdout);
+    else if (p > 0){
+        // Parent process only reads from the pipe
+        close(fd[1]);
+        int failed = 0;
+        for (int k = 0; k < n; k = k + 1){
+            float value;
+            size_t received = 0;
+            // A read can return less than one complete float
+            while (received < sizeof(value)){
+                ssize_t result = read(fd[0], (char*)&value + received,
+                                      sizeof(value) - received);
+                if (result == -1 && errno == EINTR){
+                    continue;
+                }
+                if (result <= 0){
+                    printf("Pipe read failed\n");
+                    failed = 1;
+                    break;
+                }
+                received = received + result;
+            }
+            if (failed){
+                break;
+            }
+            printf("%f\n", value);
+            fflush(stdout);
+        }
+        close(fd[0]);
+        int status;
+        while (waitpid(p, &status, 0) == -1){
+            if (errno != EINTR){
+                perror("waitpid");
+                return 1;
+            }
+        }
+        if (failed || !WIFEXITED(status) || WEXITSTATUS(status) != 0){
+            return 1;
+        }
     }
-    close(channel[0]);
-    return finish(child);
+    else{
+        perror("fork");
+        close(fd[0]);
+        close(fd[1]);
+        return 1;
+    }
+
+    return 0;
 }
