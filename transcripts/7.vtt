@@ -1,0 +1,5954 @@
+WEBVTT
+
+1
+00:00:15.940 --> 00:00:21.279
+Omar Mansour: Right, good evening, everyone. But the delays, we had a technical issue.
+
+2
+00:00:21.940 --> 00:00:23.440
+Omar Mansour: Now we can get started.
+
+3
+00:00:24.110 --> 00:00:26.890
+Omar Mansour: Get off, but we can recover.
+
+4
+00:00:27.150 --> 00:00:32.510
+Omar Mansour: Okay, our exam is next week, next Wednesday.
+
+5
+00:00:32.770 --> 00:00:34.330
+Omar Mansour: The same exact room.
+
+6
+00:00:34.610 --> 00:00:38.209
+Omar Mansour: At the same exact time as the lecture, which is 6 PM.
+
+7
+00:00:38.890 --> 00:00:39.740
+Omar Mansour: Nope.
+
+8
+00:00:40.040 --> 00:00:53.349
+Omar Mansour: If you wish to have a review session, that's fine, we can do it over the weekend. You just send me an email. If there's a strong desire, if we have a few people, then we can send… we can set up a review session on Saturday or something, by Zoom.
+
+9
+00:00:54.320 --> 00:00:56.329
+Omar Mansour: So I'm gonna be waiting for your emails.
+
+10
+00:00:56.490 --> 00:01:03.049
+Omar Mansour: Other than that, today we have a normal lecture, and of course, the first thing I want to start with is to see if you have any questions.
+
+11
+00:01:03.470 --> 00:01:10.689
+Omar Mansour: Before we can go on and talk about a brand new topic, Which is multi-threaded processes.
+
+12
+00:01:10.830 --> 00:01:15.480
+Omar Mansour: And of course, anything we talk about today is going to be in your exam next week.
+
+13
+00:01:17.090 --> 00:01:21.710
+Omar Mansour: All right, first things first, any questions about the multiple choice
+
+14
+00:01:21.990 --> 00:01:23.969
+Omar Mansour: So I did post a PDF.
+
+15
+00:01:24.110 --> 00:01:33.289
+Omar Mansour: It had, like, 15 questions, 15 multiple-choice questions, multiple choice questions, a single answer. Just want to make sure this is well understood.
+
+16
+00:01:33.420 --> 00:01:37.550
+Omar Mansour: Multiple choice questions, but a single answer is desired.
+
+17
+00:01:37.850 --> 00:01:40.240
+Omar Mansour: A lot of multiple choice answers.
+
+18
+00:01:40.580 --> 00:01:55.790
+Omar Mansour: You only have multiple choice questions being provided. You choose more than one answer, you get a zero. You choose no answer, you still get a zero. You choose one answer that is incorrect, you get a zero as well. So you have to choose one answer that is the correct one. That's the only way to get your point.
+
+19
+00:01:57.480 --> 00:02:00.749
+Omar Mansour: And, of course, as I have posted already last week.
+
+20
+00:02:01.160 --> 00:02:09.020
+Omar Mansour: 75% of the grade is for multiple choice, I mean, for the exam, of course, the next week exam. 25% of the exams
+
+21
+00:02:09.280 --> 00:02:10.750
+Omar Mansour: points are…
+
+22
+00:02:11.180 --> 00:02:17.950
+Omar Mansour: a programming problem, or maybe two small problems, either a normal problem or two smaller problems. I haven't decided on that yet.
+
+23
+00:02:19.210 --> 00:02:22.469
+Omar Mansour: Okay, so, any questions about that?
+
+24
+00:02:22.780 --> 00:02:25.840
+Omar Mansour: Seemed very anxious, you seem to be having 10 questions.
+
+25
+00:02:26.230 --> 00:02:30.369
+Omar Mansour: Okay, what is the question? How many questions are on the exam?
+
+26
+00:02:30.730 --> 00:02:33.789
+Omar Mansour: For choice, we typically have
+
+27
+00:02:34.300 --> 00:02:43.939
+Omar Mansour: But I put that in the announcement as well. You typically have, need to answer at least 30 points. I give you a few extra points, a few extra credit questions as well.
+
+28
+00:02:44.500 --> 00:02:50.019
+Omar Mansour: You typically get somewhere between 33 and 35 multiple-choice questions.
+
+29
+00:02:50.420 --> 00:02:54.899
+Omar Mansour: But you only need to answer theory, The rest are extra credits.
+
+30
+00:02:55.170 --> 00:02:56.929
+Omar Mansour: Truly extra credit, okay?
+
+31
+00:02:57.450 --> 00:02:58.460
+Omar Mansour: For the exam.
+
+32
+00:03:01.070 --> 00:03:03.020
+Omar Mansour: Okay, any other questions?
+
+33
+00:03:06.150 --> 00:03:11.999
+Omar Mansour: That's the only question? Okay. I thought you had, like, 10 questions. Okay. I mean, you kind of answered some.
+
+34
+00:03:12.210 --> 00:03:15.970
+Omar Mansour: I just need, like, I need to know in my head
+
+35
+00:03:16.290 --> 00:03:22.409
+Omar Mansour: If I get 5 wrong, am I gonna get F? You know what I'm saying? I'm gonna get 5F if you get 5 wrong.
+
+36
+00:03:22.810 --> 00:03:25.220
+Omar Mansour: If you get 5 wrong, there's extra credit.
+
+37
+00:03:25.540 --> 00:03:27.710
+Omar Mansour: That's actually gonna be pretty damn good.
+
+38
+00:03:27.900 --> 00:03:28.780
+Omar Mansour: Okay?
+
+39
+00:03:28.990 --> 00:03:37.349
+Omar Mansour: Well, use the… so I gave a PDF, that you're gonna have double the number of questions, more than double their extra credit.
+
+40
+00:03:37.900 --> 00:03:43.529
+Omar Mansour: What an answer it's, first, before trying to look up the answer, Online, okay?
+
+41
+00:03:44.010 --> 00:03:46.609
+Omar Mansour: We're gonna try to answer it, and then grade yourselves.
+
+42
+00:03:46.890 --> 00:04:05.819
+Omar Mansour: That's the easiest way. Yes? For the… you said we have one or maybe two shorter coding exercises? Is that… that's gonna be writing? That's on a piece of paper, yes. The programming problem is on a piece of paper. It's a pen and paper programming problem. So, this means…
+
+43
+00:04:05.910 --> 00:04:09.719
+Omar Mansour: You don't want to go to the exam, And it's the first time.
+
+44
+00:04:09.920 --> 00:04:15.210
+Omar Mansour: in this course, or in your life, I hope not, in which you're doing a programming problem on a piece of paper.
+
+45
+00:04:15.360 --> 00:04:17.260
+Omar Mansour: Take one of the assignments.
+
+46
+00:04:17.630 --> 00:04:24.349
+Omar Mansour: Redo it again on a piece of paper without looking up the answer, just redo it from scratch on a piece of paper. Train.
+
+47
+00:04:24.890 --> 00:04:28.440
+Omar Mansour: The exam should not be your first rehearsal, okay?
+
+48
+00:04:29.010 --> 00:04:43.940
+Omar Mansour: Do a rehearsal prior to the exam, maybe in the weekend, or what have you, a rehearsal of solving a programming problem on a piece of paper. You've done it in other classes, you're probably better off. If this is the first time, this is your first semester, and this is your first midterm exam.
+
+49
+00:04:44.820 --> 00:04:57.920
+Omar Mansour: your first exposure to solving a programming problem on a piece of paper, then you probably want to take one of the assignments and solve it before going to the exam. Trying to do it for the first time ever in the exam is a bad idea.
+
+50
+00:04:58.130 --> 00:05:12.680
+Omar Mansour: it's not gonna work, okay? So, when the length of one of these problems is we, like, a, like, a Part A or a Part B? No, it's gonna be the equivalent of, like, of a, you know, like a single…
+
+51
+00:05:12.840 --> 00:05:22.849
+Omar Mansour: problem homework, like, for example, I think problem… like, a part A of maybe problem, of homework 5, for example, something at that level, part A of problem 5.
+
+52
+00:05:23.130 --> 00:05:23.940
+Omar Mansour: Huh?
+
+53
+00:05:24.620 --> 00:05:26.850
+Omar Mansour: 30, 40, 50 lines, it could be.
+
+54
+00:05:27.290 --> 00:05:31.269
+Omar Mansour: Probably less. I don't think 50 lines, no. It's gonna be less.
+
+55
+00:05:31.790 --> 00:05:35.250
+Omar Mansour: It may be even, two smaller problems.
+
+56
+00:05:35.470 --> 00:05:45.500
+Omar Mansour: Okay, so it depends. I haven't decided which section gets what, but clearly different sections are going to have different exams, but they're all at the same difficulty level.
+
+57
+00:05:47.730 --> 00:05:48.630
+Omar Mansour: Okay.
+
+58
+00:05:49.000 --> 00:05:50.889
+Omar Mansour: Alright, any other questions?
+
+59
+00:05:51.130 --> 00:05:51.910
+Omar Mansour: Yes.
+
+60
+00:05:52.800 --> 00:06:01.190
+Omar Mansour: Other than printf, are there any, like, C standard level functions that we should… Yeah, there's, that we should, like, keep in mind, or…
+
+61
+00:06:01.340 --> 00:06:02.519
+Omar Mansour: Go ahead, Jacob.
+
+62
+00:06:03.080 --> 00:06:06.279
+Omar Mansour: Other than the print F, there's CANF.
+
+63
+00:06:06.910 --> 00:06:09.570
+Omar Mansour: You need it. I don't think I use CAN F in my…
+
+64
+00:06:09.850 --> 00:06:13.230
+Omar Mansour: Exams that often, but it's a good thing to know.
+
+65
+00:06:13.580 --> 00:06:20.880
+Omar Mansour: standard and a standard out, really, are what you need to know. Also, there's, if you have to do an ASCII to integer.
+
+66
+00:06:21.710 --> 00:06:31.600
+Omar Mansour: I'll try to put that, at least a prototype, because it's not the most… should be a common thing to use. If you use it in multiple homeworks, almost every homework, really.
+
+67
+00:06:32.050 --> 00:06:44.809
+Omar Mansour: you should be able to parse from the command line, all of those things, you should be able… I mean, there's nothing to give you, there's no example, you should just know it from your homework, how you get the input parameters from the main routine.
+
+68
+00:06:45.170 --> 00:06:47.420
+Omar Mansour: You know, how you push the command line that…
+
+69
+00:06:47.780 --> 00:06:55.029
+Omar Mansour: someone, you know, entered into the, you know, while executing your program and so on. You've been through that 5 times already.
+
+70
+00:06:56.400 --> 00:06:57.749
+Omar Mansour: In 5 homeworks.
+
+71
+00:06:58.020 --> 00:07:07.040
+Omar Mansour: I mean, the exam is similar to the homework. I'm not gonna give you a brand new idea that you have to think about, because that's not the time… that's not the kind of thing you do in one hour.
+
+72
+00:07:07.250 --> 00:07:09.760
+Omar Mansour: They're ideas you already know.
+
+73
+00:07:09.990 --> 00:07:18.220
+Omar Mansour: with maybe slight modifications, maybe slight tweaks. If you understood them, did the homework, he understood them, that slight tweak would be
+
+74
+00:07:18.350 --> 00:07:19.680
+Omar Mansour: I'm gonna brush it off.
+
+75
+00:07:20.110 --> 00:07:23.380
+Omar Mansour: Probably be upset at how easy it is.
+
+76
+00:07:23.640 --> 00:07:27.310
+Omar Mansour: If you haven't been doing the homeworks, then a slight tweak is gonna throw you off.
+
+77
+00:07:28.300 --> 00:07:29.840
+Omar Mansour: You have to do the homeworks.
+
+78
+00:07:30.250 --> 00:07:32.179
+Omar Mansour: That is the rehearsal for the exam, okay?
+
+79
+00:07:33.030 --> 00:07:34.500
+Omar Mansour: Any other questions?
+
+80
+00:07:37.630 --> 00:07:55.839
+Omar Mansour: No more questions, okay. All right, very good. So, by the way, if we need… if you want to have a review session, the review session is mostly questions and answers, meaning I'm not going to go back and review, you know, seven… seven lectures, two and a half hours each. I'm not gonna go back and put 17 hours of a review session.
+
+81
+00:07:55.970 --> 00:08:03.949
+Omar Mansour: Or even a summary of that. It's not gonna… it doesn't work that way. A review session means questions and answers, so unless you have any questions.
+
+82
+00:08:04.350 --> 00:08:11.100
+Omar Mansour: Then, or you don't want to come up with any questions, then really, there will not be a review session, okay?
+
+83
+00:08:14.250 --> 00:08:16.720
+Omar Mansour: You can always review by watching the videos.
+
+84
+00:08:18.060 --> 00:08:18.820
+Omar Mansour: Alright?
+
+85
+00:08:19.470 --> 00:08:25.100
+Omar Mansour: long videos, but that's how it is. Alright, so let's talk today about multi-threaded processes.
+
+86
+00:08:25.840 --> 00:08:33.740
+Omar Mansour: All along, we've been talking about a single threaded process, so the first thing we wish to resolve is, what is a thread?
+
+87
+00:08:34.559 --> 00:08:36.910
+Omar Mansour: A thread is a sequence.
+
+88
+00:08:37.140 --> 00:08:44.500
+Omar Mansour: of executing instructions, machine instructions, a sequence of instructions that are executing. We're going to refer to that as a thread.
+
+89
+00:08:44.880 --> 00:08:47.770
+Omar Mansour: That sequence of executing machine instructions.
+
+90
+00:08:49.100 --> 00:08:51.730
+Omar Mansour: Typically executes sequentially.
+
+91
+00:08:52.460 --> 00:08:58.849
+Omar Mansour: But not always. The typical scenario is that the CPU executes one instruction, then the next, and then the next.
+
+92
+00:08:59.010 --> 00:09:06.919
+Omar Mansour: Until it encounters either a branch, could be a conditional branch, like an if statement in a higher level code.
+
+93
+00:09:07.110 --> 00:09:10.760
+Omar Mansour: or until we encounter a function call. In a function call.
+
+94
+00:09:10.960 --> 00:09:19.979
+Omar Mansour: The CPU goes and executes a subroutine, and when the subroutine returns, the CPU goes back and executes from the original position.
+
+95
+00:09:22.010 --> 00:09:26.130
+Omar Mansour: So, a thread is a sequence of instructions that are executed.
+
+96
+00:09:26.350 --> 00:09:34.039
+Omar Mansour: Now… Everything we've been talking about so far has been pertaining… has pertained to a single threaded process.
+
+97
+00:09:34.360 --> 00:09:49.309
+Omar Mansour: And every process has some memory areas, as we have emphasized before. Every process has a code segment. You give it another name, and you can use them interchangeably. It's also called a text segment. What do we have in a text segment? Who remembers?
+
+98
+00:09:50.930 --> 00:09:55.589
+Omar Mansour: Because our exam is next week. What is in the text segment of the process memory?
+
+99
+00:09:59.800 --> 00:10:01.400
+Omar Mansour: Huh?
+
+100
+00:10:02.080 --> 00:10:05.070
+Omar Mansour: Do what code? No, no assembly.
+
+101
+00:10:05.740 --> 00:10:08.019
+Omar Mansour: Assembly is not loaded into memory at all.
+
+102
+00:10:08.430 --> 00:10:10.409
+Omar Mansour: Who wants to give me a better answer?
+
+103
+00:10:12.050 --> 00:10:13.789
+Omar Mansour: Machine code is what you have.
+
+104
+00:10:14.170 --> 00:10:16.800
+Omar Mansour: You don't have assembly code, you have machine code.
+
+105
+00:10:16.980 --> 00:10:18.380
+Omar Mansour: Assembly is still.
+
+106
+00:10:19.240 --> 00:10:22.310
+Omar Mansour: It still is a higher level language than the actual machine code.
+
+107
+00:10:22.950 --> 00:10:32.429
+Omar Mansour: It's not a high-level language, it is a very low-level language, but it still is machine code. The CPU executes machine code. Yes, they map one-for-one with assembly.
+
+108
+00:10:32.780 --> 00:10:33.800
+Omar Mansour: statements.
+
+109
+00:10:34.590 --> 00:10:36.250
+Omar Mansour: What you have here is machine code.
+
+110
+00:10:37.100 --> 00:10:39.949
+Omar Mansour: What is in the data segment of the process memory?
+
+111
+00:10:40.160 --> 00:10:41.300
+Omar Mansour: Who remembers?
+
+112
+00:10:42.590 --> 00:10:44.140
+Omar Mansour: That's actually important.
+
+113
+00:10:44.330 --> 00:10:45.740
+Omar Mansour: For today's discussion.
+
+114
+00:10:48.950 --> 00:10:51.739
+Omar Mansour: Shall I select someone to help me out randomly?
+
+115
+00:10:55.030 --> 00:11:11.440
+Omar Mansour: Everyone is trying to avoid eye contact. Yes, thank you. Somebody saved all of us. Yes? It's the global variable. Global variables. Thank you so much. Could be integers, chars, objects, big objects, arrays of objects. Arrays of integers. Doesn't matter. Global variables.
+
+116
+00:11:11.660 --> 00:11:15.759
+Omar Mansour: What is a global variable? It's a variable declared outside of any function.
+
+117
+00:11:19.100 --> 00:11:22.370
+Omar Mansour: What about the stack segment of the memory? What's it used for?
+
+118
+00:11:25.940 --> 00:11:33.969
+Omar Mansour: Huh. I can't believe our exam is next week. Yes, thank you. They're temporary data. Temp… like what? Variables?
+
+119
+00:11:34.150 --> 00:11:35.539
+Omar Mansour: What kind of variables?
+
+120
+00:11:35.890 --> 00:11:37.310
+Omar Mansour: vocal variables.
+
+121
+00:11:37.770 --> 00:11:43.210
+Omar Mansour: And for local variables, not only that, parameters being passed into a function.
+
+122
+00:11:43.620 --> 00:11:47.909
+Omar Mansour: So this means every time you do a function call, a stack frame is created.
+
+123
+00:11:48.340 --> 00:11:51.049
+Omar Mansour: As we have discussed before, and in the stack frame.
+
+124
+00:11:51.310 --> 00:11:55.439
+Omar Mansour: We have saved the CPU registers of the caller.
+
+125
+00:11:56.470 --> 00:12:03.730
+Omar Mansour: And we've passed parameters to the stack, and then we have the local variables of that function also in the stack frame.
+
+126
+00:12:03.830 --> 00:12:07.999
+Omar Mansour: The moment the function returns, the stack frame for that function is destroyed.
+
+127
+00:12:08.620 --> 00:12:18.970
+Omar Mansour: And then we have a list of open files, and then we have some CPU registers. Now, every single threaded process has a bunch of CPU registers that are being used when the process is running.
+
+128
+00:12:19.270 --> 00:12:26.160
+Omar Mansour: The state of the process does not have to be running. There are two other states where the process may be in. What are they?
+
+129
+00:12:26.600 --> 00:12:28.529
+Omar Mansour: We remember from prior discussions.
+
+130
+00:12:29.200 --> 00:12:31.929
+Omar Mansour: What are the other two states of the process?
+
+131
+00:12:33.140 --> 00:12:34.799
+Omar Mansour: Two main states of the process.
+
+132
+00:12:35.760 --> 00:12:44.529
+Omar Mansour: If it's not running, where else could it… what else could it be? Yes? Reading and ready. Waiting and ready, thank you so much. The process could be waiting, it could be ready.
+
+133
+00:12:45.190 --> 00:12:49.529
+Omar Mansour: But only if the process is running that it is actually
+
+134
+00:12:50.180 --> 00:12:54.020
+Omar Mansour: have… that the CPU registers are actually loaded into the CPU.
+
+135
+00:12:54.820 --> 00:13:02.540
+Omar Mansour: only when it's running that its CPU registers are loaded into the CPU. What happens if the process is actually not running, if it is ready?
+
+136
+00:13:04.260 --> 00:13:09.839
+Omar Mansour: Where are the CPU registers for the process? Well, they're going to be saved. Where are they saved? Are they saved in the stack?
+
+137
+00:13:13.250 --> 00:13:20.119
+Omar Mansour: If the process is not running, where are the CPU registers for the process? Where are they being saved? Yes?
+
+138
+00:13:20.690 --> 00:13:30.389
+Omar Mansour: Let me take him this time. The PCB. In the PCB, the process control block. Every process has a process control block. It's an object that represents the process.
+
+139
+00:13:30.600 --> 00:13:33.059
+Omar Mansour: Why do we need to save the CPU registers?
+
+140
+00:13:33.620 --> 00:13:35.269
+Omar Mansour: If the process is not running.
+
+141
+00:13:36.390 --> 00:13:37.460
+Omar Mansour: Because…
+
+142
+00:13:38.020 --> 00:13:47.039
+Omar Mansour: If the process is not running, this means there's some other process that is running, destroying the values, prior values of the CPU register. If I wish to restore
+
+143
+00:13:47.810 --> 00:13:51.120
+Omar Mansour: My process is, if I wish to convert its state
+
+144
+00:13:51.330 --> 00:14:03.030
+Omar Mansour: to be running, meaning dispatch it into the CPU, and I need to load its CPU registers. I need to restore the CPU registers from the process control block, so then I can resume the process
+
+145
+00:14:03.360 --> 00:14:07.210
+Omar Mansour: with its copy of the CPU registers intact.
+
+146
+00:14:07.410 --> 00:14:18.800
+Omar Mansour: Again, go back to that assembly example we've given before in Lecture 1. It's an ultra-important example. We said this is the gift that never stops giving, and it will never stop giving in scores, okay?
+
+147
+00:14:20.070 --> 00:14:21.709
+Omar Mansour: Any questions so far?
+
+148
+00:14:22.680 --> 00:14:29.240
+Omar Mansour: So now we need to transition to discussing Multi-threaded processes. This means…
+
+149
+00:14:30.480 --> 00:14:35.279
+Omar Mansour: Not only that I have a single thread, a single sequence.
+
+150
+00:14:35.430 --> 00:14:47.929
+Omar Mansour: of machine instructions that are executing, one at a time, of course, a sequence of machine instructions executing. No, I may have 1, 2, 3, or even 10 threads in my process, or 100 threads in my process.
+
+151
+00:14:48.300 --> 00:14:57.620
+Omar Mansour: Any number you wish to have. In this particular example, it's a demonstration example, doesn't have to be 3. I'm giving an example for demonstration using 3 threads.
+
+152
+00:14:58.710 --> 00:15:04.990
+Omar Mansour: So, in this case, Every thread, No, well, first of all…
+
+153
+00:15:05.210 --> 00:15:08.399
+Omar Mansour: Look at the things that are shared between all the threads.
+
+154
+00:15:08.500 --> 00:15:13.729
+Omar Mansour: All three threads have a single code segment. This is where you have the machine instructions.
+
+155
+00:15:14.910 --> 00:15:21.579
+Omar Mansour: I feel instructions are organized clearly into Subroutines. Functions, that is.
+
+156
+00:15:22.290 --> 00:15:28.010
+Omar Mansour: Machine instructions are not just spaghetti code, typically. Machine instructions are organized into functions.
+
+157
+00:15:28.650 --> 00:15:34.599
+Omar Mansour: We have the data segment. This is also shared between all the threads. That's a very important distinction.
+
+158
+00:15:34.800 --> 00:15:47.669
+Omar Mansour: The data segment is where you have global variables. This means global variables are shared between all the threads within the same process. Well, between threads of different processes.
+
+159
+00:15:48.150 --> 00:15:51.690
+Omar Mansour: Global variables are shared between threads of the same process.
+
+160
+00:15:53.450 --> 00:16:05.289
+Omar Mansour: Open files are shared between all the threads, so this means one thread can open a file, another thread can be reading from the same file, and a third thread might be writing to the same exact file.
+
+161
+00:16:06.460 --> 00:16:07.270
+Omar Mansour: Okay?
+
+162
+00:16:08.830 --> 00:16:13.949
+Omar Mansour: But here's the distinction here. Every thread has its own set of CPU registers.
+
+163
+00:16:14.080 --> 00:16:16.919
+Omar Mansour: Which makes perfect sense. Why is that?
+
+164
+00:16:17.410 --> 00:16:22.340
+Omar Mansour: Despite the fact that they share The same exact code segment.
+
+165
+00:16:23.370 --> 00:16:24.810
+Omar Mansour: That code is shared.
+
+166
+00:16:25.290 --> 00:16:31.150
+Omar Mansour: The code may have many, many, many different subroutines. I can also say many, many, many different functions. A subroutine is a function.
+
+167
+00:16:31.670 --> 00:16:33.189
+Omar Mansour: It's just a terminology.
+
+168
+00:16:33.410 --> 00:16:35.769
+Omar Mansour: It's for C versus generic terminology.
+
+169
+00:16:38.230 --> 00:16:39.140
+Omar Mansour: Okay.
+
+170
+00:16:39.560 --> 00:16:43.069
+Omar Mansour: One… thread may be executed function X,
+
+171
+00:16:43.280 --> 00:16:46.120
+Omar Mansour: Another thread may be executing function Y.
+
+172
+00:16:46.560 --> 00:16:57.560
+Omar Mansour: the third thread may be executing function Z. So every thread, despite sharing all the code with all of the functions, they may be executing at different areas of the code.
+
+173
+00:16:58.120 --> 00:17:09.430
+Omar Mansour: Function X, function Y, function Z. That is completely legitimate. In fact, it is more likely than not. In fact, it is the most likely scenario, is that you will have every thread executing a very different function.
+
+174
+00:17:10.510 --> 00:17:16.779
+Omar Mansour: And within those functions, function X, function Y, function Z, Other subroutines may be called.
+
+175
+00:17:18.579 --> 00:17:25.259
+Omar Mansour: So this dictates… Given, first of all, that every function Use access to local variables.
+
+176
+00:17:25.869 --> 00:17:31.530
+Omar Mansour: And these are 3 separate functions, then we have 3 sets of local variables, one for each function.
+
+177
+00:17:31.680 --> 00:17:43.149
+Omar Mansour: Because every thread is running a different function. So it makes perfect sense. In fact, there's no other way around this. Every thread needs to have its own stack, which is also known as the call stack.
+
+178
+00:17:44.040 --> 00:18:00.380
+Omar Mansour: That stack is the cold stack. They are one and the same. It's a segment of the memory, an area of the memory. Now, as opposed to what we had before, when we had a single stack segment for every process, now we have a stack segment for every thread within the same process.
+
+179
+00:18:03.880 --> 00:18:11.069
+Omar Mansour: Makes sense. So… The call stack may have different sequence of functions being called for one thread.
+
+180
+00:18:11.320 --> 00:18:17.949
+Omar Mansour: A very different sequence of function calls for another thread, a completely different sequence of function calls for the fair thread.
+
+181
+00:18:18.350 --> 00:18:26.170
+Omar Mansour: And every function call has its own stack frame, as we have emphasized multiple times. And in a stack frame, we keep the CPU registers of the caller.
+
+182
+00:18:27.330 --> 00:18:32.839
+Omar Mansour: We keep the parameters that are being passed in the function call, as well as the local theory.
+
+183
+00:18:33.670 --> 00:18:34.940
+Omar Mansour: Any questions?
+
+184
+00:18:36.490 --> 00:18:39.809
+Omar Mansour: So why are the CPU registers? Why do we have 3 copies?
+
+185
+00:18:40.550 --> 00:18:45.819
+Omar Mansour: Because at any… any given time, at any given point of time.
+
+186
+00:18:46.070 --> 00:18:51.260
+Omar Mansour: a CPU would be only executing one instruction at any instance of time.
+
+187
+00:18:51.920 --> 00:18:54.350
+Omar Mansour: Assuming we have a single CPU.
+
+188
+00:18:56.590 --> 00:19:03.220
+Omar Mansour: So this means… The CPU is executing one instruction, And then the next…
+
+189
+00:19:03.560 --> 00:19:06.330
+Omar Mansour: So it's really executing a bunch of instructions.
+
+190
+00:19:06.690 --> 00:19:08.600
+Omar Mansour: In a function or a subroutine.
+
+191
+00:19:08.800 --> 00:19:12.709
+Omar Mansour: They're consuming, or they are using, CPU registers.
+
+192
+00:19:13.640 --> 00:19:18.670
+Omar Mansour: At some point, maybe another CPU, so simultaneously.
+
+193
+00:19:18.840 --> 00:19:21.770
+Omar Mansour: So I can have two scenarios here. I can have…
+
+194
+00:19:22.710 --> 00:19:26.290
+Omar Mansour: my three threads, time sharing a single CPU,
+
+195
+00:19:27.080 --> 00:19:29.500
+Omar Mansour: Or, I can have my 3 threads.
+
+196
+00:19:29.880 --> 00:19:33.130
+Omar Mansour: actually executing in 3 separate CPUs.
+
+197
+00:19:34.490 --> 00:19:36.950
+Omar Mansour: I have 8 CPUs on my laptop.
+
+198
+00:19:37.250 --> 00:19:43.449
+Omar Mansour: You have probably the same, maybe even more. I think newer laptops, actually, today have even more.
+
+199
+00:19:43.730 --> 00:19:45.900
+Omar Mansour: I think the, Intel Ultra.
+
+200
+00:19:46.270 --> 00:19:55.030
+Omar Mansour: I think it's getting closer to, like, some of them are getting, like, 12 CPUs or something crazy like that. Even phones now are getting with 10 CPUs.
+
+201
+00:19:56.020 --> 00:20:00.760
+Omar Mansour: It's probably gonna get crazier, and you're gonna be getting more and more CPUs. If you're running on a server.
+
+202
+00:20:02.100 --> 00:20:14.699
+Omar Mansour: Maybe you want to do a lot of heavyweight processing. Some servers have 256, I kid you not. Some servers have 256 and possibly more, CPUs.
+
+203
+00:20:15.850 --> 00:20:18.369
+Omar Mansour: So I can have 200 threads of my process.
+
+204
+00:20:18.650 --> 00:20:21.869
+Omar Mansour: And every thread may be running on a very different CPU.
+
+205
+00:20:22.040 --> 00:20:25.519
+Omar Mansour: And what does a CPU have? A CPU has registers.
+
+206
+00:20:25.890 --> 00:20:29.040
+Omar Mansour: These are where you're doing the computations.
+
+207
+00:20:29.280 --> 00:20:35.540
+Omar Mansour: you're saving… the output of the operations you're doing, the output of a logical OR,
+
+208
+00:20:35.840 --> 00:20:44.869
+Omar Mansour: operation, the output of an addition operation. All of the results are going to be saved into some CPU registers. All the upruns are going to be coming from CPU registers.
+
+209
+00:20:45.050 --> 00:20:49.460
+Omar Mansour: CPU registers are needed for executing subroutines all the time.
+
+210
+00:20:50.470 --> 00:20:54.219
+Omar Mansour: We are executing different subroutines, so we need different sets of CPU residents.
+
+211
+00:20:54.910 --> 00:21:06.649
+Omar Mansour: So, I may be running at the same exact instance of time in 3 separate CPUs. Alternatively, maybe all 3 friends are running on the same CPU, but they're time-sharing the CPU.
+
+212
+00:21:07.060 --> 00:21:21.689
+Omar Mansour: If I have a single CPU in my system, my threads are timesharing. One thread is running, and the thread that is running has its CPU loaded into this… has its CPU registers actually loaded into the CPU, because that is the running thread.
+
+213
+00:21:21.820 --> 00:21:27.439
+Omar Mansour: The other two threads are either block waiting, Or ready to run.
+
+214
+00:21:27.770 --> 00:21:42.639
+Omar Mansour: But they're not occupying a CPU, because we have a single CPU that is being timeshared. One will be running, the other two are not running, and their CPU registers are saved in the corresponding PCB process control blocks, that is.
+
+215
+00:21:43.240 --> 00:21:45.100
+Omar Mansour: Any questions about this topic?
+
+216
+00:21:45.600 --> 00:21:46.910
+Omar Mansour: Before we move on.
+
+217
+00:21:48.040 --> 00:21:49.870
+Omar Mansour: Now, it's very important
+
+218
+00:21:50.300 --> 00:21:55.979
+Omar Mansour: Might appear as a subtle point, might appear as obvious, maybe it's even offending to some people.
+
+219
+00:21:56.140 --> 00:22:01.130
+Omar Mansour: But let's not mistake this. Global variables are shared between all the threads.
+
+220
+00:22:01.520 --> 00:22:02.320
+Omar Mansour: Okay?
+
+221
+00:22:02.470 --> 00:22:20.680
+Omar Mansour: That is actually a big distinction as compared to different processes. Different processes do not share global variables, as I hope all of you have encountered in Assignments 4 and 5. Some of you did not believe it, some of you would say, oh, it's the same variable name! I get that almost every semester. Two people are actually doing the homework.
+
+222
+00:22:21.290 --> 00:22:24.559
+Omar Mansour: Only to find out that the same variable name doesn't mean
+
+223
+00:22:24.730 --> 00:22:27.959
+Omar Mansour: Different processes have access to the same variable.
+
+224
+00:22:28.190 --> 00:22:43.390
+Omar Mansour: They have access to different instances of the same variable, because the moment you fork the process, the child process gets its own memory space, which always has its own very separate instance of the same exact variable names.
+
+225
+00:22:43.570 --> 00:22:47.519
+Omar Mansour: Not the case here. The moment you create a thread, and then another thread.
+
+226
+00:22:47.650 --> 00:22:52.769
+Omar Mansour: All the global variables are shared, but every thread is going to have its own set of local variables.
+
+227
+00:22:53.720 --> 00:23:02.080
+Omar Mansour: Because every thread has its own stack. So let's not forget this. The stack contains local variables, the data segment contains global variables.
+
+228
+00:23:02.470 --> 00:23:03.680
+Omar Mansour: Any questions?
+
+229
+00:23:04.950 --> 00:23:06.270
+Omar Mansour: Very good. So…
+
+230
+00:23:06.880 --> 00:23:14.990
+Omar Mansour: Now, one would argue, why do we even need threads? In fact, I tell you, the first version of Unix.
+
+231
+00:23:15.200 --> 00:23:20.440
+Omar Mansour: I think it was 1969. It was actually developed by the same developer of the C language programming.
+
+232
+00:23:20.890 --> 00:23:29.490
+Omar Mansour: was developed, as I mentioned before, in AT&T Bell Labs, right there in New Jersey, not that far away, just for your knowledge.
+
+233
+00:23:29.610 --> 00:23:33.049
+Omar Mansour: We're very close to where all the action was going on.
+
+234
+00:23:34.860 --> 00:23:39.160
+Omar Mansour: at NYU, unfortunately, was not developed at NYU, but very close.
+
+235
+00:23:40.450 --> 00:23:45.509
+Omar Mansour: So… Why do we need to study this? Why do we need to… well…
+
+236
+00:23:45.920 --> 00:23:51.999
+Omar Mansour: The original Unix didn't even have threads. It only had processes. It had zero concept of threads.
+
+237
+00:23:52.830 --> 00:23:59.820
+Omar Mansour: But then other operating systems started creating threads, so then Unix had to catch up, but it was an afterthought, actually.
+
+238
+00:24:00.120 --> 00:24:02.090
+Omar Mansour: But then it started implementing threats.
+
+239
+00:24:02.830 --> 00:24:08.039
+Omar Mansour: Linux had the same problem. In fact, the way Linux implements thread is a bit convoluted.
+
+240
+00:24:08.370 --> 00:24:09.919
+Omar Mansour: But it works.
+
+241
+00:24:12.630 --> 00:24:23.540
+Omar Mansour: So, we need to study threads, because most of the modern applications use threads. Many, many, many, many applications today are written, in fact, more
+
+242
+00:24:23.640 --> 00:24:36.660
+Omar Mansour: applications are written with Java than they are in C++. C++ is for high-performance computing. Java is for lower performance, but easier to develop type applications, like typically what you have on your phone.
+
+243
+00:24:36.660 --> 00:24:44.680
+Omar Mansour: Some use Kotlin or what have you. They all have their own implementations of threads. We're gonna get through that very soon.
+
+244
+00:24:45.820 --> 00:24:53.309
+Omar Mansour: But threads are always there, because multi-threaded applications are always there, so we need to study threads. That's one motivation.
+
+245
+00:24:54.440 --> 00:25:02.660
+Omar Mansour: The more compelling motivation is Because I may always need to divide my application into sub-tasks.
+
+246
+00:25:03.540 --> 00:25:10.300
+Omar Mansour: And, baby, I wish to have every one of those subtasks, not to be confused with a task.
+
+247
+00:25:10.590 --> 00:25:16.839
+Omar Mansour: not for the OS task, I meant just some… You don't… Parts of the application.
+
+248
+00:25:17.780 --> 00:25:19.649
+Omar Mansour: Subtasks of the application.
+
+249
+00:25:20.670 --> 00:25:28.870
+Omar Mansour: And maybe I need to have each one of them run on a separate thread so we don't block each other's. Such as what? Well, in a word processor.
+
+250
+00:25:30.240 --> 00:25:31.780
+Omar Mansour: like, Microsoft Word.
+
+251
+00:25:32.110 --> 00:25:43.309
+Omar Mansour: I typically would like to have one task that is communicating with the user, the user interface, or the graphics user interface, to be more accurate, and that needs to be very responsive.
+
+252
+00:25:44.300 --> 00:25:55.539
+Omar Mansour: I click a keyboard button when I'm typing a word, I want to see that reflect on the screen immediately, in a fraction of a second. In fact, the maximum I wish to see is a delay of one second.
+
+253
+00:25:56.020 --> 00:25:58.880
+Omar Mansour: You know, that is probably too much of a delay for me, personally.
+
+254
+00:25:59.350 --> 00:26:04.699
+Omar Mansour: I don't want to have to click on a keyboard button and wait 5 seconds to see
+
+255
+00:26:05.770 --> 00:26:17.800
+Omar Mansour: the letter that I typed reflecting on the screen, that is just too long. So, if my application is busy doing a spell check, or is busy doing the periodic save to the disk.
+
+256
+00:26:18.530 --> 00:26:19.939
+Omar Mansour: That might be annoying.
+
+257
+00:26:20.240 --> 00:26:24.920
+Omar Mansour: So for that, we may actually have a thread Running.
+
+258
+00:26:25.460 --> 00:26:26.770
+Omar Mansour: and saving.
+
+259
+00:26:27.000 --> 00:26:36.699
+Omar Mansour: your file every second, for example, maybe another thread that is doing a spell check all the time. So that way, the thread that is communicating with the user
+
+260
+00:26:36.830 --> 00:26:45.480
+Omar Mansour: is free and responsive all the time. So that's a motivation. Maybe I can actually divide my application into multiple threads. Alternatively, a web server
+
+261
+00:26:46.260 --> 00:26:57.290
+Omar Mansour: And you will appreciate this a bit more when you do Assignment 6. Assignment 6 is going to be after the midterm. Actually, it's a very interesting assignment. You're actually going to be creating
+
+262
+00:26:57.390 --> 00:27:02.869
+Omar Mansour: Servers and clients, and you're going to be communicating between them using message passing, using sockets.
+
+263
+00:27:03.860 --> 00:27:13.290
+Omar Mansour: you will see that a server may need to have to handle multiple clients. In fact, a typical server handles thousands, in some cases.
+
+264
+00:27:13.540 --> 00:27:15.139
+Omar Mansour: Millions of clients.
+
+265
+00:27:15.610 --> 00:27:17.519
+Omar Mansour: Typically, thousands of clients.
+
+266
+00:27:18.750 --> 00:27:21.459
+Omar Mansour: Simultaneously. So, if it has to do that.
+
+267
+00:27:21.820 --> 00:27:25.859
+Omar Mansour: As it's communicating and waiting for a response from one of the clients.
+
+268
+00:27:26.540 --> 00:27:28.920
+Omar Mansour: You don't want the rest of the clients to be stuck.
+
+269
+00:27:29.850 --> 00:27:34.329
+Omar Mansour: Because the server is stuck. So the server now is going to have to be multi-threaded.
+
+270
+00:27:34.620 --> 00:27:41.740
+Omar Mansour: one thread for communication with every client that is communicating with the server. So that's another motivation.
+
+271
+00:27:42.170 --> 00:27:59.379
+Omar Mansour: That is another way of writing an application. So, different reasons for writing applications to be multi-threaded. Kernels are always going to be multi-threaded as well. So, what are the benefits? Responsiveness. We already gave that example with the word processor and the need for the user to see a response immediately.
+
+272
+00:27:59.630 --> 00:28:05.820
+Omar Mansour: Speedup is another… benefits of doing multi-threading. Speed up meaning
+
+273
+00:28:06.410 --> 00:28:13.920
+Omar Mansour: If my application is actually divided into multiple tasks, and every task is represented by a thread.
+
+274
+00:28:15.060 --> 00:28:18.499
+Omar Mansour: I don't mean here a task meaning a process, I actually meant
+
+275
+00:28:19.110 --> 00:28:21.120
+Omar Mansour: A part of the, of the application.
+
+276
+00:28:22.250 --> 00:28:28.589
+Omar Mansour: So in this case, if I take every part of the application, every separate subtask of the application, and I actually put it
+
+277
+00:28:29.510 --> 00:28:34.750
+Omar Mansour: in a separate thread, and I can load that thread into a different CPU, then
+
+278
+00:28:34.900 --> 00:28:45.810
+Omar Mansour: I can have a speedup. Why is that? Because if every thread is running at a separate CPU, they can all be running at the same exact time, then I can achieve a processing speedup.
+
+279
+00:28:46.920 --> 00:28:59.850
+Omar Mansour: So then one would argue that I can achieve responsiveness and speed up using multiple processes. I can take my application and divide my application into multiple processes. We have already done that in assignments
+
+280
+00:29:00.080 --> 00:29:06.630
+Omar Mansour: foresee, as well as… 5, in which we have splits.
+
+281
+00:29:06.920 --> 00:29:12.949
+Omar Mansour: the program into multiple processes using the fork. The same program, the same application?
+
+282
+00:29:13.170 --> 00:29:17.400
+Omar Mansour: split into multiple processes, so I can achieve a speedup
+
+283
+00:29:17.570 --> 00:29:23.419
+Omar Mansour: If every one of the processes is running on a separate CPU, I can also achieve responsiveness
+
+284
+00:29:23.740 --> 00:29:34.090
+Omar Mansour: I can have the spell check as a separate process, I can have the save as a separate process, I can do both. However, I can do them, but I'm not gonna do them as good. Why is that?
+
+285
+00:29:34.510 --> 00:29:38.569
+Omar Mansour: Well, threads are lightweight compared to processes.
+
+286
+00:29:38.930 --> 00:29:50.780
+Omar Mansour: Let's recall this. Threads share the same data segment, the same code segment. Every time you create a new thread, you don't have to allocate memory like you did when we did the fork.
+
+287
+00:29:51.340 --> 00:29:52.909
+Omar Mansour: Creating a new process.
+
+288
+00:29:54.690 --> 00:30:00.570
+Omar Mansour: So, creating a new process involves allocating a good chunk of memory, And then loading…
+
+289
+00:30:01.340 --> 00:30:04.579
+Omar Mansour: The child process into that memory.
+
+290
+00:30:04.910 --> 00:30:20.259
+Omar Mansour: by copying the memory space of the parent byte by byte, if you recall from our prior discussion. So fork implies you have to allocate memory, and you have to copy the image from the parent byte by byte, and this includes the data segment.
+
+291
+00:30:20.750 --> 00:30:24.290
+Omar Mansour: Global variables, that is. The code segment, which could be very big.
+
+292
+00:30:25.190 --> 00:30:30.669
+Omar Mansour: Something… Applications or some processes could be a few hundred megabytes.
+
+293
+00:30:31.110 --> 00:30:43.030
+Omar Mansour: now you're gonna have to copy a few hundred megabytes of code, maybe a few hundred megabytes of data. That's a lot of copying, a lot of memory allocations. So it is heavyweight. Creating a new process is more involved
+
+294
+00:30:43.410 --> 00:30:47.530
+Omar Mansour: Storage-wise, and time-wise, because you have to do a lot of copying as well.
+
+295
+00:30:48.590 --> 00:30:53.640
+Omar Mansour: But creating a new thread doesn't involve that. Your code and your data are shared between the thread.
+
+296
+00:30:53.840 --> 00:31:09.500
+Omar Mansour: So the advantage is resource sharing. Not only the address space, or the memory space, I use them interchangeably, the address space means the memory space. Not only that I don't have to spend a lot of time creating a new memory area for the child.
+
+297
+00:31:09.570 --> 00:31:16.079
+Omar Mansour: and then copy. I don't have to duplicate the address space or the memory space. They are shared between threads.
+
+298
+00:31:16.160 --> 00:31:17.980
+Omar Mansour: But also all the resources.
+
+299
+00:31:18.810 --> 00:31:20.879
+Omar Mansour: The open file table.
+
+300
+00:31:21.040 --> 00:31:29.050
+Omar Mansour: It shared only one open file table for all Indeed, for all threats.
+
+301
+00:31:29.780 --> 00:31:35.189
+Omar Mansour: Creating a new process implies creating a brand new open file table.
+
+302
+00:31:35.850 --> 00:31:48.959
+Omar Mansour: So that also takes time. So it is more lightweight to create a new thread than it is to create a new process, so the creation itself matters. The sharing itself is important. What did we do in Assignment 5?
+
+303
+00:31:50.100 --> 00:31:56.149
+Omar Mansour: Processes do not share the memory space for the admin space. So what did we have to do? We had to create a shared memory.
+
+304
+00:31:56.920 --> 00:32:03.649
+Omar Mansour: And then, in 5D, we communicated by message passing. Now, I don't have to create a shared memory.
+
+305
+00:32:04.100 --> 00:32:06.810
+Omar Mansour: for threads. The memory is already shared.
+
+306
+00:32:07.150 --> 00:32:14.859
+Omar Mansour: all the global variables… I mean, not all the memory, clearly each has its own stack, but the memory here meaning the data segment.
+
+307
+00:32:16.020 --> 00:32:22.970
+Omar Mansour: and the code segment. They're both shared already, readily shared. I don't have to create a shared memory. So resources are shared.
+
+308
+00:32:23.570 --> 00:32:26.929
+Omar Mansour: Creation is lightweight, and even switching
+
+309
+00:32:27.260 --> 00:32:28.860
+Omar Mansour: Why do we need to switch?
+
+310
+00:32:29.110 --> 00:32:34.929
+Omar Mansour: Because at any given point of time, I have roughly many, many, many processes running.
+
+311
+00:32:35.870 --> 00:32:45.769
+Omar Mansour: Every process has multiple threads, so switching between processes actually is heavier than switching between threads of the same process.
+
+312
+00:32:46.680 --> 00:32:54.480
+Omar Mansour: Also, mostly, because switching between threads of the same process does not involve switching from one memory space to another.
+
+313
+00:32:57.300 --> 00:33:01.890
+Omar Mansour: Switching from one process to another process means I have to switch the memory space.
+
+314
+00:33:09.570 --> 00:33:18.410
+Omar Mansour: Okay, so the next thing I want to talk about is… so we have already alluded to this, we can take advantage of having multiple processors in my system.
+
+315
+00:33:18.630 --> 00:33:20.860
+Omar Mansour: And we can take advantage of that.
+
+316
+00:33:21.270 --> 00:33:23.609
+Omar Mansour: To achieve a lot of speed up.
+
+317
+00:33:23.720 --> 00:33:29.759
+Omar Mansour: The question is, what does that involve? Does it involve some difficulties? And the answer is yes. But before we move on.
+
+318
+00:33:30.510 --> 00:33:40.250
+Omar Mansour: two terms here we want to make sure are well understood. I can use them interchangeably, actually. In fact, I'm going to use them interchangeably in this course.
+
+319
+00:33:40.550 --> 00:33:47.110
+Omar Mansour: What do they mean, and why can't we use them to change them? Well, they mean slightly different things that are not that important for this course.
+
+320
+00:33:48.310 --> 00:33:50.810
+Omar Mansour: In every laptop that we have today.
+
+321
+00:33:51.100 --> 00:33:54.600
+Omar Mansour: many, many computers that we have today, and you have multiple CPUs.
+
+322
+00:33:54.970 --> 00:34:07.489
+Omar Mansour: And the CPUs are the engines that execute programs, one instruction at a time. The CPU fetches, that's the only job in life for a CPU to fetch the instruction, executes the instruction. We call that the
+
+323
+00:34:07.600 --> 00:34:08.510
+Omar Mansour: The hoop.
+
+324
+00:34:08.900 --> 00:34:15.459
+Omar Mansour: You know, the, the fetch-execute loop, that's what it's called, the fetch-execute loop, and that's really the only thing the CPU does.
+
+325
+00:34:17.000 --> 00:34:17.909
+Omar Mansour: Okay.
+
+326
+00:34:18.949 --> 00:34:22.159
+Omar Mansour: So, we have multiple CPUs in our systems.
+
+327
+00:34:23.310 --> 00:34:27.339
+Omar Mansour: If we do have multiple CPUs, we're gonna call that a multi-processor system.
+
+328
+00:34:28.199 --> 00:34:35.600
+Omar Mansour: System here means a computer system, not a… not a water system, meaning a computer system. I don't need to say that, I'm just gonna say system.
+
+329
+00:34:37.360 --> 00:34:45.720
+Omar Mansour: Okay, now… If all the CPUs are in the same chip, We're gonna call that multi-core.
+
+330
+00:34:47.620 --> 00:34:51.429
+Omar Mansour: Now, clearly, Maybe it's not clear, actually.
+
+331
+00:34:51.730 --> 00:34:53.170
+Omar Mansour: But let me emphasize.
+
+332
+00:34:55.280 --> 00:35:01.599
+Omar Mansour: in your laptops, If you add 8 CPUs, they're all in the same chip, I assure you that much.
+
+333
+00:35:03.760 --> 00:35:05.680
+Omar Mansour: A single chip, a single…
+
+334
+00:35:06.630 --> 00:35:13.669
+Omar Mansour: piece of hardware that's called a microprocessor in this case, contains 8 CPUs, so that's a multi-core system.
+
+335
+00:35:14.530 --> 00:35:17.870
+Omar Mansour: So when all the CPUs are in one chip, we call that a multi-core.
+
+336
+00:35:18.550 --> 00:35:23.140
+Omar Mansour: In servers, that is not the case. In servers, you can have 256.
+
+337
+00:35:24.050 --> 00:35:27.070
+Omar Mansour: CPUs, maybe you can have 500 CPUs.
+
+338
+00:35:27.780 --> 00:35:31.410
+Omar Mansour: I assure you, they're not going to be in the same chip. It's just impossible.
+
+339
+00:35:32.380 --> 00:35:35.050
+Omar Mansour: So, we're gonna call them multiprocessors.
+
+340
+00:35:36.190 --> 00:35:41.239
+Omar Mansour: So multiprocessors are the more general term, so I can use it all the time.
+
+341
+00:35:41.980 --> 00:35:42.690
+Omar Mansour: Okay?
+
+342
+00:35:43.110 --> 00:35:47.560
+Omar Mansour: means I have multiple processors, Possibly in different CPUs.
+
+343
+00:35:49.030 --> 00:35:55.630
+Omar Mansour: Okay, aside from terminology, What are the difficulties that we…
+
+344
+00:35:56.260 --> 00:36:09.219
+Omar Mansour: are going to encounter when we have a multiprocessing system, meaning multiple CPUs. Well, I need to achieve a speedup. For that, I need to divide my activities. All the activities in my application need to be divided.
+
+345
+00:36:09.930 --> 00:36:18.139
+Omar Mansour: Either threads or processes, either one of them, both of them are going to work. Threads have that advantage that resources are already shared.
+
+346
+00:36:18.710 --> 00:36:21.409
+Omar Mansour: All resources are shared, including the memory.
+
+347
+00:36:23.480 --> 00:36:34.939
+Omar Mansour: That is with threads. Processes do not share the memory. Every process has its own… a child process, that is, will have its own memory space, but that's okay. We can then create a shared memory like we did in Assignment 5.
+
+348
+00:36:36.170 --> 00:36:40.509
+Omar Mansour: So in either way, I can do the speedup using processes or spreads.
+
+349
+00:36:42.440 --> 00:36:51.180
+Omar Mansour: But then… This involves taking my application and dividing it into different threads, or dividing it into different processes.
+
+350
+00:36:52.180 --> 00:36:53.070
+Omar Mansour: So…
+
+351
+00:36:53.350 --> 00:37:00.980
+Omar Mansour: Dividing the activities within the process is something that I have to care about. I have to divide them such that they can run
+
+352
+00:37:01.940 --> 00:37:03.739
+Omar Mansour: Possibly in separate CPU.
+
+353
+00:37:04.920 --> 00:37:10.320
+Omar Mansour: Balancing. So, after I divide the activities, of my application.
+
+354
+00:37:10.650 --> 00:37:16.019
+Omar Mansour: into separate CPUs, Each one running a separate thread or a separate process.
+
+355
+00:37:16.160 --> 00:37:22.989
+Omar Mansour: I need to make sure that there's some balance between the work that is being done in each of those divided activities.
+
+356
+00:37:25.140 --> 00:37:28.390
+Omar Mansour: Because that's how you achieve the maximum efficiency.
+
+357
+00:37:29.530 --> 00:37:31.220
+Omar Mansour: And then I would have to…
+
+358
+00:37:31.600 --> 00:37:34.579
+Omar Mansour: Deal with the topic of data splitting.
+
+359
+00:37:36.460 --> 00:37:46.480
+Omar Mansour: Which is very common if you're doing, for example, image processing. For doing an image processing, let's say it's an MRI image, or what have you, that takes a long time to process.
+
+360
+00:37:47.210 --> 00:37:51.879
+Omar Mansour: One way is to try to split your image, possibly into four quadrants.
+
+361
+00:37:53.460 --> 00:37:59.750
+Omar Mansour: Such that… I can have… One CPU will process the top left.
+
+362
+00:38:00.060 --> 00:38:08.910
+Omar Mansour: quadrant, another CPU process the top right quadrant of my image, and then the bottom left, and then the bottom right, so then I can actually
+
+363
+00:38:09.150 --> 00:38:15.190
+Omar Mansour: Run the same exact function, that does processing, for example, a fast Fourier transform.
+
+364
+00:38:16.590 --> 00:38:18.860
+Omar Mansour: The same exact function can be run.
+
+365
+00:38:21.010 --> 00:38:23.290
+Omar Mansour: But the data might be split.
+
+366
+00:38:23.660 --> 00:38:27.369
+Omar Mansour: So every thread or process might be that
+
+367
+00:38:28.190 --> 00:38:34.650
+Omar Mansour: processing different sets of data, so I have to split the data between the different, threads.
+
+368
+00:38:35.580 --> 00:38:38.809
+Omar Mansour: But at some point, I'm gonna have to collect the data again.
+
+369
+00:38:39.070 --> 00:38:44.260
+Omar Mansour: So, at some point, I'm gonna have to… I'm gonna need to have a result image.
+
+370
+00:38:44.630 --> 00:38:46.399
+Omar Mansour: Where the data is collected.
+
+371
+00:38:46.630 --> 00:39:00.849
+Omar Mansour: So there may be some data dependency, and we're gonna spend the whole chapter next week talking about data dependencies and data hazards, and synchronization, and locking a critical section, all of that stuff. All of that stuff we're gonna talk about next week.
+
+372
+00:39:04.010 --> 00:39:04.950
+Omar Mansour: Okay.
+
+373
+00:39:05.650 --> 00:39:08.760
+Omar Mansour: Finally, multi-threaded.
+
+374
+00:39:10.820 --> 00:39:13.990
+Omar Mansour: We're multi-process… applications.
+
+375
+00:39:15.210 --> 00:39:17.109
+Omar Mansour: For multi-threaded processes.
+
+376
+00:39:19.620 --> 00:39:25.800
+Omar Mansour: Let's stick to multi-threaded processes. They're actually more difficult to debug and test than single-threaded processes.
+
+377
+00:39:26.650 --> 00:39:29.539
+Omar Mansour: The good news is, once you have a breakpoint.
+
+378
+00:39:30.870 --> 00:39:36.180
+Omar Mansour: In one of the multiple threads, the entire process I'm gonna pause.
+
+379
+00:39:37.320 --> 00:39:45.910
+Omar Mansour: So if I have a breakpoint here, and a breakpoint there, and a breakpoint there, the moment any of the breakpoints is hit, all the process is going to pause.
+
+380
+00:39:46.230 --> 00:39:47.519
+Omar Mansour: Which is good.
+
+381
+00:39:48.920 --> 00:39:52.329
+Omar Mansour: But if the breakpoint is hit in the first thread.
+
+382
+00:39:55.490 --> 00:39:58.730
+Omar Mansour: You might have to do a little bit of slight understanding.
+
+383
+00:39:59.430 --> 00:40:08.959
+Omar Mansour: And how to access the call stack, so you can figure out where the second thread and the third threads are paused, in which function. You can figure that out by looking at the call stack.
+
+384
+00:40:09.100 --> 00:40:18.770
+Omar Mansour: and actually in which statement within the function, which you can easily figure out as well. However, clearly, it dictates a bit more understanding of the call stack.
+
+385
+00:40:18.910 --> 00:40:21.930
+Omar Mansour: Which you all should, if you're gonna be using the debugger.
+
+386
+00:40:22.050 --> 00:40:33.730
+Omar Mansour: Because that way you can figure out where every other thread is running on, which function, because, as I mentioned before, typically, it is incredibly more likely than not
+
+387
+00:40:34.960 --> 00:40:52.930
+Omar Mansour: I would say incredibly… let's say it's more likely than not that every thread is going to be running a separate function, maybe function X, functionY, and then function Z. So really, if the breakpoint is hit on function X, I wish to know which function was running in the other thread, and which statement was actually running, so then I can do some debugging.
+
+388
+00:40:53.770 --> 00:40:56.259
+Omar Mansour: So debugging is absolutely more involved.
+
+389
+00:40:57.300 --> 00:41:04.400
+Omar Mansour: And now, back again to defining a couple of other terms that are actually important. You're responsible for understanding them.
+
+390
+00:41:04.520 --> 00:41:13.400
+Omar Mansour: One term is called parallelism, another term is called concurrency, and now it is time to really distinguish between the two. Who knows the difference between parallelism and concurrency?
+
+391
+00:41:15.890 --> 00:41:24.800
+Omar Mansour: One person, very good. It's actually… well, two, maybe a few. Maybe the rest of you are just shy. You probably know what it is, but you're just shy. You don't want to raise your hand. That's okay.
+
+392
+00:41:25.420 --> 00:41:34.140
+Omar Mansour: All right, so what is it? Well, actually, I'm gonna use a picture. A picture is worth a thousand words, like they say. Some people says that, they say it. I use it.
+
+393
+00:41:35.810 --> 00:41:38.519
+Omar Mansour: demonstration example. Let's say I have 4 threads.
+
+394
+00:41:38.700 --> 00:41:41.779
+Omar Mansour: I don't always need to have four threads, it's just for demonstrations.
+
+395
+00:41:42.390 --> 00:41:45.549
+Omar Mansour: Friends, T1, T2, T3, and T4.
+
+396
+00:41:45.740 --> 00:41:50.029
+Omar Mansour: And assuming I have a single CPU, or maybe I have multiple CPUs.
+
+397
+00:41:50.140 --> 00:41:52.429
+Omar Mansour: But all four threads are running on the same CPU.
+
+398
+00:41:54.070 --> 00:41:58.019
+Omar Mansour: So this means they're timesharing the CPU. That's what it means.
+
+399
+00:41:58.240 --> 00:41:59.110
+Omar Mansour: Nope.
+
+400
+00:41:59.640 --> 00:42:02.990
+Omar Mansour: Thread's T1, thread T1 is gonna run for a bit of time.
+
+401
+00:42:03.170 --> 00:42:09.100
+Omar Mansour: And then we switch, and we run T2 for a bit of time, switch, run T3, T4, and then back again.
+
+402
+00:42:09.600 --> 00:42:16.460
+Omar Mansour: So we're going to refer to that as concurrency. This means all four threads are running concurrently.
+
+403
+00:42:17.090 --> 00:42:23.140
+Omar Mansour: They are not running in parallel, they're not, absolutely not. They are running concurrently.
+
+404
+00:42:23.330 --> 00:42:24.920
+Omar Mansour: It may appear…
+
+405
+00:42:25.360 --> 00:42:36.960
+Omar Mansour: to the user of the computer that they're actually running at the same time, because the switching time is very small. Who remembers what we referred to as that switching time? What was it? What did we refer to it as?
+
+406
+00:42:37.130 --> 00:42:39.069
+Omar Mansour: We give it a name, that's switching time.
+
+407
+00:42:40.610 --> 00:42:41.420
+Omar Mansour: Buh?
+
+408
+00:42:41.610 --> 00:42:42.280
+Omar Mansour: Thick.
+
+409
+00:42:42.500 --> 00:42:46.269
+Omar Mansour: The timer tick. Exactly. We give it another name as well.
+
+410
+00:42:46.580 --> 00:42:48.270
+Omar Mansour: We call it the time slice.
+
+411
+00:42:49.540 --> 00:42:54.689
+Omar Mansour: What was the time slice? What, is it in minutes, or seconds, or hours?
+
+412
+00:42:54.840 --> 00:42:57.960
+Omar Mansour: What is the time slice, typically, in your computers?
+
+413
+00:42:59.080 --> 00:43:01.730
+Omar Mansour: I thought it was… Milliseconds.
+
+414
+00:43:02.150 --> 00:43:06.980
+Omar Mansour: Milliseconds, exactly. How many milliseconds? Most of you had it as 1 millisecond, I presume?
+
+415
+00:43:08.380 --> 00:43:13.750
+Omar Mansour: A millisecond, then switch. A millisecond, so the user of the computer wouldn't even know
+
+416
+00:43:13.910 --> 00:43:22.069
+Omar Mansour: that the CPU is switching. In fact, the applications running don't even know that they're being switched. They shouldn't. Why would they? They don't need to know.
+
+417
+00:43:22.570 --> 00:43:39.530
+Omar Mansour: unless they start looking at the current time and, you know, evaluating things, they can figure it out, you can write code to figure it out, but typically you don't, and typically you're not even aware, and you shouldn't be, should be transparent to you, shouldn't be aware that you're being switched in and out into the CPU.
+
+418
+00:43:39.720 --> 00:43:43.880
+Omar Mansour: Okay? But now you're running concurrently with other threads.
+
+419
+00:43:44.060 --> 00:43:48.119
+Omar Mansour: Of the same process, or maybe other threads of a different process.
+
+420
+00:43:48.240 --> 00:43:54.079
+Omar Mansour: I just said we have 4 threads. I didn't say they belong to the same process. Maybe every thread
+
+421
+00:43:54.360 --> 00:43:58.049
+Omar Mansour: Is actually in a single threaded process that is very possible.
+
+422
+00:43:58.930 --> 00:44:04.709
+Omar Mansour: Another demonstration example here is if I have two CPU cores.
+
+423
+00:44:04.840 --> 00:44:10.179
+Omar Mansour: Again, a core means, you know, when I have two cores, that means they are in the same exact chip.
+
+424
+00:44:10.780 --> 00:44:13.739
+Omar Mansour: But that's… that doesn't matter. I have two CPUs.
+
+425
+00:44:15.980 --> 00:44:27.209
+Omar Mansour: And the same exact four threads now are probably going to be assigned into different CPUs, so now I have T1 running at the same exact time, running simultaneously with thread number 2.
+
+426
+00:44:28.470 --> 00:44:36.599
+Omar Mansour: And then, I'm timesharing, so I'm switching from T1 to T3, T1, T3, But over the second CPU,
+
+427
+00:44:36.770 --> 00:44:43.070
+Omar Mansour: T2 is running and switching with T4. So now I can say that T1 and T2 are running in parallel
+
+428
+00:44:43.800 --> 00:44:47.940
+Omar Mansour: And I can also say that T3 and T4 are also running in parallel.
+
+429
+00:44:49.050 --> 00:45:01.059
+Omar Mansour: Running in parallel means they are truly at the same snapshot of time, at the same instance of time. If I take a y-axis, time axis is the x-axis. If I take a y-axis.
+
+430
+00:45:01.310 --> 00:45:09.350
+Omar Mansour: vertical axis and take a look at any snapshot of time that is the y-axis, I would see that two threads are running in parallel.
+
+431
+00:45:11.850 --> 00:45:22.549
+Omar Mansour: So that is called parallelism. That is the definition of parallelism, is that they're actually running at the same time simultaneously, whereas concurrency means the threads
+
+432
+00:45:22.800 --> 00:45:25.419
+Omar Mansour: are actually timesharing the same exact CPU.
+
+433
+00:45:25.610 --> 00:45:26.820
+Omar Mansour: Any questions?
+
+434
+00:45:28.810 --> 00:45:32.629
+Omar Mansour: I can have data parallelism, which is the example we gave before.
+
+435
+00:45:32.840 --> 00:45:35.509
+Omar Mansour: I can run the same exact processing function.
+
+436
+00:45:36.100 --> 00:45:38.140
+Omar Mansour: Two different quadrants of an image.
+
+437
+00:45:39.380 --> 00:45:46.460
+Omar Mansour: So pictorially, I can take an image, Divided into 4 quadrants.
+
+438
+00:45:49.200 --> 00:45:50.349
+Omar Mansour: I can run.
+
+439
+00:45:50.800 --> 00:45:54.709
+Omar Mansour: Process every quadrant in a different thread.
+
+440
+00:46:03.140 --> 00:46:06.880
+Omar Mansour: using the same exact function, for example, FFT.
+
+441
+00:46:08.880 --> 00:46:10.590
+Omar Mansour: Same exact function.
+
+442
+00:46:11.310 --> 00:46:17.170
+Omar Mansour: But different data, because everyone is operating on a very separate pixels within the image.
+
+443
+00:46:17.550 --> 00:46:20.009
+Omar Mansour: Every image, of course, is formed of a bunch of pixels.
+
+444
+00:46:21.870 --> 00:46:30.880
+Omar Mansour: That is called data parallelism, distributing substance of the data across multiple cores, the same exact operation, for example, a fast Fourier transform.
+
+445
+00:46:30.990 --> 00:46:36.079
+Omar Mansour: If you're not familiar with what it is, you don't need to, just some processing function, okay?
+
+446
+00:46:37.900 --> 00:46:40.170
+Omar Mansour: Task parallelism is different.
+
+447
+00:46:40.410 --> 00:46:46.390
+Omar Mansour: Now, I'm running a very different function And…
+
+448
+00:46:47.870 --> 00:47:01.239
+Omar Mansour: Every thread. Every thread runs a different function. Function X, function 1, function Z, and every thread is running in a separate CPU course to achieve parallelism. Any questions about the difference between data parallelism and task parallelism?
+
+449
+00:47:03.030 --> 00:47:04.510
+Omar Mansour: Very good. So…
+
+450
+00:47:05.390 --> 00:47:13.100
+Omar Mansour: Now, we need to find out what is the maximum possible speedup I can ever achieve. Theoretically. I mean, not practically, but theoretically.
+
+451
+00:47:13.520 --> 00:47:16.899
+Omar Mansour: Because that sets up the upper limit. Practically, you're going to be getting less.
+
+452
+00:47:17.070 --> 00:47:27.999
+Omar Mansour: always going to be getting less. So that is the upper limit. So the actual speedup is always going to be smaller than or equal to that limit, and the way we do it is by evaluating
+
+453
+00:47:28.430 --> 00:47:30.730
+Omar Mansour: Using a little bit of a diagram.
+
+454
+00:47:31.390 --> 00:47:33.230
+Omar Mansour: If I had a single CPU,
+
+455
+00:47:33.410 --> 00:47:36.280
+Omar Mansour: And I had a program running on that single CPU.
+
+456
+00:47:37.600 --> 00:47:38.909
+Omar Mansour: You would notice.
+
+457
+00:47:39.010 --> 00:47:40.990
+Omar Mansour: That some parts of your program
+
+458
+00:47:42.790 --> 00:47:49.249
+Omar Mansour: can execute in parallel. Let's say some statements can execute in parallel, but other statements cannot.
+
+459
+00:47:49.800 --> 00:47:52.050
+Omar Mansour: Let's take a loop, for example.
+
+460
+00:47:52.660 --> 00:47:55.069
+Omar Mansour: The loop contains many iterations.
+
+461
+00:48:00.350 --> 00:48:01.859
+Omar Mansour: So if I have a vector.
+
+462
+00:48:02.550 --> 00:48:06.190
+Omar Mansour: I can also refer to a vector as a column matrix.
+
+463
+00:48:06.730 --> 00:48:10.160
+Omar Mansour: If I tried to add… Inc.
+
+464
+00:48:10.410 --> 00:48:12.020
+Omar Mansour: It has a bunch of entries.
+
+465
+00:48:16.390 --> 00:48:18.430
+Omar Mansour: It was to be plus C.
+
+466
+00:48:21.730 --> 00:48:23.459
+Omar Mansour: That means I'm adding
+
+467
+00:48:29.980 --> 00:48:33.489
+Omar Mansour: The first two entries, meaning the first entry from
+
+468
+00:48:33.870 --> 00:48:44.740
+Omar Mansour: vector B to the first entry from vector C, and the result goes to the first entry of vector A. By the same argument, I can add the second entry
+
+469
+00:48:44.940 --> 00:48:50.899
+Omar Mansour: of B, and the second element of vector C, and take the result.
+
+470
+00:48:56.350 --> 00:49:01.759
+Omar Mansour: and save it in the second element of vector A, that is vector addition.
+
+471
+00:49:02.570 --> 00:49:10.130
+Omar Mansour: should all know that, what that means. I can do it using a loop of multiple iterations. I iterate over the elements.
+
+472
+00:49:10.680 --> 00:49:15.820
+Omar Mansour: of vector A and read and sum the elements of vectors B and C.
+
+473
+00:49:16.060 --> 00:49:21.390
+Omar Mansour: Now, you would notice… that… There is no…
+
+474
+00:49:21.570 --> 00:49:25.610
+Omar Mansour: reason why I cannot do all of those additions
+
+475
+00:49:25.920 --> 00:49:28.879
+Omar Mansour: In parallel, at the same exact time.
+
+476
+00:49:29.590 --> 00:49:34.070
+Omar Mansour: There's no dependency between one iteration of that loop and the next iteration of the loop.
+
+477
+00:49:35.810 --> 00:49:42.299
+Omar Mansour: Our needs… To compute the first element, Before computing the last element.
+
+478
+00:49:42.530 --> 00:49:48.419
+Omar Mansour: The last only relies on the last element of vector B,
+
+479
+00:49:51.910 --> 00:49:57.919
+Omar Mansour: and the last element of vector C, and they have nothing to do with computing the first element.
+
+480
+00:49:58.620 --> 00:50:03.180
+Omar Mansour: So I can run every iteration of that loop, In parallel.
+
+481
+00:50:03.750 --> 00:50:05.019
+Omar Mansour: Indeed I can.
+
+482
+00:50:05.950 --> 00:50:10.580
+Omar Mansour: So that loop… We're gonna be having some statements or some iterations.
+
+483
+00:50:10.780 --> 00:50:14.060
+Omar Mansour: that are parallelizable. I can run them in parallel.
+
+484
+00:50:15.540 --> 00:50:21.440
+Omar Mansour: So, the percentage of my code, or the percentage of execution time of my program.
+
+485
+00:50:22.310 --> 00:50:27.310
+Omar Mansour: To be more accurate, the percentage of execution time Of my program.
+
+486
+00:50:27.900 --> 00:50:37.720
+Omar Mansour: that can be parallelized, I'm going to call that parallelizable code, and the percentage of my program that cannot be parallelized, I'm gonna call that my sequential
+
+487
+00:50:38.360 --> 00:50:40.380
+Omar Mansour: Execution time of my program.
+
+488
+00:50:41.080 --> 00:50:43.609
+Omar Mansour: The sequential execution time of my program.
+
+489
+00:50:43.730 --> 00:50:45.580
+Omar Mansour: I'm gonna call that a fraction.
+
+490
+00:50:45.990 --> 00:50:53.240
+Omar Mansour: So instead of saying 20%, maybe I can say 0.2. So the sequential execution, or the sequential portion.
+
+491
+00:50:53.790 --> 00:50:57.320
+Omar Mansour: The sequential fraction of my program's gonna be S.
+
+492
+00:50:59.300 --> 00:51:00.800
+Omar Mansour: Maybe 10%.
+
+493
+00:51:01.020 --> 00:51:02.900
+Omar Mansour: 10% would be a 0.1.
+
+494
+00:51:03.060 --> 00:51:04.590
+Omar Mansour: So that's actually a fraction.
+
+495
+00:51:05.680 --> 00:51:12.789
+Omar Mansour: And the parallelizable portion of my program is going to be thus 1 minus S, because if 10%
+
+496
+00:51:13.050 --> 00:51:19.869
+Omar Mansour: oh, my program has to run sequentially, then 90% can run in parallel. I mean, that goes without saying.
+
+497
+00:51:22.730 --> 00:51:28.270
+Omar Mansour: Now you would notice, for the code that can run in parallel, it means
+
+498
+00:51:29.430 --> 00:51:32.260
+Omar Mansour: I can execute it in multiple CPUs.
+
+499
+00:51:33.030 --> 00:51:38.990
+Omar Mansour: for the code, or for the portion of my program that is parallelizable, that portion is 1 minus S,
+
+500
+00:51:39.290 --> 00:51:44.750
+Omar Mansour: I can split it over multiple CPUs. For example, this loop…
+
+501
+00:51:45.180 --> 00:51:50.760
+Omar Mansour: which actually sums a bunch of elements. I can take that. If this has 8 elements.
+
+502
+00:51:54.000 --> 00:51:57.499
+Omar Mansour: I can run each computation in a very separate CPU.
+
+503
+00:52:00.290 --> 00:52:03.490
+Omar Mansour: And then, the time it takes to execute
+
+504
+00:52:04.130 --> 00:52:09.559
+Omar Mansour: is 1 minus S divided by the number of CPUs, and the number of CPUs is N.
+
+505
+00:52:11.280 --> 00:52:14.650
+Omar Mansour: Which means you take the parallelizable portion.
+
+506
+00:52:14.840 --> 00:52:17.250
+Omar Mansour: you figure out the number of CPUs that you have.
+
+507
+00:52:17.680 --> 00:52:21.969
+Omar Mansour: And the parallelizable portion is going to execute in a time that is
+
+508
+00:52:22.340 --> 00:52:24.279
+Omar Mansour: 1 minus S divided by N.
+
+509
+00:52:26.780 --> 00:52:29.940
+Omar Mansour: So this means the speedup actually is the ratio between the two.
+
+510
+00:52:30.470 --> 00:52:36.810
+Omar Mansour: So the speedup is the total time in a single CPU divided by the total time And…
+
+511
+00:52:37.170 --> 00:52:40.140
+Omar Mansour: multiple CPUs, meaning N CPU.
+
+512
+00:52:40.850 --> 00:52:42.250
+Omar Mansour: And that is…
+
+513
+00:52:42.400 --> 00:52:57.859
+Omar Mansour: S plus 1 minus S, which is a 1, divided by S plus 1 minus S over N, and that is the maximum theoretical speedup you can ever achieve having multiple CPUs. So really, this tells us that the maximum theoretical speedup
+
+514
+00:52:58.000 --> 00:53:07.319
+Omar Mansour: is really dictated By the portion of your code, the portion of your program, That executes sequentially.
+
+515
+00:53:08.300 --> 00:53:12.450
+Omar Mansour: So, let me ask you an alertness awakeness test.
+
+516
+00:53:15.060 --> 00:53:17.160
+Omar Mansour: Alertness and weakness test.
+
+517
+00:53:18.340 --> 00:53:22.410
+Omar Mansour: What happens if I have infinite number of CPUs?
+
+518
+00:53:23.350 --> 00:53:25.539
+Omar Mansour: What is the maximum speedup I can achieve?
+
+519
+00:53:31.360 --> 00:53:33.990
+Omar Mansour: I'm sorry? Stop the cereal question?
+
+520
+00:53:34.710 --> 00:53:51.130
+Omar Mansour: Yes, in terms of S. 1 over S. 1 over S, exactly. It is 1 over S. Why? Because that parallelizable portion, if I had infinite number of CPUs, if I had 10, it becomes 1 tenth. If I had 100, it becomes 1 hundredth. It keeps shrinking and shrinking until it becomes a 0.
+
+521
+00:53:51.540 --> 00:53:52.570
+Omar Mansour: Sudette?
+
+522
+00:53:52.930 --> 00:54:04.580
+Omar Mansour: is the parallelizable portion. It shrinks, it becomes a zero, so it is 1 over S. Or you can take a look here and say, when n goes to infinity, this term becomes a 0. So the maximum
+
+523
+00:54:05.210 --> 00:54:06.330
+Omar Mansour: Ever.
+
+524
+00:54:06.940 --> 00:54:17.070
+Omar Mansour: The maximum ever Speedup that you can ever have is dictated by the sequential… Portion of your program.
+
+525
+00:54:17.400 --> 00:54:21.929
+Omar Mansour: Okay? Any questions about that? This is called Abdall's Law. Who has seen this law before?
+
+526
+00:54:22.420 --> 00:54:27.750
+Omar Mansour: Some of you might have. You should have seen it in computer architecture. Who studied a course in computer architecture before?
+
+527
+00:54:28.520 --> 00:54:30.530
+Omar Mansour: Who has taken a course in computer architecture?
+
+528
+00:54:31.620 --> 00:54:33.240
+Omar Mansour: You've seen Abdallah's law before?
+
+529
+00:54:33.410 --> 00:54:37.240
+Omar Mansour: Okay, very good. Who's gonna be taking a course in computer architecture?
+
+530
+00:54:37.480 --> 00:54:39.319
+Omar Mansour: This semester or next semester.
+
+531
+00:54:39.470 --> 00:54:42.019
+Omar Mansour: Who intends to take it? No? No one?
+
+532
+00:54:43.540 --> 00:54:45.889
+Omar Mansour: It is an interesting course, not a bad course.
+
+533
+00:54:46.850 --> 00:54:54.530
+Omar Mansour: you'll study something about, I rec… I'm presuming… I'm presuming, but I'm not sure, I don't know what's in the course.
+
+534
+00:54:54.830 --> 00:55:08.610
+Omar Mansour: I'm hoping… actually, you know, I'm older than this, but so the course that I've studied, I'm hoping they modernized it today to study architectures for AI, for example. These are new architectures that I have never studied.
+
+535
+00:55:08.660 --> 00:55:22.669
+Omar Mansour: Today, of course, there are, neural processing units, graphics processing units, and Tensor processing units. All of these are certain CPU architectures pertaining to machine learning.
+
+536
+00:55:22.750 --> 00:55:31.119
+Omar Mansour: And I would think you should be interested in learning about that, because if you're ever going to be doing actual new level programming for machine learning.
+
+537
+00:55:32.480 --> 00:55:44.520
+Omar Mansour: Maybe you need to know something about the architecture of the computing engine that you're using. Maybe that's a good thing. You know, typically people use something, a language that is called CUDA. Who's familiar with CUDA?
+
+538
+00:55:45.210 --> 00:55:46.200
+Omar Mansour: One person.
+
+539
+00:55:46.450 --> 00:55:47.880
+Omar Mansour: 25 people.
+
+540
+00:55:48.120 --> 00:55:54.910
+Omar Mansour: Okay, 3, okay, I guess people are shy. Okay, so maybe it's a good idea to learn the engine that it's designed for.
+
+541
+00:55:55.270 --> 00:56:04.170
+Omar Mansour: So, I don't… well, that's if the course has been modernized. Now, maybe the course is not. Maybe they're teaching it the same way it was 15 years ago. You're saying, no, it's not modernized?
+
+542
+00:56:04.870 --> 00:56:07.910
+Omar Mansour: Modernized or not? Not modernized.
+
+543
+00:56:08.670 --> 00:56:11.870
+Omar Mansour: Too bad. Okay, alright. Sorry to hear that.
+
+544
+00:56:13.370 --> 00:56:14.490
+Omar Mansour: But moving on.
+
+545
+00:56:15.000 --> 00:56:18.659
+Omar Mansour: Threads. How do we implement threads? Now we know what threads are.
+
+546
+00:56:19.470 --> 00:56:27.569
+Omar Mansour: We have a motivation now, speed up unresponsiveness. We have a motivation to take an application and spread it into different threads.
+
+547
+00:56:27.690 --> 00:56:32.399
+Omar Mansour: Different, you know, improved responsiveness for, at least for that user interface.
+
+548
+00:56:32.760 --> 00:56:33.819
+Omar Mansour: Speed up.
+
+549
+00:56:34.450 --> 00:56:44.050
+Omar Mansour: as well, if I have multiple… I mean, to have speedup, you need to have multiple CPUs. If I only have a single CPU, I cannot achieve a speedup. How would I? If N is 1,
+
+550
+00:56:46.140 --> 00:56:52.649
+Omar Mansour: If N is 1, then clearly there's no speedup, okay? To have a speedup, I need to have multiple CPUs.
+
+551
+00:56:54.550 --> 00:56:59.169
+Omar Mansour: So, that's a good motivation. We know about that. We know how threads work.
+
+552
+00:57:00.560 --> 00:57:07.750
+Omar Mansour: Now, let's take a look, a quick look of how they are implemented. To be more specific, where are they implemented?
+
+553
+00:57:08.540 --> 00:57:13.980
+Omar Mansour: So, modern operating systems today, are going to implement threads for you.
+
+554
+00:57:14.110 --> 00:57:16.569
+Omar Mansour: All you have to do is to do a system call.
+
+555
+00:57:17.040 --> 00:57:24.529
+Omar Mansour: Well, hopefully you do a library call that is then going to do a system call that is going to be creating a brand new thread for your process.
+
+556
+00:57:25.740 --> 00:57:27.769
+Omar Mansour: But let's go and study.
+
+557
+00:57:28.720 --> 00:57:32.010
+Omar Mansour: A bunch of other alternatives, a bunch of other approaches.
+
+558
+00:57:32.530 --> 00:57:36.150
+Omar Mansour: So, we can have user-managed threads.
+
+559
+00:57:36.480 --> 00:57:43.880
+Omar Mansour: This does not involve the kernel at all. This means the process, the user mode process.
+
+560
+00:57:44.490 --> 00:57:50.620
+Omar Mansour: Using more processes, as we have emphasized in Lecture 1. They could be system programs.
+
+561
+00:57:51.010 --> 00:57:53.279
+Omar Mansour: But it could be application programs.
+
+562
+00:57:53.630 --> 00:58:04.350
+Omar Mansour: It's not always, doesn't always have to be an application, it may be a system program. I'm gonna call them user-mode processes. In fact, I'm just gonna call them user processes for short.
+
+563
+00:58:04.890 --> 00:58:12.679
+Omar Mansour: user processes, Can manage, meaning they can create, And cancel threads.
+
+564
+00:58:12.910 --> 00:58:21.760
+Omar Mansour: without… requesting Care Look Services, without getting any help, from the girl.
+
+565
+00:58:24.150 --> 00:58:25.490
+Omar Mansour: There's one approach.
+
+566
+00:58:28.070 --> 00:58:30.330
+Omar Mansour: Without operating system support.
+
+567
+00:58:31.160 --> 00:58:33.970
+Omar Mansour: The colonel, in fact, does not even know
+
+568
+00:58:34.630 --> 00:58:40.479
+Omar Mansour: that the user process has created threads. It still thinks it's a single-threaded process.
+
+569
+00:58:40.620 --> 00:58:46.669
+Omar Mansour: Because by definition, every time you start a process, It's a single-threaded process.
+
+570
+00:58:47.410 --> 00:58:48.210
+Omar Mansour: Okay?
+
+571
+00:58:50.250 --> 00:58:57.080
+Omar Mansour: The other approach is to actually have the process not manage, meaning create and delete.
+
+572
+00:58:57.730 --> 00:59:15.279
+Omar Mansour: and communicate between the threads, not do that at all, but instead, it can request that service from the kernel, so it can ask the kernel to create a second thread for the process, and if that is the case, we're going to call that kernel-managed threads, supported and managed by the OS kernel.
+
+573
+00:59:15.520 --> 00:59:18.809
+Omar Mansour: Every modern operating system supports that.
+
+574
+00:59:19.200 --> 00:59:28.049
+Omar Mansour: Now, the key word is every modern operating system. Don't come back with an operating system that was developed 50 years ago, like the original Unix. It did not support threads.
+
+575
+00:59:28.160 --> 00:59:29.300
+Omar Mansour: It just didn't.
+
+576
+00:59:29.720 --> 00:59:46.540
+Omar Mansour: But every modern operating system supports Friends. This includes Windows, Solaris, which is a Unix operating system. It's actually started from the Unix DNA, the Unix source code. This is, owned by the division of Oracle called Sun Microsystems.
+
+577
+00:59:46.810 --> 00:59:47.890
+Omar Mansour: Linux.
+
+578
+00:59:48.390 --> 00:59:56.240
+Omar Mansour: is not from the source code of Unix, it actually started as a parallel, you know, as a parallel effort.
+
+579
+00:59:56.480 --> 01:00:01.860
+Omar Mansour: has nothing to do with the original Unix, in terms of source code, but it has the same design architecture.
+
+580
+01:00:03.340 --> 01:00:23.029
+Omar Mansour: So Linux is another modern operating system that does support kernel-managed spreads. 264 is another Unix flavor. And then Mac is yet another Unix flavor. Mac actually has Unix source code, original Unix source code, that Apple bought from AT&T.
+
+581
+01:00:23.160 --> 01:00:32.370
+Omar Mansour: Bell Labs, that is. They licensed the source code, and they bought it, and they use it, and it is in the Mac OS. So really, Mac is considered a Unix system.
+
+582
+01:00:33.690 --> 01:00:39.359
+Omar Mansour: But it's not what we use for this course. What we use for this course, our case study, is Linux, okay?
+
+583
+01:00:41.830 --> 01:00:52.410
+Omar Mansour: So, this dictates that we talk, I mean, the fact that The threads can be solidly created…
+
+584
+01:00:52.750 --> 01:01:01.830
+Omar Mansour: Inside the user process without the kernel going, or they could be completely created by the kernel and managed by the kernel.
+
+585
+01:01:02.150 --> 01:01:12.130
+Omar Mansour: So then this actually gets them to have a different threading model. The first model is exactly that, a many-to-one model. This is where
+
+586
+01:01:12.470 --> 01:01:29.170
+Omar Mansour: the process, the user process, creates its own threads without the kernel even knowing about them. So the kernel, as far as the kernel is concerned, is only a single thread. This is a single threaded process. The kernel is managing, meaning scheduling.
+
+587
+01:01:29.890 --> 01:01:31.610
+Omar Mansour: Exiting. Creating.
+
+588
+01:01:32.200 --> 01:01:34.129
+Omar Mansour: A single thread of process.
+
+589
+01:01:34.270 --> 01:01:39.730
+Omar Mansour: So a curve that is managing a single thread, However.
+
+590
+01:01:39.930 --> 01:01:45.409
+Omar Mansour: Within that user mode process, within the user process, it is creating
+
+591
+01:01:46.540 --> 01:01:51.790
+Omar Mansour: by itself, on its own, a bunch of threads. The kernel thinks it's a single-threaded process.
+
+592
+01:01:52.920 --> 01:01:57.129
+Omar Mansour: That is one approach. Now, this approach is pretty historic.
+
+593
+01:01:58.020 --> 01:02:02.210
+Omar Mansour: Meaning, this is how things started. The original URIX did not support threads.
+
+594
+01:02:02.790 --> 01:02:09.870
+Omar Mansour: And, some CPUs supported threads at the beginning, but a very limited number of threads.
+
+595
+01:02:11.790 --> 01:02:14.940
+Omar Mansour: Today, every modern operating system supports
+
+596
+01:02:15.150 --> 01:02:20.560
+Omar Mansour: France, but that wasn't the case before. So are we just studying history? No, we're not.
+
+597
+01:02:21.590 --> 01:02:26.079
+Omar Mansour: Why is that? Because today, this model is still in play.
+
+598
+01:02:26.740 --> 01:02:29.890
+Omar Mansour: So yes, it was the only model in the past.
+
+599
+01:02:31.200 --> 01:02:36.670
+Omar Mansour: Today, we can have… we can still have a many-to-one Threading bottle.
+
+600
+01:02:36.940 --> 01:02:41.789
+Omar Mansour: Why would you have it today? If the kernel can give you the threads, why would the application bother?
+
+601
+01:02:43.280 --> 01:02:47.719
+Omar Mansour: Because today, we still have smaller computer systems.
+
+602
+01:02:48.060 --> 01:02:57.409
+Omar Mansour: Smaller computer systems mean they are not 64-bit systems. You don't have 16 gigabytes of memory like your laptop has, and let's remember.
+
+603
+01:02:57.990 --> 01:03:02.909
+Omar Mansour: Let's keep track of that. Let's actually remember, every process has a process control block.
+
+604
+01:03:03.460 --> 01:03:09.839
+Omar Mansour: And unfortunately, Every time we have a thread, we have a thread-controlled block as well.
+
+605
+01:03:10.400 --> 01:03:15.869
+Omar Mansour: So, just like with processes, we have had an object representing the process.
+
+606
+01:03:16.050 --> 01:03:25.579
+Omar Mansour: an instance of a process control block. We also have a thread control block that is an instance, you know, that is an object representing every thread in the system. Now.
+
+607
+01:03:25.970 --> 01:03:32.030
+Omar Mansour: In the example I like to give, I say, I have roughly 400 processes in my system.
+
+608
+01:03:32.200 --> 01:03:36.549
+Omar Mansour: If every one of those 400 processes created 10 threads.
+
+609
+01:03:37.910 --> 01:03:45.830
+Omar Mansour: then I would have 4,000 threads in my system. 4,000 threads implies 4,000 objects.
+
+610
+01:03:46.090 --> 01:03:47.610
+Omar Mansour: Representing the threats.
+
+611
+01:03:48.180 --> 01:03:51.949
+Omar Mansour: 4,000, that's a… that's actually a large number. That's a lot of memory.
+
+612
+01:03:52.580 --> 01:03:58.290
+Omar Mansour: Not only that, the scheduler So, if we take a look here.
+
+613
+01:04:01.370 --> 01:04:04.829
+Omar Mansour: The scheduler is going to be scheduling the threads.
+
+614
+01:04:05.690 --> 01:04:11.719
+Omar Mansour: So if I have 4,000 threads, this means my scheduler has to go through 4,000 threads.
+
+615
+01:04:11.860 --> 01:04:26.940
+Omar Mansour: figure out which one is due for running next, which one of the ready threads is going to be executing next, is going to have its state change from ready to running. It has to select from 4,000 threads. So that's really a lot of burden on the kernel.
+
+616
+01:04:27.240 --> 01:04:29.769
+Omar Mansour: A lot of burden in computations.
+
+617
+01:04:30.240 --> 01:04:34.090
+Omar Mansour: A lot of Eden in memory. Every thread needs an object in the memory.
+
+618
+01:04:34.490 --> 01:04:39.210
+Omar Mansour: So it's memory, and computation earnings.
+
+619
+01:04:40.730 --> 01:04:46.749
+Omar Mansour: Requiring more memory and requiring more computations requires a fast, big CPU.
+
+620
+01:04:46.860 --> 01:04:48.309
+Omar Mansour: So even today.
+
+621
+01:04:49.350 --> 01:05:02.729
+Omar Mansour: Some computer systems are very small, they have very limited amount of memory, they have maybe 500, like, half a gigabyte. They have 32-bit CPUs that cannot run as fast, because they're 32 bits. That is very possible.
+
+622
+01:05:03.150 --> 01:05:11.460
+Omar Mansour: And where are they? Well, some watches, maybe not the Apple Watch, I think the Apple Watch is pretty powerful. Some watches, like Fitbit or what have you.
+
+623
+01:05:11.580 --> 01:05:15.200
+Omar Mansour: Some watches are just very simple, they're just there to count your,
+
+624
+01:05:15.540 --> 01:05:25.790
+Omar Mansour: you know, your workouts, they're just for, you know, exercising and that stuff. Some systems, like Internet of Things, they have very small computers.
+
+625
+01:05:26.080 --> 01:05:30.629
+Omar Mansour: You know, some people today, they have, like, a computer system in their refrigerator.
+
+626
+01:05:30.890 --> 01:05:36.370
+Omar Mansour: Some have a computer system, you know, running their, air conditioning.
+
+627
+01:05:36.610 --> 01:05:44.109
+Omar Mansour: Some have computer systems running their curtains, you know, such that they, you know, with an app, they turn on and off, and all that stuff.
+
+628
+01:05:45.510 --> 01:05:52.309
+Omar Mansour: In fact, even a cheap car, like a Honda Civic, for example, today, it has, like, 50 computers.
+
+629
+01:05:52.610 --> 01:05:56.519
+Omar Mansour: These computers are not… $1,000 laptops.
+
+630
+01:05:56.900 --> 01:06:04.180
+Omar Mansour: Those 50 computers you have in your Honda Civic are probably $2 or $3 each. These are very small, underpowered computers.
+
+631
+01:06:05.270 --> 01:06:08.650
+Omar Mansour: We don't want to be having a large memory burden
+
+632
+01:06:09.200 --> 01:06:19.919
+Omar Mansour: or compute burden on the kernel to manage many, many threads. So then the threads can be managed by the application using the many-to-one model, but there's a downside.
+
+633
+01:06:21.090 --> 01:06:23.670
+Omar Mansour: What happens if you make a blocking call?
+
+634
+01:06:26.700 --> 01:06:29.300
+Omar Mansour: Who wants to give me an example of a blocking call?
+
+635
+01:06:37.490 --> 01:06:40.559
+Omar Mansour: What is a blocking call? We talked about that already.
+
+636
+01:06:42.430 --> 01:06:48.620
+Omar Mansour: Yes, you want to try? Yes. Like, what, sorry? Time overweight? Like, always?
+
+637
+01:06:48.750 --> 01:06:52.420
+Omar Mansour: Like a weight, that is a block of coal, but what else?
+
+638
+01:06:53.170 --> 01:07:05.149
+Omar Mansour: Like what? I.O. like what? We're saying I.O. Yes, like what? I.O. read or write. Read or write. These are blocky calls. We talked about why they block the… block the process.
+
+639
+01:07:05.310 --> 01:07:10.840
+Omar Mansour: Whoa! So what happens if one of the threads Big Serene.
+
+640
+01:07:12.860 --> 01:07:17.209
+Omar Mansour: Now, the kernel is managing a single threaded process.
+
+641
+01:07:17.600 --> 01:07:23.749
+Omar Mansour: And that single-threaded process made a blocking call a read, for example, a blocking read.
+
+642
+01:07:24.280 --> 01:07:31.650
+Omar Mansour: By default, every read and every ride is a blocking call, unless you change the behavior of how you opened that type
+
+643
+01:07:32.140 --> 01:07:34.869
+Omar Mansour: Or that socket, or that file, okay?
+
+644
+01:07:35.940 --> 01:07:44.939
+Omar Mansour: By default, unless you change that behavior, a read is blocking, a write is blocking. You can change it, you can make it non-blocking, and it's gonna always decay.
+
+645
+01:07:45.150 --> 01:07:47.959
+Omar Mansour: Block up your process, but it may return a failure.
+
+646
+01:07:48.160 --> 01:07:48.980
+Omar Mansour: Mostly.
+
+647
+01:07:50.000 --> 01:07:51.390
+Omar Mansour: This will take a lot of time.
+
+648
+01:07:51.750 --> 01:07:56.320
+Omar Mansour: Alright, so, a blocking read… By one of the threads.
+
+649
+01:07:56.920 --> 01:07:59.879
+Omar Mansour: The kernel thinks it's a single-threaded process.
+
+650
+01:08:00.440 --> 01:08:06.540
+Omar Mansour: that is doing a read that's gonna take a long time, so it's gonna block the process. The process is gonna have a different state.
+
+651
+01:08:06.800 --> 01:08:10.320
+Omar Mansour: The entire process is going to be in a blocked waiting state.
+
+652
+01:08:10.530 --> 01:08:12.130
+Omar Mansour: Until the I.O.
+
+653
+01:08:12.580 --> 01:08:13.750
+Omar Mansour: has completed.
+
+654
+01:08:14.420 --> 01:08:29.010
+Omar Mansour: So now, the entire process, with all of the threads it's implementing, are going to be blocked. The downside is, one thread issues a blocking call, blocks the entire process, blocks all of the threads within the process.
+
+655
+01:08:29.279 --> 01:08:30.960
+Omar Mansour: That's a downside.
+
+656
+01:08:32.279 --> 01:08:39.489
+Omar Mansour: Okay? But it is essential for smaller computer systems, and it is how things used to be 50 years ago.
+
+657
+01:08:39.950 --> 01:08:41.220
+Omar Mansour: Any questions?
+
+658
+01:08:41.490 --> 01:08:46.279
+Omar Mansour: about that many-to-one model. It still isn't used, like I said, in very small computer systems.
+
+659
+01:08:46.529 --> 01:09:01.199
+Omar Mansour: which are very… which… actually, there are more small computer systems than there are big computers. Internet of Things, really, means we have lots and lots and lots of miniature computer systems all over the place. They're still there, they're still running.
+
+660
+01:09:01.490 --> 01:09:03.180
+Omar Mansour: They just don't have enough resources.
+
+661
+01:09:04.890 --> 01:09:08.470
+Omar Mansour: You might have to program for a watch at some point. I hope not, but you might.
+
+662
+01:09:08.899 --> 01:09:13.769
+Omar Mansour: Hopefully you're providing big servers as opposed to small watches, I hope.
+
+663
+01:09:17.729 --> 01:09:24.999
+Omar Mansour: So the one-to-one model is exactly the opposite. Every thread is managed by the colonel.
+
+664
+01:09:27.130 --> 01:09:29.759
+Omar Mansour: Every time the user process.
+
+665
+01:09:30.250 --> 01:09:38.689
+Omar Mansour: wants to create a thread, it does a system call telling the kernel to create a thread for it. So the kernel is well aware
+
+666
+01:09:40.140 --> 01:09:43.690
+Omar Mansour: Of all the threads of the multi-threaded process.
+
+667
+01:09:43.819 --> 01:09:52.279
+Omar Mansour: The scheduler is well aware of all of the threads of the multi-threaded process. This means a thread control block for every thread, that's memory.
+
+668
+01:09:52.609 --> 01:10:00.540
+Omar Mansour: It also means the scheduler has to choose which thread to run next out of a huge list of ready threads.
+
+669
+01:10:00.690 --> 01:10:02.210
+Omar Mansour: So that's more processing.
+
+670
+01:10:02.700 --> 01:10:03.809
+Omar Mansour: But that's okay.
+
+671
+01:10:04.270 --> 01:10:07.430
+Omar Mansour: Modern computers can handle that with ease.
+
+672
+01:10:07.540 --> 01:10:16.449
+Omar Mansour: They have a lot of memory, they have a lot of processing power, so this is in every modern system, every modern Windows, Linux, Solaris 9, and ladder.
+
+673
+01:10:18.200 --> 01:10:22.620
+Omar Mansour: Whereas, in here, we needed a special library for the application.
+
+674
+01:10:23.840 --> 01:10:27.560
+Omar Mansour: Now, at some point, people wanted something in the middle.
+
+675
+01:10:27.880 --> 01:10:36.860
+Omar Mansour: That is not the one-to-one model, that is not the many-to-one model, so now we have the many-to-one-to-many model, which is a compromise between the two, in which we have
+
+676
+01:10:36.980 --> 01:10:39.340
+Omar Mansour: Many user-level threads
+
+677
+01:10:40.580 --> 01:10:54.600
+Omar Mansour: and a fewer, that's the key word here, fewer kernel-level threads, or kernel-managed threads. So I can have 100 threads in my process, and only 10 threads that are managed by the kernel.
+
+678
+01:10:55.080 --> 01:11:00.829
+Omar Mansour: This allows me to circumvent the blocking problem, where one of the threads
+
+679
+01:11:01.200 --> 01:11:04.720
+Omar Mansour: Issues a blocking call, blocks the entire process.
+
+680
+01:11:04.990 --> 01:11:11.799
+Omar Mansour: in the many-to-one-to-many model, one block, one thread issues a blocking call. It's gonna block
+
+681
+01:11:12.090 --> 01:11:14.170
+Omar Mansour: Some of the threads, but not all of them.
+
+682
+01:11:14.630 --> 01:11:17.389
+Omar Mansour: The remaining threads are going to be getting a chance to run.
+
+683
+01:11:18.370 --> 01:11:24.029
+Omar Mansour: Maybe even getting a chance to be assigned into another kernel-managed thread. So the key word here is…
+
+684
+01:11:24.520 --> 01:11:27.979
+Omar Mansour: We still do not want the kernel to manage a lot of threads.
+
+685
+01:11:28.370 --> 01:11:34.240
+Omar Mansour: So the kernel is going to manage a lot fewer threads than what the user process dictates.
+
+686
+01:11:35.570 --> 01:11:36.320
+Omar Mansour: Okay?
+
+687
+01:11:37.390 --> 01:11:53.610
+Omar Mansour: and the remaining of the threads, the division of which threads go to which kernel-managed thread, that division of that mapping is handled by the usable process. Now, by the way, I want to go back here, very briefly. A question that is sometimes being asked is, how does a process
+
+688
+01:11:54.010 --> 01:11:56.730
+Omar Mansour: the 8 threads without the curl intervention.
+
+689
+01:11:57.720 --> 01:12:01.000
+Omar Mansour: Well, it's actually a very low-level code.
+
+690
+01:12:01.210 --> 01:12:05.740
+Omar Mansour: that you don't need to worry about. It's beyond the scope of this course, but it relies
+
+691
+01:12:06.170 --> 01:12:16.829
+Omar Mansour: on the process, Having the ability of getting interrupted every few seconds or milliseconds.
+
+692
+01:12:16.940 --> 01:12:18.689
+Omar Mansour: using a signal.
+
+693
+01:12:18.900 --> 01:12:21.069
+Omar Mansour: And we're gonna talk about signals today towards the end.
+
+694
+01:12:21.860 --> 01:12:23.780
+Omar Mansour: a UNIX signal, for example.
+
+695
+01:12:25.410 --> 01:12:30.970
+Omar Mansour: There is something that's called an alarm signal. An alarm signal allows a process
+
+696
+01:12:31.190 --> 01:12:35.109
+Omar Mansour: Kind of like your… who has used an alarm before to wake up in the morning?
+
+697
+01:12:35.490 --> 01:12:39.449
+Omar Mansour: Very good. So, okay, I did, I did,
+
+698
+01:12:39.660 --> 01:12:41.820
+Omar Mansour: It's the same thing, the same concept.
+
+699
+01:12:41.930 --> 01:12:45.279
+Omar Mansour: You know, you tell… the Colonel.
+
+700
+01:12:45.780 --> 01:12:49.490
+Omar Mansour: To give you a signal, maybe every half a second.
+
+701
+01:12:50.760 --> 01:12:57.379
+Omar Mansour: And that signal will have a signal handler, kind of like an interrupt and interrupt service routine, in a very similar manner.
+
+702
+01:12:58.020 --> 01:13:00.510
+Omar Mansour: The signal handler inside the process.
+
+703
+01:13:00.840 --> 01:13:07.830
+Omar Mansour: is gonna do some low-level code to save the CPU registers of one friend, Somewhere.
+
+704
+01:13:08.150 --> 01:13:10.910
+Omar Mansour: And switch into executing another thread.
+
+705
+01:13:11.010 --> 01:13:13.440
+Omar Mansour: So every bit of time.
+
+706
+01:13:15.100 --> 01:13:30.129
+Omar Mansour: the process that is executing one thread, it will end up executing a signal handler, kind of like an interrupt handler, but it's not. It's called a signal handler. And that signal handler switches into another thread. It acts as a sketch work.
+
+707
+01:13:31.080 --> 01:13:32.160
+Omar Mansour: Okay?
+
+708
+01:13:33.430 --> 01:13:41.289
+Omar Mansour: It's low-level code that we don't need to worry about. The only thing I want you to know is that it is doable, it is possible, it is implemented, it is used.
+
+709
+01:13:42.300 --> 01:13:45.729
+Omar Mansour: That the user processes can actually switch between threads.
+
+710
+01:13:46.000 --> 01:13:52.690
+Omar Mansour: inside the user process without the kernel intervention. Well, the only thing the kernel has to do is to give you an alarm signal.
+
+711
+01:13:55.860 --> 01:13:59.970
+Omar Mansour: Another approach is to dedicate
+
+712
+01:14:00.210 --> 01:14:06.940
+Omar Mansour: So this one uses the many… too many model, which you have more user thread than we have kernel managed thread.
+
+713
+01:14:07.700 --> 01:14:14.490
+Omar Mansour: But also, at the same time, this is called a two-level model. At the same time, we have one important
+
+714
+01:14:14.580 --> 01:14:30.619
+Omar Mansour: user-level thread that is… that has its own dedicated kernel-managed thread. This is used in HP Unix, 364 Unix. These are versions of Unix that are really almost dead. Solaris prior to version 8, like, an older version of Solaris.
+
+715
+01:14:32.120 --> 01:14:40.830
+Omar Mansour: Okay, now that we know the threading models, Now it's time to actually… Weird.
+
+716
+01:14:41.240 --> 01:14:44.339
+Omar Mansour: About threading, or thread libraries.
+
+717
+01:14:44.500 --> 01:14:52.600
+Omar Mansour: So typically, if you wish to create a thread, you're not going to do a system call yourself, telling the kernel to create a thread on your behalf.
+
+718
+01:14:53.230 --> 01:15:01.019
+Omar Mansour: No, no, no, no. As always, we're gonna invoke a library function that is then gonna invoke the system called us.
+
+719
+01:15:01.270 --> 01:15:06.560
+Omar Mansour: So, very common libraries are… posit's threads.
+
+720
+01:15:08.100 --> 01:15:14.040
+Omar Mansour: POSIX, as I have mentioned before, means the moment you see POSIX, it means a Unix-like system.
+
+721
+01:15:14.440 --> 01:15:19.580
+Omar Mansour: A Unix-like system could be an actual Unix, But it could be Linux.
+
+722
+01:15:19.900 --> 01:15:23.360
+Omar Mansour: It could be, Qin X,
+
+723
+01:15:24.190 --> 01:15:26.419
+Omar Mansour: It could be an actual Unix, like a Mac.
+
+724
+01:15:27.410 --> 01:15:28.160
+Omar Mansour: Okay?
+
+725
+01:15:31.840 --> 01:15:35.590
+Omar Mansour: OSICS stands for Portable Operating System Interface.
+
+726
+01:15:36.860 --> 01:15:39.260
+Omar Mansour: works for every Unix-like system.
+
+727
+01:15:40.110 --> 01:15:45.300
+Omar Mansour: So, BThreads is the library we're going to be using. We're going to be using this in assignment number 7.
+
+728
+01:15:46.390 --> 01:15:56.870
+Omar Mansour: And unlike the case that we had before, in which the standard library was linked and added to our program by itself without any intervention.
+
+729
+01:15:56.970 --> 01:16:00.080
+Omar Mansour: Going forward, when we use beef threads.
+
+730
+01:16:00.370 --> 01:16:03.999
+Omar Mansour: When you type GCC, and then the name of your source file.
+
+731
+01:16:04.140 --> 01:16:09.379
+Omar Mansour: dash O, the name of your output file. Now you're gonna have to add another option. You're gonna have to add a library.
+
+732
+01:16:09.870 --> 01:16:13.459
+Omar Mansour: If you don't add a library, your program will compile, but it's not gonna link.
+
+733
+01:16:13.720 --> 01:16:22.460
+Omar Mansour: If you recall, We have a two-step process. We first compile every source file into an object file.
+
+734
+01:16:23.700 --> 01:16:28.090
+Omar Mansour: And then after that, we link all of the object files, and then we add the libraries.
+
+735
+01:16:28.220 --> 01:16:30.910
+Omar Mansour: So the linking is where the libraries are being added.
+
+736
+01:16:31.150 --> 01:16:35.480
+Omar Mansour: If you logged, Use the dash p thread option.
+
+737
+01:16:36.210 --> 01:16:37.710
+Omar Mansour: To add the library.
+
+738
+01:16:38.750 --> 01:16:42.989
+Omar Mansour: You're gonna have a link error. You're not gonna have a compilation error, you're gonna have a link error.
+
+739
+01:16:43.290 --> 01:16:48.049
+Omar Mansour: So please be aware of that. I'm sure you're gonna figure it out in assignment number 7.
+
+740
+01:16:48.910 --> 01:16:53.240
+Omar Mansour: Another thread library that we can use is Windows Threads.
+
+741
+01:16:54.980 --> 01:17:01.140
+Omar Mansour: The third one is Java threads. This is clearly a very common one that many of you have already.
+
+742
+01:17:03.630 --> 01:17:09.650
+Omar Mansour: Of course, there's also the implementation of these, especially the Pthreads. It may be
+
+743
+01:17:10.930 --> 01:17:15.640
+Omar Mansour: Kernel level, meaning a one-to-one model, or it could be a user level.
+
+744
+01:17:15.810 --> 01:17:17.729
+Omar Mansour: Feeding as many into one bottle.
+
+745
+01:17:19.740 --> 01:17:23.900
+Omar Mansour: Now, POSIX is IEEE standard 1003.1C.
+
+746
+01:17:24.590 --> 01:17:29.239
+Omar Mansour: It dictates the APIs, meaning the names, and the behaviors.
+
+747
+01:17:29.640 --> 01:17:32.390
+Omar Mansour: Of the functions we're going to be using.
+
+748
+01:17:32.670 --> 01:17:44.579
+Omar Mansour: But not the actual implementation. The implementation, you know, depends on who's providing the library. You can have a GNU, you know, in GCC, for example, you can have the vShreads library, you can have a different one for Windows.
+
+749
+01:17:44.650 --> 01:17:58.189
+Omar Mansour: So really, it only dictates the specification, meaning the names and the parameters of the functions you're going to be using, meaning the APIs, the application program interface, which is names and parameters.
+
+750
+01:18:00.760 --> 01:18:05.230
+Omar Mansour: But the implementation is dependent on the system. I mean, a P-thread in a…
+
+751
+01:18:05.570 --> 01:18:10.130
+Omar Mansour: is going to be different than a Pthread in Linux. The implementation is different.
+
+752
+01:18:12.900 --> 01:18:19.829
+Omar Mansour: could be running WSL, Windows subsystem for Linux, it's gonna implement P threads, but the implementation's gonna be very different as well.
+
+753
+01:18:22.110 --> 01:18:23.929
+Omar Mansour: Very good. Let's take an exam.
+
+754
+01:18:25.740 --> 01:18:30.959
+Omar Mansour: you will need… again, this example is not identical to your homework, because why would I give you the homework then?
+
+755
+01:18:31.090 --> 01:18:37.340
+Omar Mansour: It's a demonstration. That's a lot… not a lot easier, let's say, half the difficulty of the homework.
+
+756
+01:18:37.470 --> 01:18:40.830
+Omar Mansour: It all workers just a little bit more, because he has to do some more.
+
+757
+01:18:41.280 --> 01:18:45.979
+Omar Mansour: Oh, by the way, I forgot to tell you, so I have decided in order to…
+
+758
+01:18:47.490 --> 01:18:54.830
+Omar Mansour: kind of, motivate everyone to do their homeworks. Anyone who gets 5 or above in their homework is going to get the full grade of the homework.
+
+759
+01:18:55.500 --> 01:19:03.460
+Omar Mansour: The reason why I'm doing this, because I don't want to be punishing people who are actually working in the homework, taking advantage of the grading done by the TAs.
+
+760
+01:19:03.600 --> 01:19:15.599
+Omar Mansour: making a mistake and getting an 8 out of 10, for example, which is actually very beneficial, because now you have a TA who's looking after you and finding out the mistake, letting you know what the mistake is. You do that mistake, you will never do it again.
+
+761
+01:19:16.150 --> 01:19:18.259
+Omar Mansour: As compared to someone who cheated.
+
+762
+01:19:19.240 --> 01:19:21.920
+Omar Mansour: Used cloud, got 10 out of 10.
+
+763
+01:19:22.250 --> 01:19:32.409
+Omar Mansour: Now, I don't want to be rewarding that person, so anyone who actually gets anything above 5 is going to get the full grade. So that way, you get the benefit of having someone grading for you.
+
+764
+01:19:32.520 --> 01:19:36.050
+Omar Mansour: You use the homework as a rehearsal, and you don't have to worry.
+
+765
+01:19:36.400 --> 01:19:40.199
+Omar Mansour: About whether you actually you know, lose points or not.
+
+766
+01:19:40.380 --> 01:19:45.590
+Omar Mansour: I mean, you really have to get something really dismal to get the full green, okay?
+
+767
+01:19:46.270 --> 01:19:48.889
+Omar Mansour: So from now on, just get something above 5.
+
+768
+01:19:49.070 --> 01:19:57.260
+Omar Mansour: Just make sure you, you know, use it as a rehearsal, really, as a guided tour, you know, someone who's gonna look at it.
+
+769
+01:19:57.480 --> 01:20:00.110
+Omar Mansour: And help you find mistakes.
+
+770
+01:20:00.410 --> 01:20:03.870
+Omar Mansour: And you learn from mistakes. You don't learn by…
+
+771
+01:20:04.240 --> 01:20:11.999
+Omar Mansour: You know, getting the code correct all the time. You learn from making mistakes, so that's the whole goal. So please keep that in mind going forward with the remaining homework.
+
+772
+01:20:13.450 --> 01:20:15.530
+Omar Mansour: Alright, so let's take a look at this example.
+
+773
+01:20:19.070 --> 01:20:29.909
+Omar Mansour: I include… be threatened me. So not only that I have to say GCC, dash p thread.
+
+774
+01:20:33.110 --> 01:20:41.900
+Omar Mansour: dash p thread option, but also, I have to include, in my source file, include Pthread.h. And as always, I include standard IO.H.
+
+775
+01:20:42.120 --> 01:20:46.799
+Omar Mansour: That's how I could use printf. If I don't have standard IONH, I won't be able to use printf.
+
+776
+01:20:47.460 --> 01:20:55.080
+Omar Mansour: Now, these set of files, they contain function prototypes. That is what's going to be given to you for system calls in the exam.
+
+777
+01:20:55.550 --> 01:21:01.299
+Omar Mansour: And I think I emphasized this before, but I want to repeat it. Function prototypes, I'm going to show you the syntax of the functions.
+
+778
+01:21:02.460 --> 01:21:05.389
+Omar Mansour: But I want to actually go through this very briefly as well.
+
+779
+01:21:06.650 --> 01:21:11.509
+Omar Mansour: here, I'm declaring a function called Flutter.
+
+780
+01:21:12.350 --> 01:21:15.370
+Omar Mansour: Unlike the main routine where I have an open curly brace.
+
+781
+01:21:15.720 --> 01:21:23.240
+Omar Mansour: and a closing pure loop raise, this is defining the function. This is a function definition. That one here is not a function definition.
+
+782
+01:21:23.620 --> 01:21:26.979
+Omar Mansour: That runner is a function declaration.
+
+783
+01:21:29.560 --> 01:21:34.419
+Omar Mansour: That's a generic term. The correct term is… it's a function prototype.
+
+784
+01:21:34.910 --> 01:21:40.359
+Omar Mansour: So a function prototype means I'm declaring a function, just like with a variable.
+
+785
+01:21:41.460 --> 01:21:58.529
+Omar Mansour: Can anyone use a variable in a compiled language? I'm not talking about Python. Python is not a compiled language. In a compiled language, can anyone, like Java, or C, or C++, can I start using a variable prior to declaring that variable? I cannot.
+
+786
+01:21:58.810 --> 01:22:11.629
+Omar Mansour: anytime I start using a variable, that variable must have been declared in an earlier statement. Earlier meaning, if I go in the file from top to bottom, earlier meaning
+
+787
+01:22:12.260 --> 01:22:13.370
+Omar Mansour: from the top.
+
+788
+01:22:13.470 --> 01:22:27.120
+Omar Mansour: Meaning, on the top of where I'm using it. That's what earlier means, because the compiler goes through your file from top to bottom, so the compiler has to find it before you start using it. The declaration, that is. I have to declare a variable before using that variable.
+
+789
+01:22:27.870 --> 01:22:32.750
+Omar Mansour: Now, with C++, And in some…
+
+790
+01:22:33.660 --> 01:22:36.830
+Omar Mansour: Depending, actually, on the, on the…
+
+791
+01:22:37.100 --> 01:22:49.340
+Omar Mansour: level of the compiler, and in many C compilers, you cannot use a function prior to declaring that function. In some C compilers, depending on your settings, it's just going to give you a warning if you do that.
+
+792
+01:22:49.850 --> 01:22:56.489
+Omar Mansour: In other C compilers, it's going to give you an error. Whether it's a warning or an error depends on how you set your warning levels.
+
+793
+01:22:57.800 --> 01:23:00.860
+Omar Mansour: In all cases, this is a prototype.
+
+794
+01:23:01.940 --> 01:23:11.619
+Omar Mansour: It must contain the type of the return, and the type of the parameters, and the number of parameters, and it ends with a semicolon. This means I'm declaring a function.
+
+795
+01:23:12.470 --> 01:23:15.170
+Omar Mansour: So this gives me the right to use this function.
+
+796
+01:23:15.940 --> 01:23:17.580
+Omar Mansour: Prior to defining the function.
+
+797
+01:23:19.600 --> 01:23:20.480
+Omar Mansour: Okay?
+
+798
+01:23:23.750 --> 01:23:27.770
+Omar Mansour: So, in the May routine, I'm declaring
+
+799
+01:23:28.360 --> 01:23:34.279
+Omar Mansour: This is actually an integer, tid, meaning the thread ID. I'm declaring a variable, thread ID.
+
+800
+01:23:34.610 --> 01:23:38.009
+Omar Mansour: And prior to being in the main routine, I declared a variable sum.
+
+801
+01:23:38.250 --> 01:23:41.399
+Omar Mansour: So let's do a quick alertness-awakeness test.
+
+802
+01:23:41.600 --> 01:23:45.050
+Omar Mansour: Is this… A global or a local?
+
+803
+01:23:45.660 --> 01:23:46.420
+Omar Mansour: Variable.
+
+804
+01:23:49.850 --> 01:23:52.729
+Omar Mansour: some. Is it local, or is it global?
+
+805
+01:23:54.290 --> 01:23:55.070
+Omar Mansour: Huh?
+
+806
+01:23:55.380 --> 01:23:55.845
+Omar Mansour: Hello?
+
+807
+01:23:56.440 --> 01:23:57.650
+Omar Mansour: Global.
+
+808
+01:23:57.870 --> 01:24:04.360
+Omar Mansour: Why is it global? It's outside. It is global. What did we say about global variables?
+
+809
+01:24:04.530 --> 01:24:06.830
+Omar Mansour: They're shared.
+
+810
+01:24:07.180 --> 01:24:14.980
+Omar Mansour: Yes, they are… that's the definition, but what do they do with threads? They are shared between each and all of the threads. So if I start creating threads.
+
+811
+01:24:15.350 --> 01:24:20.019
+Omar Mansour: That global variable is shared between all of them, because it's in the data segment.
+
+812
+01:24:20.380 --> 01:24:21.180
+Omar Mansour: Okay?
+
+813
+01:24:22.380 --> 01:24:23.780
+Omar Mansour: Just remember that picture.
+
+814
+01:24:24.250 --> 01:24:33.170
+Omar Mansour: That's my data set. There's only one data segment for all three threads. That's where my global variable is. That's where my sum… my int sum is.
+
+815
+01:24:34.320 --> 01:24:35.350
+Omar Mansour: Okay.
+
+816
+01:24:37.060 --> 01:24:40.569
+Omar Mansour: Fantastic. What about this one? Is that a local or a global variable?
+
+817
+01:24:41.330 --> 01:24:43.450
+Omar Mansour: Global. That's a local variable.
+
+818
+01:24:43.850 --> 01:24:47.460
+Omar Mansour: It's not global, that's a local variable. Where is it? In the stack.
+
+819
+01:24:47.870 --> 01:24:49.270
+Omar Mansour: The stack, okay?
+
+820
+01:24:50.400 --> 01:24:57.920
+Omar Mansour: Very good. So, at this point, when I'm invoking main, You need to understand this.
+
+821
+01:24:58.370 --> 01:25:11.299
+Omar Mansour: We have one thread that is running, because by definition, this process starts always as a single threaded process. Every process starts as a single threaded process. I already have one thread.
+
+822
+01:25:11.490 --> 01:25:15.609
+Omar Mansour: That is the main thread, for lack of a better name. Now, I don't have a name for it.
+
+823
+01:25:15.740 --> 01:25:19.690
+Omar Mansour: Threads have a thread ID, So the main thread…
+
+824
+01:25:20.870 --> 01:25:24.450
+Omar Mansour: Is the one that the process starts with, okay?
+
+825
+01:25:25.620 --> 01:25:31.060
+Omar Mansour: So we have a couple of local variables. This is actually an integer, that one is an object.
+
+826
+01:25:31.300 --> 01:25:32.699
+Omar Mansour: Because this is a struct.
+
+827
+01:25:33.650 --> 01:25:34.870
+Omar Mansour: attribute.
+
+828
+01:25:35.230 --> 01:25:39.299
+Omar Mansour: We're gonna talk about this later. For now, it's just a… it's just an object.
+
+829
+01:25:39.470 --> 01:25:41.370
+Omar Mansour: An instance of a struct.
+
+830
+01:25:42.060 --> 01:25:48.949
+Omar Mansour: And, as we always do, We're gonna check the arguments, so just a reminder.
+
+831
+01:25:49.120 --> 01:25:51.579
+Omar Mansour: Actually, a quick review with all of us.
+
+832
+01:25:57.970 --> 01:25:59.550
+Omar Mansour: We're doing the example.
+
+833
+01:26:02.890 --> 01:26:05.129
+Omar Mansour: RG is an integer.
+
+834
+01:26:06.480 --> 01:26:11.590
+Omar Mansour: And I wanted to be… I'm expecting A to be a tool.
+
+835
+01:26:13.570 --> 01:26:15.099
+Omar Mansour: If it's not editable.
+
+836
+01:26:16.650 --> 01:26:24.779
+Omar Mansour: I'm actually gonna return, meaning I'm all… pretty much, because this is the main routine, returning from the main routine, meaning I'm going to be exiting the program.
+
+837
+01:26:25.030 --> 01:26:32.349
+Omar Mansour: And as we said before, a return code of zero indicates success, or successfully running your program.
+
+838
+01:26:32.590 --> 01:26:43.159
+Omar Mansour: Anything that is not zero indicates a problem. A minus 1 means, by convention, I mean, it's going to compile either way, whether you return a zero or return a minus 1, but by convention.
+
+839
+01:26:43.300 --> 01:26:48.149
+Omar Mansour: in any UNIX-like system, the convention is you return an error code.
+
+840
+01:26:48.630 --> 01:26:53.330
+Omar Mansour: In case you encounter… in case your program encounters a failure, a problem.
+
+841
+01:26:54.720 --> 01:27:07.379
+Omar Mansour: So the problem here is, if RX is not equal to a 2. Now, you would always notice, or you've noticed, given your prior 5 homeworks, every time we invoke the homework, we do something like this.
+
+842
+01:27:08.980 --> 01:27:10.350
+Omar Mansour: Day lap 7.
+
+843
+01:27:10.620 --> 01:27:12.310
+Omar Mansour: And to say 7.
+
+844
+01:27:12.420 --> 01:27:14.649
+Omar Mansour: Or maybe that a bicycle can do.
+
+845
+01:27:15.050 --> 01:27:16.370
+Omar Mansour: Basics.
+
+846
+01:27:17.700 --> 01:27:18.510
+Omar Mansour: Okay?
+
+847
+01:27:22.350 --> 01:27:28.719
+Omar Mansour: So, this invocation is going to result in ARC being equal to a 2.
+
+848
+01:27:29.580 --> 01:27:33.660
+Omar Mansour: What happens if I try to invoke the program just like that?
+
+849
+01:27:34.780 --> 01:27:37.419
+Omar Mansour: what is going to be the value for Oxy?
+
+850
+01:27:37.770 --> 01:27:41.699
+Omar Mansour: what we want. What happens if I invoke it with something like that?
+
+851
+01:27:43.070 --> 01:27:47.090
+Omar Mansour: What is ARC? Okay, so ARC…
+
+852
+01:27:47.480 --> 01:27:50.869
+Omar Mansour: Is the number of parameters being passed to the shell.
+
+853
+01:27:53.100 --> 01:27:54.640
+Omar Mansour: Now, here's what's important.
+
+854
+01:27:58.760 --> 01:28:00.010
+Omar Mansour: Here's what's important.
+
+855
+01:28:01.350 --> 01:28:09.510
+Omar Mansour: what's important also is argv. ARGV is an array, I mean, because that's a… what type of an array? What are the elements?
+
+856
+01:28:12.480 --> 01:28:13.380
+Omar Mansour: Sorry?
+
+857
+01:28:14.910 --> 01:28:17.830
+Omar Mansour: Pointers, an array of pointers, okay?
+
+858
+01:28:19.160 --> 01:28:24.460
+Omar Mansour: So, if arc is 2, Then that array has two elements.
+
+859
+01:28:25.390 --> 01:28:26.660
+Omar Mansour: Two pointers.
+
+860
+01:28:30.250 --> 01:28:33.880
+Omar Mansour: Each one of them, It indeed.
+
+861
+01:28:35.810 --> 01:28:36.870
+Omar Mansour: I see 3.
+
+862
+01:28:38.780 --> 01:28:47.429
+Omar Mansour: So… The second index… Because a raised indexing is zero-based, the second index would have An index of 1.
+
+863
+01:28:47.710 --> 01:28:49.720
+Omar Mansour: is pointing at a C string.
+
+864
+01:28:50.680 --> 01:28:54.639
+Omar Mansour: In this particular example, what is the size of that C string?
+
+865
+01:28:58.060 --> 01:29:00.129
+Omar Mansour: A C string is a chart array.
+
+866
+01:29:01.330 --> 01:29:03.749
+Omar Mansour: What is the size of that seat frame?
+
+867
+01:29:07.470 --> 01:29:08.700
+Omar Mansour: Who wants to help me?
+
+868
+01:29:10.130 --> 01:29:16.310
+Omar Mansour: that example invocation here. I'll get… an arcs of 2.
+
+869
+01:29:16.530 --> 01:29:19.519
+Omar Mansour: and then I will get a pointer.
+
+870
+01:29:20.190 --> 01:29:24.759
+Omar Mansour: to a C string, but I'm just asking, what would be the size of that C string?
+
+871
+01:29:25.190 --> 01:29:26.700
+Omar Mansour: Huh?
+
+872
+01:29:26.860 --> 01:29:27.670
+Omar Mansour: Good three.
+
+873
+01:29:28.130 --> 01:29:29.710
+Omar Mansour: We'll say 3.
+
+874
+01:29:30.280 --> 01:29:31.960
+Omar Mansour: Okay, who's saying to?
+
+875
+01:29:32.510 --> 01:29:34.800
+Omar Mansour: Who's saying 4? I hear someone say 4.
+
+876
+01:29:39.760 --> 01:29:41.490
+Omar Mansour: Okay, who's saying 5?
+
+877
+01:29:42.860 --> 01:29:50.250
+Omar Mansour: There's actually 3. Now, why is it 3? Well, I have two characters in here. Believe it or not, this is not passed as an integer.
+
+878
+01:29:50.550 --> 01:29:52.830
+Omar Mansour: This is passed as 2.
+
+879
+01:29:53.100 --> 01:29:54.350
+Omar Mansour: characters.
+
+880
+01:29:57.280 --> 01:30:00.320
+Omar Mansour: So, we're gonna be having an array of 3 elements.
+
+881
+01:30:02.710 --> 01:30:03.900
+Omar Mansour: Fixed?
+
+882
+01:30:04.140 --> 01:30:05.190
+Omar Mansour: 4…
+
+883
+01:30:05.410 --> 01:30:13.260
+Omar Mansour: And what is the third element? Access theorem. What is that? What is the value? Null. What is the value? Zero.
+
+884
+01:30:15.270 --> 01:30:20.890
+Omar Mansour: Okay, backslash really means it's an escape, it means it's not an ASCII encoded. So I can just say as you go.
+
+885
+01:30:21.460 --> 01:30:23.129
+Omar Mansour: What about the value?
+
+886
+01:30:24.850 --> 01:30:28.640
+Omar Mansour: Meaning the ASCII coding, for…
+
+887
+01:30:29.140 --> 01:30:35.509
+Omar Mansour: The character 6. What is the actual value? Someone has to look it up, of course. You don't memorize that, you just look it up.
+
+888
+01:30:36.430 --> 01:30:40.600
+Omar Mansour: What is the value for an ASCII character of 6?
+
+889
+01:30:46.490 --> 01:30:48.609
+Omar Mansour: 54… 54?
+
+890
+01:30:50.250 --> 01:30:54.790
+Omar Mansour: Okay, so we're gonna say 54. That's actually the value you're gonna be having in the array.
+
+891
+01:30:57.810 --> 01:30:59.949
+Omar Mansour: So the array's gonna have a value of 54.
+
+892
+01:31:00.730 --> 01:31:01.950
+Omar Mansour: Is that cooling.
+
+893
+01:31:03.870 --> 01:31:05.320
+Omar Mansour: by definition.
+
+894
+01:31:06.460 --> 01:31:12.970
+Omar Mansour: Since 4 is less by 2, then I'm presuming the ASCII coding of the character 4 is gonna be at 52.
+
+895
+01:31:13.500 --> 01:31:15.040
+Omar Mansour: Okay.
+
+896
+01:31:15.530 --> 01:31:21.289
+Omar Mansour: Very good, very good. So… Now, there is a function that's called ASCII to Integer.
+
+897
+01:31:26.260 --> 01:31:30.220
+Omar Mansour: That can take a pointer, to assist rank.
+
+898
+01:31:30.750 --> 01:31:33.620
+Omar Mansour: The pointer to a C string is RV of 1.
+
+899
+01:31:34.700 --> 01:31:37.159
+Omar Mansour: And that function can take the C string.
+
+900
+01:31:37.990 --> 01:31:42.350
+Omar Mansour: and convert the C string into… an integer variable.
+
+901
+01:31:44.920 --> 01:31:58.400
+Omar Mansour: So we look for that conversion, and we say, okay, if it is less than 0, then the user again entered the wrong unexpected value. So I'm expecting the user to enter something here that is 1 to something that's very big.
+
+902
+01:31:59.440 --> 01:32:04.270
+Omar Mansour: What happens if the user enters something that is not an ASCII character representing a number?
+
+903
+01:32:04.460 --> 01:32:08.500
+Omar Mansour: I'll get something that's a zero, so that will be caught in here as well.
+
+904
+01:32:10.410 --> 01:32:12.529
+Omar Mansour: Any questions so far about this code?
+
+905
+01:32:12.830 --> 01:32:16.050
+Omar Mansour: Nothing is interesting here, I just wanted to review a few things.
+
+906
+01:32:16.570 --> 01:32:18.340
+Omar Mansour: Here's what's more interesting.
+
+907
+01:32:21.350 --> 01:32:26.419
+Omar Mansour: I'm gonna be initializing This attribute object…
+
+908
+01:32:27.100 --> 01:32:31.189
+Omar Mansour: Using pthread underscore attribute init. That is…
+
+909
+01:32:31.470 --> 01:32:35.879
+Omar Mansour: That is indeed a library function. Now, here's the deal. Actually, I want to go back a little.
+
+910
+01:32:36.160 --> 01:32:37.840
+Omar Mansour: F, print F.
+
+911
+01:32:38.550 --> 01:32:47.589
+Omar Mansour: I told you earlier, There's in many C compilers, and in all, all C++ compilers, you have to prototype
+
+912
+01:32:47.950 --> 01:32:50.619
+Omar Mansour: Or fully define a function before you can use it.
+
+913
+01:32:51.230 --> 01:32:55.030
+Omar Mansour: Did we ever… prototype or define as printf.
+
+914
+01:32:55.570 --> 01:32:58.719
+Omar Mansour: The answer is no. Well, in fact, the answer is yes.
+
+915
+01:32:59.570 --> 01:33:02.700
+Omar Mansour: Where did we… prototype it.
+
+916
+01:33:02.970 --> 01:33:04.030
+Omar Mansour: the I.O.
+
+917
+01:33:04.200 --> 01:33:05.760
+Omar Mansour: In this include file.
+
+918
+01:33:06.120 --> 01:33:11.129
+Omar Mansour: Exactly. So including the file is actually, it is there, a copy and paste.
+
+919
+01:33:11.650 --> 01:33:16.709
+Omar Mansour: We copy everything in Standard ION H, and guess what's in Standard ION H?
+
+920
+01:33:17.200 --> 01:33:21.209
+Omar Mansour: a bunch of function prototypes. That's all it contains, prototypes.
+
+921
+01:33:22.820 --> 01:33:28.380
+Omar Mansour: Very good. So while the same argument, Pthread.h, doesn't contain the definition of the functions.
+
+922
+01:33:28.560 --> 01:33:32.289
+Omar Mansour: There is not an opening curly brace, a closing… there's no such a thing.
+
+923
+01:33:32.390 --> 01:33:39.369
+Omar Mansour: The header files include only the function prototypes. So the pthread.h contains the prototypes.
+
+924
+01:33:40.760 --> 01:33:46.520
+Omar Mansour: So I can use any function that is declared in pthread.h, and I did.
+
+925
+01:33:46.710 --> 01:33:54.300
+Omar Mansour: I'm also going to be using BThread underscore create to create a brand new thread. Here's one thing worth mentioning.
+
+926
+01:33:55.340 --> 01:34:00.470
+Omar Mansour: Unlike processes, There is no hierarchy between threads.
+
+927
+01:34:00.780 --> 01:34:02.820
+Omar Mansour: In processes, we had a tree.
+
+928
+01:34:03.240 --> 01:34:04.640
+Omar Mansour: We had a parent.
+
+929
+01:34:04.750 --> 01:34:12.449
+Omar Mansour: We had a child, a grandchild, a grand-grandchild, grand-grandchild, and then a grandparent and a grandparent, all the way until they get the root to the root of that tree.
+
+930
+01:34:14.970 --> 01:34:17.820
+Omar Mansour: And what was the root of the tree in a Unix system?
+
+931
+01:34:18.780 --> 01:34:25.380
+Omar Mansour: init process, thank you so much. Someone is alert, very good, actually, very encouraging for the exam. We have the init process.
+
+932
+01:34:25.620 --> 01:34:29.819
+Omar Mansour: That is the… The grand ancestor of everybody.
+
+933
+01:34:30.580 --> 01:34:34.109
+Omar Mansour: Okay, there's the init process. Every user mode process.
+
+934
+01:34:34.260 --> 01:34:40.519
+Omar Mansour: kernel processes have Kthread as the grand ancestor. Okay, very good.
+
+935
+01:34:40.900 --> 01:34:44.990
+Omar Mansour: So there's a hierarchy, there's a parent-child relationship all the time, always.
+
+936
+01:34:46.500 --> 01:34:55.960
+Omar Mansour: That is just not the case for threads. Threads do not have a hierarchy. Threads do not have a parent, do not have a child. All threads are born the same.
+
+937
+01:34:56.530 --> 01:35:01.649
+Omar Mansour: You can create that thread, but that is not your child. You are not the parent of that thread.
+
+938
+01:35:02.140 --> 01:35:04.109
+Omar Mansour: So now, instead of just having
+
+939
+01:35:04.490 --> 01:35:13.599
+Omar Mansour: the main thread, immediately after this call returns. Now I have the main thread, and I have another thread.
+
+940
+01:35:14.260 --> 01:35:17.610
+Omar Mansour: It's just called another thread. It's not a child thread.
+
+941
+01:35:17.710 --> 01:35:22.579
+Omar Mansour: There's no parent-child relationship, absolutely not. We have a flat hierarchy.
+
+942
+01:35:22.830 --> 01:35:24.450
+Omar Mansour: They're all at the same level.
+
+943
+01:35:27.040 --> 01:35:32.009
+Omar Mansour: And how did I create this? I passed a few parameters. I passed four parameters to Pthreadcreate.
+
+944
+01:35:32.120 --> 01:35:36.169
+Omar Mansour: The first parameter, this is the address of operator.
+
+945
+01:35:36.430 --> 01:35:39.369
+Omar Mansour: It's not a logical hand, it's not a bitwise hand.
+
+946
+01:35:39.910 --> 01:35:41.720
+Omar Mansour: Is the address of operator.
+
+947
+01:35:42.370 --> 01:35:47.099
+Omar Mansour: That is off tint. Whoa, what is tent? Where is… oh, here's tint.
+
+948
+01:35:47.280 --> 01:35:52.959
+Omar Mansour: I'm passing the address of TID, but I never initialized TID, so why am I passing the address of TID?
+
+949
+01:35:53.440 --> 01:35:57.319
+Omar Mansour: Because the library is gonna populate it for me.
+
+950
+01:35:58.380 --> 01:36:07.250
+Omar Mansour: The library, I never initialized it, I never assigned it a value. The library is going to assign it a value for me. What do you think the value is?
+
+951
+01:36:08.130 --> 01:36:12.879
+Omar Mansour: the thread… the thread ID of the thread that we just created.
+
+952
+01:36:13.550 --> 01:36:17.190
+Omar Mansour: So now I know the thread ID of the thread I just created, not my child.
+
+953
+01:36:17.470 --> 01:36:20.869
+Omar Mansour: Just a flat hierarchy, okay? Now I know the thread ID.
+
+954
+01:36:22.360 --> 01:36:25.479
+Omar Mansour: Now we know what the first… what about the second parameter?
+
+955
+01:36:25.810 --> 01:36:28.540
+Omar Mansour: I'm passing the address of attribute.
+
+956
+01:36:28.860 --> 01:36:30.569
+Omar Mansour: The address of this object.
+
+957
+01:36:31.060 --> 01:36:36.170
+Omar Mansour: Well, I initialized this object, so I want to pass… some information.
+
+958
+01:36:36.290 --> 01:36:45.919
+Omar Mansour: some attributes about the thread that I wish to create. For now, we default initialized those attributes. We're going to talk about them later today.
+
+959
+01:36:46.070 --> 01:36:49.209
+Omar Mansour: A few of them, and the latter, next lecture, and so on.
+
+960
+01:36:50.130 --> 01:36:51.210
+Omar Mansour: Very good.
+
+961
+01:36:51.430 --> 01:36:55.330
+Omar Mansour: That is the second parameter. What about the third parameter? Runner.
+
+962
+01:36:56.170 --> 01:36:57.449
+Omar Mansour: Why is water?
+
+963
+01:36:58.030 --> 01:36:59.800
+Omar Mansour: ZRA is going to prompt the…
+
+964
+01:37:00.110 --> 01:37:02.759
+Omar Mansour: Right, so Rudder is the name of…
+
+965
+01:37:02.870 --> 01:37:13.130
+Omar Mansour: A function. This function here is runner. Am I passing 1, 2, 3, 4, 5… am I passing 5 statements right here? Is that what I'm passing? A copy of the 5 statements?
+
+966
+01:37:14.900 --> 01:37:15.810
+Omar Mansour: Huh?
+
+967
+01:37:16.720 --> 01:37:29.780
+Omar Mansour: It doesn't make no sense. What about if I had a thousand statements? I wish you don't have a thousand statements in a single function, but let's say I do. Do we pass a thousand statements? No, we don't. We've already alluded to that. We're passing a function pointer.
+
+968
+01:37:30.120 --> 01:37:32.380
+Omar Mansour: The reason why we studied function pointers.
+
+969
+01:37:32.940 --> 01:37:35.900
+Omar Mansour: And what did we say? We said the name of the function.
+
+970
+01:37:36.320 --> 01:37:45.030
+Omar Mansour: duals as the address of the function, just like the name of the array, duals is the address of the array. So we're passing the address of the function. That is what the third parameter must be.
+
+971
+01:37:46.380 --> 01:37:52.019
+Omar Mansour: and… argv of 1, sort of force parameter, what is the type of argv of 1?
+
+972
+01:37:54.830 --> 01:37:55.590
+Omar Mansour: History.
+
+973
+01:37:55.750 --> 01:38:00.890
+Omar Mansour: Huh? Pointer? It's a pointer. Exactly. So the fourth parameter must be a pointer.
+
+974
+01:38:01.760 --> 01:38:03.080
+Omar Mansour: Now, here's the deal.
+
+975
+01:38:08.660 --> 01:38:10.180
+Omar Mansour: the thread function.
+
+976
+01:38:10.550 --> 01:38:17.110
+Omar Mansour: Meaning, the… I pass the address of the thread function as the third parameter. The thread function must…
+
+977
+01:38:17.450 --> 01:38:18.790
+Omar Mansour: It has to.
+
+978
+01:38:19.010 --> 01:38:23.620
+Omar Mansour: There's no other option, there's no other ifs or buts. It must.
+
+979
+01:38:24.710 --> 01:38:27.650
+Omar Mansour: It must take one parameter, that is a pointer.
+
+980
+01:38:27.890 --> 01:38:35.779
+Omar Mansour: It's a generic pointer, that's what avoid is. It takes one and only one parameter. It must. There are no choices here.
+
+981
+01:38:36.000 --> 01:38:37.299
+Omar Mansour: It just has to.
+
+982
+01:38:37.590 --> 01:38:41.980
+Omar Mansour: And it returns… A pointer that is also a generic pointer.
+
+983
+01:38:44.400 --> 01:38:45.730
+Omar Mansour: These are the rules.
+
+984
+01:38:46.450 --> 01:38:52.969
+Omar Mansour: If you pass, The address of a function that takes two parameters, You'll get a compilation error.
+
+985
+01:38:53.590 --> 01:38:59.669
+Omar Mansour: If you pass the address of a function that takes one parameter that's an integer, you also get a compilation error.
+
+986
+01:39:00.300 --> 01:39:08.490
+Omar Mansour: You have to pass the address of a function that takes one parameter, there's a generic pointer and returns a pointer.
+
+987
+01:39:08.590 --> 01:39:15.990
+Omar Mansour: There's no choice. Anything else wouldn't give you a compilation error. Don't be scratching your head. That's why you get the compilation error, okay?
+
+988
+01:39:18.080 --> 01:39:19.340
+Omar Mansour: So we…
+
+989
+01:39:19.490 --> 01:39:33.360
+Omar Mansour: passed this function, whatever we pass here in the Pthread create, whatever the force parameter is, is going to be passed here into this function, and this function becomes my new thread. So the new thread is going to start by executing this function.
+
+990
+01:39:33.830 --> 01:39:35.419
+Omar Mansour: Getting that parameter.
+
+991
+01:39:36.640 --> 01:39:38.769
+Omar Mansour: Why did we pass it? A pointer.
+
+992
+01:39:40.490 --> 01:39:41.630
+Omar Mansour: to the C-String.
+
+993
+01:39:41.910 --> 01:39:44.920
+Omar Mansour: or V of what a point of the C string that contains 64.
+
+994
+01:39:45.470 --> 01:39:46.370
+Omar Mansour: Alright?
+
+995
+01:39:47.720 --> 01:39:51.189
+Omar Mansour: What does it do with it? Well, it's gonna do…
+
+996
+01:39:51.370 --> 01:39:55.910
+Omar Mansour: and ask you to enter, it's gonna declare two vocal variables, i and upper.
+
+997
+01:39:56.320 --> 01:39:59.079
+Omar Mansour: And then it's gonna do an ASCII to integer.
+
+998
+01:39:59.630 --> 01:40:02.540
+Omar Mansour: of this pointer, which is a pointer to a C string.
+
+999
+01:40:04.600 --> 01:40:08.170
+Omar Mansour: Converting it into an integer, upper.
+
+1000
+01:40:08.730 --> 01:40:11.240
+Omar Mansour: Which is gonna get a value of 64, and then…
+
+1001
+01:40:11.540 --> 01:40:14.649
+Omar Mansour: It's gonna initialize sum to a zero. Where is sum?
+
+1002
+01:40:14.800 --> 01:40:16.419
+Omar Mansour: Is that a local variable?
+
+1003
+01:40:16.910 --> 01:40:20.319
+Omar Mansour: No, we've emphasized this. Sum is a global variable.
+
+1004
+01:40:20.450 --> 01:40:25.640
+Omar Mansour: It's gonna initialize some to a zero. It's gonna go to a loop from 1 to 64,
+
+1005
+01:40:27.350 --> 01:40:36.949
+Omar Mansour: In the first iteration, it adds 1, in the second iteration, it adds 2. In the third, it adds 3. In the fourth, it adds 4. In the 17th iteration, it adds 17.
+
+1006
+01:40:37.370 --> 01:40:40.799
+Omar Mansour: So it's adding the sum of an arithmetic sequence.
+
+1007
+01:40:41.450 --> 01:40:49.959
+Omar Mansour: That's what it is, a sum of an arithmetic sequence. It's adding the sum of the arithmetic sequence. When it's done, it's going to do a Pthread exit. It's gonna return an exit code of 0.
+
+1008
+01:40:50.200 --> 01:40:53.560
+Omar Mansour: So this trend started here and exited there.
+
+1009
+01:40:53.880 --> 01:40:54.850
+Omar Mansour: Alright?
+
+1010
+01:40:55.580 --> 01:40:59.230
+Omar Mansour: Now, this is a global variable.
+
+1011
+01:40:59.670 --> 01:41:06.240
+Omar Mansour: And the main thread is going to have to wait until the computation is complete.
+
+1012
+01:41:07.210 --> 01:41:11.960
+Omar Mansour: And only when the competition is complete, then it's going to be using
+
+1013
+01:41:12.630 --> 01:41:16.260
+Omar Mansour: This global variable sum, put that to the screen.
+
+1014
+01:41:16.430 --> 01:41:21.810
+Omar Mansour: So the way it knows that the computation is complete is that it waits until the
+
+1015
+01:41:21.930 --> 01:41:28.350
+Omar Mansour: Second threat exists. I'm not gonna call it a child's friend, it's not a child, there's no parent-child relationship, there's no hierarchy.
+
+1016
+01:41:29.410 --> 01:41:30.869
+Omar Mansour: How does it wait?
+
+1017
+01:41:31.050 --> 01:41:35.389
+Omar Mansour: If there's no child relationship, we have used a wait system call before.
+
+1018
+01:41:36.480 --> 01:41:54.709
+Omar Mansour: And the wait system call automatically waits for a child process. Now there's no parent-child relationship, so we're gonna have to use something equivalent to the wait TID. We have to wait for a particular thread, so now comes the valuable TID that we obtained. We're gonna wait.
+
+1019
+01:41:54.780 --> 01:41:58.419
+Omar Mansour: for this particular thread ID of that thread.
+
+1020
+01:41:58.890 --> 01:42:08.489
+Omar Mansour: using Pthread underscore join. This is similar to saying wait pit, which is a system call that allows you to wait for another process.
+
+1021
+01:42:09.510 --> 01:42:16.550
+Omar Mansour: And I can get the return status, or the exit status of that thread, by providing a pointer to
+
+1022
+01:42:16.760 --> 01:42:26.079
+Omar Mansour: an integer, and it will be populated with whatever the thread returned, but I don't care. I provided a null pointer because I don't care about the status at all.
+
+1023
+01:42:26.800 --> 01:42:35.609
+Omar Mansour: Okay, so what happens before we take a break? We're gonna take a break, and if you want to go to the bathroom, hang with me for 2 more minutes. In fact, one more minute, okay?
+
+1024
+01:42:36.910 --> 01:42:45.190
+Omar Mansour: Alright, what happens, typically, again, if I want to achieve a speedup, I have 8 CPU cores, maybe I want to create 8 threads.
+
+1025
+01:42:45.650 --> 01:42:55.809
+Omar Mansour: do some processing that is different for, you know, or actually process different data for the different threads for the 8 of them. How do I create 8 threads? I'm going to do the same exact approach.
+
+1026
+01:42:56.380 --> 01:43:06.059
+Omar Mansour: Except I'm going to put this inside a loop, and instead of a scalar, single tid, I'm going to use an array of 8, for example, or an array of N.
+
+1027
+01:43:06.370 --> 01:43:09.879
+Omar Mansour: And in this loop, I'm gonna be giving the address
+
+1028
+01:43:10.640 --> 01:43:16.159
+Omar Mansour: of the first element, the address of the second element, so it's going to be N tid of…
+
+1029
+01:43:16.480 --> 01:43:18.369
+Omar Mansour: I, I being the loop.
+
+1030
+01:43:18.590 --> 01:43:20.389
+Omar Mansour: It's a reader variable.
+
+1031
+01:43:22.130 --> 01:43:24.170
+Omar Mansour: And instead of waiting.
+
+1032
+01:43:25.480 --> 01:43:29.629
+Omar Mansour: for one thread, I want to wait for all of them, so I'm going to do this also in a loop.
+
+1033
+01:43:29.800 --> 01:43:42.889
+Omar Mansour: So, just a snippet, you would create an array, I'm going to call them worker threads, this particular case, because they're going to be doing some work for me. I'm going to create an array of worker threads, possibly 10 if I have 10 CPU boards.
+
+1034
+01:43:43.110 --> 01:43:49.120
+Omar Mansour: And then, if I wish to wait for all of them, I'm gonna do a piece of red joint. I'm gonna be doing,
+
+1035
+01:43:49.770 --> 01:43:54.579
+Omar Mansour: the thread ID of each one of them, and I don't care about the status, so I just pass it on.
+
+1036
+01:43:55.300 --> 01:43:56.670
+Omar Mansour: So I could do this.
+
+1037
+01:43:56.820 --> 01:43:59.790
+Omar Mansour: approach. In fact, you're gonna do something similar.
+
+1038
+01:44:00.370 --> 01:44:12.640
+Omar Mansour: Not really a lot of, I mean, you're gonna create a few threads, a few worker threads, so you're gonna follow this exact approach to create worker threads for Assignment 7, so we can achieve a speed-up.
+
+1039
+01:44:13.440 --> 01:44:14.260
+Omar Mansour: Okay?
+
+1040
+01:44:14.810 --> 01:44:17.720
+Omar Mansour: the speed of computation. You'll have to split the data.
+
+1041
+01:44:18.410 --> 01:44:24.209
+Omar Mansour: You're gonna have to create the threads, you're gonna have to wait for the threads, then you're gonna have to collect the data, and you print the data.
+
+1042
+01:44:24.340 --> 01:44:25.820
+Omar Mansour: In assignment number 7.
+
+1043
+01:44:27.660 --> 01:44:33.010
+Omar Mansour: Clearly, because we did not get assignment number 7, all you have to do for now is study.
+
+1044
+01:44:33.600 --> 01:44:41.359
+Omar Mansour: the lecture, and the lecture notes, and this will be… not be a programming problem pertaining to threads, it will pertain to
+
+1045
+01:44:41.770 --> 01:44:43.590
+Omar Mansour: Multiple choice questions.
+
+1046
+01:44:43.720 --> 01:44:44.520
+Omar Mansour: Okay?
+
+1047
+01:44:45.380 --> 01:44:51.799
+Omar Mansour: Let's take a 5-minute break. What time is it? It is… 7.55, we reconvene at 8.
+
+1048
+01:45:05.070 --> 01:45:05.990
+Omar Mansour: What party?
+
+1049
+01:45:06.120 --> 01:45:18.949
+Omar Mansour: You must, yes. They are different, but, reportable on the same, task structure.
+
+1050
+01:45:20.140 --> 01:45:36.800
+Omar Mansour: Yes, we'll have the same, that will be, like, a pointer to a list. Now, implementation-wise, Linux deployments… Linux has… Yes, I guess. That's a different process, actually.
+
+1051
+01:45:36.870 --> 01:45:47.300
+Omar Mansour: With a shared memory space. Something that's called a process group. Something that's confusing, but it's okay.
+
+1052
+01:45:48.000 --> 01:46:01.290
+Omar Mansour: Yes, they're called threads, but they're implemented, and… but that's an implementation, too. I don't want to confuse you. Don't worry about how it's implemented. Alright, thank you. No, bro, I… I'm more anxious about…
+
+1053
+01:46:02.690 --> 01:46:03.620
+Omar Mansour: It's very tight.
+
+1054
+01:46:03.990 --> 01:46:06.760
+Omar Mansour: It would… because he's the one doing the eternal deal.
+
+1055
+01:46:25.400 --> 01:46:26.640
+Omar Mansour: You're just stupid people.
+
+1056
+01:46:27.200 --> 01:46:33.009
+Omar Mansour: Oh, they didn't remove it for me, I did it today, it just came out, like…
+
+1057
+01:46:33.130 --> 01:46:39.060
+Omar Mansour: When it came out, I was… Literally.
+
+1058
+01:46:43.800 --> 01:46:48.779
+Omar Mansour: Maybe by tomorrow or Friday, I don't know.
+
+1059
+01:46:49.350 --> 01:46:58.790
+Omar Mansour: Advisor, thanks. I just want the whole demo. What about you? I don't want that advisor. You want the advisor? Yeah.
+
+1060
+01:46:59.450 --> 01:47:08.539
+Omar Mansour: Yeah, program… I don't know how it works.
+
+1061
+01:47:08.820 --> 01:47:13.310
+Omar Mansour: Oh, just be… We do that.
+
+1062
+01:47:14.450 --> 01:47:16.450
+Omar Mansour: Like, what profile do you want to?
+
+1063
+01:47:22.180 --> 01:47:30.990
+Omar Mansour: Okay, you have two ways of… Actually, you have multiple ways. Typically, you create one buffer, the array.
+
+1064
+01:47:31.280 --> 01:47:40.660
+Omar Mansour: So, people go about… I mean, you can create big shared memories as well.
+
+1065
+01:47:41.390 --> 01:47:44.840
+Omar Mansour: We create one shared memory for the Arabe, one shared memory…
+
+1066
+01:47:45.040 --> 01:48:00.819
+Omar Mansour: I'm talking about how do you sell… We are overkill, but it's going to be correct, okay? Typically, people create one shared memory, all three. You go about it in two different ways. Some people… It's a shared memory, and it is…
+
+1067
+01:48:00.970 --> 01:48:14.389
+Omar Mansour: Size of the array? What's the size of two integers? Yeah. I got it, I got it.
+
+1068
+01:48:14.820 --> 01:48:24.290
+Omar Mansour: Now, you can use a backhoe. It bothers you so much.
+
+1069
+01:48:24.420 --> 01:48:27.580
+Omar Mansour: I did not array.
+
+1070
+01:48:27.770 --> 01:48:32.350
+Omar Mansour: But low-key, too, if I ask questions, we could just get on our own, too. Yeah.
+
+1071
+01:48:34.180 --> 01:48:37.480
+Omar Mansour: As, you know, the dereferencing of pointer to take.
+
+1072
+01:48:37.870 --> 01:48:39.669
+Omar Mansour: Oh, sorry, wanted to add.
+
+1073
+01:48:40.500 --> 01:48:41.200
+Omar Mansour: Okay?
+
+1074
+01:48:42.320 --> 01:48:48.999
+Omar Mansour: Always a good idea to put this in parentheses to make sure that it won't happen. So you can do this, then you can use head instead of P head if really…
+
+1075
+01:48:49.240 --> 01:48:51.750
+Omar Mansour: The rest of it bothers you so much, okay?
+
+1076
+01:48:52.380 --> 01:48:53.290
+Omar Mansour: Don't do that.
+
+1077
+01:48:53.560 --> 01:48:58.320
+Omar Mansour: Some other people do something different. They create a struct, Start contains an array.
+
+1078
+01:48:58.560 --> 01:49:02.860
+Omar Mansour: And the structure contains the head, it contains the tail.
+
+1079
+01:49:02.980 --> 01:49:06.289
+Omar Mansour: And then when you create the shared memory creator will decide that whatever.
+
+1080
+01:49:12.560 --> 01:49:13.300
+Omar Mansour: to remember.
+
+1081
+01:49:15.760 --> 01:49:19.110
+Omar Mansour: No, it's not exactly the size. You could make it the size of the buffer.
+
+1082
+01:49:19.600 --> 01:49:21.790
+Omar Mansour: That you could make it bigger than the side pillow.
+
+1083
+01:49:26.030 --> 01:49:41.610
+Omar Mansour: And I just have a quick question, because you mentioned, the version, it's not gonna, be in the written section for the exam, right? I was wondering, so, whatever the instinct 75, so share back in the five state will potentially be… I think that we… the assignments.
+
+1084
+01:49:42.080 --> 01:49:44.410
+Omar Mansour: It's going to be in the progressive problem.
+
+1085
+01:49:45.510 --> 01:49:49.090
+Omar Mansour: Just cover checking.
+
+1086
+01:49:50.230 --> 01:49:51.770
+Omar Mansour: Premier C++.
+
+1087
+01:49:59.760 --> 01:50:07.810
+Omar Mansour: But so far, we have to be using C in all the assignments we're doing C. Oh, yeah, yeah.
+
+1088
+01:50:25.480 --> 01:50:26.750
+Omar Mansour: Outstanding business.
+
+1089
+01:50:26.970 --> 01:50:30.879
+Omar Mansour: I do, I do. At home, till I can.
+
+1090
+01:50:41.360 --> 01:50:42.199
+Omar Mansour: When you're doing.
+
+1091
+01:50:46.190 --> 01:50:46.870
+Omar Mansour: Beautiful.
+
+1092
+01:50:50.740 --> 01:50:51.860
+Omar Mansour: Excessive.
+
+1093
+01:50:58.650 --> 01:50:59.530
+Omar Mansour: Go ahead.
+
+1094
+01:51:04.270 --> 01:51:06.060
+Omar Mansour: Alright, let us reconvene.
+
+1095
+01:51:08.300 --> 01:51:15.109
+Omar Mansour: So, as I told you before, We use our threads library.
+
+1096
+01:51:15.700 --> 01:51:22.419
+Omar Mansour: doesn't mean… That whatever function that we call inside the library is the actual system call.
+
+1097
+01:51:23.720 --> 01:51:30.679
+Omar Mansour: So, every time USB thread create, There's a system called… That gets it pulled.
+
+1098
+01:51:31.380 --> 01:51:36.880
+Omar Mansour: A system call is not called Pthread Create. Pthread is the library that we're using.
+
+1099
+01:51:38.080 --> 01:51:40.990
+Omar Mansour: The actual system call is a clone system call.
+
+1100
+01:51:41.660 --> 01:51:44.979
+Omar Mansour: Loa is more involved and more difficult.
+
+1101
+01:51:45.220 --> 01:51:49.400
+Omar Mansour: Then pre-thread create. Pre-Thread create takes away some of the difficulty.
+
+1102
+01:51:50.700 --> 01:51:51.850
+Omar Mansour: Like what?
+
+1103
+01:51:52.420 --> 01:51:56.900
+Omar Mansour: In clone, you have to specify the thread.
+
+1104
+01:51:57.770 --> 01:52:01.599
+Omar Mansour: We're having a shared memories piece, or shared virtual memory.
+
+1105
+01:52:01.780 --> 01:52:06.800
+Omar Mansour: You're gonna have to enable some flags, like clone the virtual memory, clone the file system.
+
+1106
+01:52:07.110 --> 01:52:09.009
+Omar Mansour: Clone some of the signal handling.
+
+1107
+01:52:10.390 --> 01:52:19.449
+Omar Mansour: and clone the files. You have to enable all of those flags. The flags are one of the parameters, actually, the third parameter that you have to pass to clone.
+
+1108
+01:52:20.770 --> 01:52:22.990
+Omar Mansour: The first parameter, what is this?
+
+1109
+01:52:23.290 --> 01:52:24.569
+Omar Mansour: What is this parameter?
+
+1110
+01:52:27.750 --> 01:52:29.389
+Omar Mansour: We've studied this before.
+
+1111
+01:52:30.520 --> 01:52:31.639
+Omar Mansour: What is this?
+
+1112
+01:52:33.700 --> 01:52:34.800
+Omar Mansour: What type?
+
+1113
+01:52:35.230 --> 01:52:37.060
+Omar Mansour: What is the type of this parameter?
+
+1114
+01:52:37.290 --> 01:52:38.449
+Omar Mansour: The first parameter.
+
+1115
+01:52:43.550 --> 01:52:44.390
+Omar Mansour: Huh?
+
+1116
+01:52:45.790 --> 01:52:48.340
+Omar Mansour: A file descriptor, is it?
+
+1117
+01:52:49.990 --> 01:52:51.350
+Omar Mansour: Is the phone number?
+
+1118
+01:52:53.560 --> 01:52:58.300
+Omar Mansour: What is the type of this first parameter? It's a function pointer. Please review
+
+1119
+01:52:58.910 --> 01:53:10.599
+Omar Mansour: Our Lecture C review session spent almost, not completely, but almost half a lecture reviewing C syntax, and we spent some time reviewing function pointers.
+
+1120
+01:53:11.440 --> 01:53:12.710
+Omar Mansour: for that.
+
+1121
+01:53:14.100 --> 01:53:22.890
+Omar Mansour: This is a function pointer. A function pointer to which function? To the thread function. So clone needs to have a thread function, just like BThread create does.
+
+1122
+01:53:24.110 --> 01:53:32.299
+Omar Mansour: And, oh, here's one difficulty. Other than the flags, another difficulty is the stack. This is a pointer.
+
+1123
+01:53:32.470 --> 01:53:34.439
+Omar Mansour: A generic pointer to the stack.
+
+1124
+01:53:35.620 --> 01:53:43.220
+Omar Mansour: So this means… The system call itself was the… user process.
+
+1125
+01:53:43.630 --> 01:53:46.640
+Omar Mansour: To allocate memory for the stack of the thread.
+
+1126
+01:53:46.920 --> 01:53:49.859
+Omar Mansour: Every time you wish to create a brand new thread.
+
+1127
+01:53:50.210 --> 01:53:54.169
+Omar Mansour: I'm gonna have to create… allocate some stack memory for that thread.
+
+1128
+01:53:54.480 --> 01:53:59.319
+Omar Mansour: Find out the address of that stack memory, and pass it to the clone system call.
+
+1129
+01:53:59.720 --> 01:54:02.529
+Omar Mansour: So, it's really a bit more involved.
+
+1130
+01:54:02.680 --> 01:54:05.309
+Omar Mansour: than Peace Red Create. Peace Red Create…
+
+1131
+01:54:05.840 --> 01:54:09.629
+Omar Mansour: Doesn't need for you to create a stack memory.
+
+1132
+01:54:10.350 --> 01:54:15.309
+Omar Mansour: Because that actually involves a decision. What is the size of your stacked memory?
+
+1133
+01:54:15.520 --> 01:54:17.259
+Omar Mansour: Is it 4 kilobytes?
+
+1134
+01:54:17.490 --> 01:54:19.309
+Omar Mansour: Is it 4 megabytes.
+
+1135
+01:54:19.720 --> 01:54:25.310
+Omar Mansour: Well, it depends how many nested calls, because the size of the stack really should be dictated
+
+1136
+01:54:26.170 --> 01:54:30.400
+Omar Mansour: By how many nested calls do you have? Every time you make a function call.
+
+1137
+01:54:30.570 --> 01:54:32.520
+Omar Mansour: A stack frame is created.
+
+1138
+01:54:34.410 --> 01:54:38.929
+Omar Mansour: That function calls another function inside it, that's a nested call.
+
+1139
+01:54:39.140 --> 01:54:46.280
+Omar Mansour: The number of nested calls dictates how big your stack should be. Gladly, that decision is taken away from us.
+
+1140
+01:54:47.070 --> 01:54:49.130
+Omar Mansour: It's actually used as a default size.
+
+1141
+01:54:50.100 --> 01:54:58.920
+Omar Mansour: But if you use a system call itself, you would have to tell the kernel exactly what is the size of… well, exactly, sorry, what is the pointer to the state.
+
+1142
+01:55:01.240 --> 01:55:02.250
+Omar Mansour: Moving on.
+
+1143
+01:55:03.860 --> 01:55:05.900
+Omar Mansour: I have one question, I'm not gonna isolate.
+
+1144
+01:55:06.570 --> 01:55:16.390
+Omar Mansour: That first mode, is that supposed to say these are not the native… the what, sorry? That's supposed to… these are, or these are not the native boats? Ethread's not a native mode, right, is what you're saying?
+
+1145
+01:55:16.630 --> 01:55:18.330
+Omar Mansour: Well, I mean,
+
+1146
+01:55:19.320 --> 01:55:25.269
+Omar Mansour: These are the native calls, the clone. I guess that's what I mean. BreadCreate is not a native call.
+
+1147
+01:55:25.670 --> 01:55:30.890
+Omar Mansour: The actual call is a clone. So Vern Create calls are library calls.
+
+1148
+01:55:31.170 --> 01:55:32.740
+Omar Mansour: That then invoke clone.
+
+1149
+01:55:32.990 --> 01:55:38.350
+Omar Mansour: Okay, so I, right, there's a missing, verb. Yeah.
+
+1150
+01:55:39.860 --> 01:55:43.400
+Omar Mansour: So, I'll update this, I'll fix it, okay? Thank you for pointing that out.
+
+1151
+01:55:51.470 --> 01:55:52.320
+Omar Mansour: Okay.
+
+1152
+01:55:57.920 --> 01:56:02.789
+Omar Mansour: Now, the next topic I wish to talk about is implicit threading.
+
+1153
+01:56:07.780 --> 01:56:10.069
+Omar Mansour: We'll actually make this one smaller so you can see this.
+
+1154
+01:56:10.640 --> 01:56:12.380
+Omar Mansour: implicit threading.
+
+1155
+01:56:14.790 --> 01:56:25.810
+Omar Mansour: What is implicit threading? What's it used for? Why is it even there? Implicit threading means you're gonna be using a multi-threaded process without having to worry about creating a thread.
+
+1156
+01:56:26.960 --> 01:56:28.690
+Omar Mansour: Creating a threads function.
+
+1157
+01:56:29.580 --> 01:56:36.469
+Omar Mansour: Worrying about the, you know, exiting the thread, or removing the thread, or any of that stuff.
+
+1158
+01:56:39.570 --> 01:56:40.570
+Omar Mansour: Okay.
+
+1159
+01:56:41.290 --> 01:56:46.009
+Omar Mansour: Why would I bother? Why is it so difficult to… creating a threat is not that difficult?
+
+1160
+01:56:47.540 --> 01:56:53.209
+Omar Mansour: But for many people, it is. Many programmers do not want to even know what is a thread.
+
+1161
+01:56:54.050 --> 01:56:57.089
+Omar Mansour: Many programmers are not actual software engineers.
+
+1162
+01:56:57.270 --> 01:57:00.860
+Omar Mansour: They do not study computer science, they don't study computer engineering either.
+
+1163
+01:57:01.300 --> 01:57:07.959
+Omar Mansour: For example, this is my favorite example, actually. I don't know if you're aware.
+
+1164
+01:57:08.990 --> 01:57:12.209
+Omar Mansour: How many of you have rode a plane to come to New York City?
+
+1165
+01:57:12.670 --> 01:57:14.469
+Omar Mansour: I'm hoping everybody okay.
+
+1166
+01:57:15.290 --> 01:57:19.079
+Omar Mansour: Help me didn't come by car. Revolt. Okay, that takes a long time.
+
+1167
+01:57:19.480 --> 01:57:26.579
+Omar Mansour: Okay, if you have ridden a plane, you would notice that somebody designed that plane. Planes are designed clearly by aerospace engineers.
+
+1168
+01:57:27.140 --> 01:57:37.109
+Omar Mansour: And, you know, airspace, you know, Boeing, for example, comes up with a new model every 4 or 5 years, and now they're rolling off models very quickly.
+
+1169
+01:57:38.000 --> 01:57:40.130
+Omar Mansour: Because they can simulate…
+
+1170
+01:57:40.840 --> 01:57:49.039
+Omar Mansour: a lot of the aspects about the planes. They can simulate the airflow. They can simulate everything on a computer before they build it.
+
+1171
+01:57:49.470 --> 01:57:54.649
+Omar Mansour: Just like cars today, actually. They can simulate everything before they build it. So they have…
+
+1172
+01:57:55.030 --> 01:58:07.639
+Omar Mansour: A way to simulate, and these programs that do the simulation are actually written by aerospace engineers who know very well about equations of motion, equations of aerodynamics, equations of this and that.
+
+1173
+01:58:07.760 --> 01:58:10.459
+Omar Mansour: And not only that, the inherited
+
+1174
+01:58:10.810 --> 01:58:18.310
+Omar Mansour: Millions upon millions upon billions of code written over the past 50 or 60 years.
+
+1175
+01:58:19.520 --> 01:58:23.509
+Omar Mansour: And it is written in a language that is called Fortran.
+
+1176
+01:58:23.930 --> 01:58:29.299
+Omar Mansour: Which most of you probably did not know about. Who has heard of a language called Fortran?
+
+1177
+01:58:30.020 --> 01:58:32.750
+Omar Mansour: a few people here who have used Fortran before.
+
+1178
+01:58:33.390 --> 01:58:47.119
+Omar Mansour: Probably not. You used Fortrad. Why did you use it? In my work. I worked in the aerospace industry. Oh, you work in aerospace, very good. Are you a mechanical engineer originally? No, no. Okay. I'm an embry director. I was an embedded engineer.
+
+1179
+01:58:47.490 --> 01:58:48.710
+Omar Mansour: Better, okay.
+
+1180
+01:58:48.930 --> 01:58:59.579
+Omar Mansour: Better wouldn't use Fortran. No, but I worked in the aerospace industry. So you know the language, okay. Yeah, a little bit. Okay, very good. So Fortran actually is typically used by,
+
+1181
+01:58:59.710 --> 01:59:01.090
+Omar Mansour: Mechanical engineers.
+
+1182
+01:59:01.340 --> 01:59:08.429
+Omar Mansour: the right simulator, it's easier than, you know, C or, you know, or C++ or Java. It's just a lot easier, really.
+
+1183
+01:59:09.110 --> 01:59:10.200
+Omar Mansour: All in all.
+
+1184
+01:59:10.670 --> 01:59:16.829
+Omar Mansour: There's no way around it. They're never gonna modify the language, because they have tens of millions of lines of code.
+
+1185
+01:59:16.930 --> 01:59:26.559
+Omar Mansour: And they're not going to bring someone to learn a language just to read those tens of millions of miles of code. They have already mechanical engineers who are well familiar, and they will continue to be the programmers.
+
+1186
+01:59:26.750 --> 01:59:28.270
+Omar Mansour: They don't want to bother.
+
+1187
+01:59:28.610 --> 01:59:30.309
+Omar Mansour: with creating threads.
+
+1188
+01:59:31.130 --> 01:59:32.530
+Omar Mansour: They don't want that.
+
+1189
+01:59:32.830 --> 01:59:35.590
+Omar Mansour: They want to learn about threads, but they want to have the speed up.
+
+1190
+01:59:35.740 --> 01:59:45.199
+Omar Mansour: Now they have a server with 256 CPUs, and they want to run a simulation, they want to run it fast, they can even have a cluster of servers.
+
+1191
+01:59:45.800 --> 01:59:51.509
+Omar Mansour: And they want to create threads on the fly. So we're gonna use… I'm going to give them implicit threading.
+
+1192
+01:59:51.660 --> 01:59:53.770
+Omar Mansour: We're studying operating systems.
+
+1193
+01:59:54.290 --> 01:59:57.789
+Omar Mansour: We are the ones implementing implicit threading for them.
+
+1194
+01:59:59.400 --> 02:00:04.890
+Omar Mansour: You don't need to use implicit threading, but you need to understand it, because we're studying the internals of operating systems.
+
+1195
+02:00:05.610 --> 02:00:08.909
+Omar Mansour: And of course, how to use the facilities as well.
+
+1196
+02:00:09.730 --> 02:00:16.150
+Omar Mansour: So, the old hinge about the concept of Thread tools.
+
+1197
+02:00:16.670 --> 02:00:23.140
+Omar Mansour: At the beginning, when the program starts, the runtime library Starts a bunch of threads.
+
+1198
+02:00:24.360 --> 02:00:25.200
+Omar Mansour: Okay?
+
+1199
+02:00:25.350 --> 02:00:37.550
+Omar Mansour: A typical scenario is the runtime library detects how many CPUs do you have in your computer system, and that is possible. Yeah, low-level code, but it's easily doable, with ease, actually.
+
+1200
+02:00:39.970 --> 02:00:47.040
+Omar Mansour: The moment you figure out how many CPUs you have, you create an equal number of threads, and that would be your thread pool.
+
+1201
+02:00:47.260 --> 02:00:49.289
+Omar Mansour: And in every thread, you create a queue.
+
+1202
+02:00:49.600 --> 02:00:51.860
+Omar Mansour: We're gonna call that a work queue.
+
+1203
+02:00:53.870 --> 02:00:56.679
+Omar Mansour: And every WorkU contains a work item.
+
+1204
+02:00:58.960 --> 02:01:01.569
+Omar Mansour: And the work item is something
+
+1205
+02:01:01.850 --> 02:01:08.730
+Omar Mansour: Similar to a threads function. Something that takes A generic pointer.
+
+1206
+02:01:11.210 --> 02:01:17.310
+Omar Mansour: So it takes one parameter, that's the reason why it's a single parameter, one and only one parameter, it's a generic pointer.
+
+1207
+02:01:18.080 --> 02:01:23.670
+Omar Mansour: And I have a function pointer. Both of these Are going to be…
+
+1208
+02:01:25.340 --> 02:01:33.419
+Omar Mansour: the work item. So the work item is a pointer to a function, followed by a pointer to the parameter of that function. That's a work item, okay?
+
+1209
+02:01:34.530 --> 02:01:37.530
+Omar Mansour: Two entries, two pointers inside a work item.
+
+1210
+02:01:37.720 --> 02:01:43.710
+Omar Mansour: And it's being enqueued into the queue, so the thread looks at the head of the queue.
+
+1211
+02:01:44.660 --> 02:01:49.569
+Omar Mansour: He views the entry at the head, executes the function using its pointer.
+
+1212
+02:01:49.990 --> 02:02:01.009
+Omar Mansour: We know that, we've done the C review, we know how to execute a function, or invoke a function using a pointer. We do know that. If you don't, please go back to the review lecture of C program, okay?
+
+1213
+02:02:03.990 --> 02:02:05.319
+Omar Mansour: And that's how it works.
+
+1214
+02:02:05.450 --> 02:02:08.439
+Omar Mansour: Now, here's the deal. The threat never exits.
+
+1215
+02:02:08.990 --> 02:02:13.569
+Omar Mansour: So at the beginning, the runtime library, before even invoking the main routine.
+
+1216
+02:02:13.680 --> 02:02:16.740
+Omar Mansour: It's gonna start a thread pool, and the thread never exits.
+
+1217
+02:02:17.410 --> 02:02:22.370
+Omar Mansour: So, if I had 100 functions, it will execute 100 functions, and it will never exit.
+
+1218
+02:02:23.230 --> 02:02:34.049
+Omar Mansour: Alternatively, without threat pools, If I wanted to run 100 functions, I would have created 100 threads.
+
+1219
+02:02:34.220 --> 02:02:39.960
+Omar Mansour: or I would have created the thread 100 times. Every time I create the runner thread, it does something that exits.
+
+1220
+02:02:40.940 --> 02:02:51.600
+Omar Mansour: a second function. So let's say function 1. Then I create a thread for function 2, and then it exits. Then I create a thread for function 3, and then it exits. So I would have created the threads
+
+1221
+02:02:52.220 --> 02:02:54.209
+Omar Mansour: If I wanted to run a hybrid function.
+
+1222
+02:02:54.360 --> 02:03:01.829
+Omar Mansour: I would have created the threads for them 100 times, and believe it or not, creating a thread
+
+1223
+02:03:01.980 --> 02:03:05.229
+Omar Mansour: Then exiting a thread takes processing time.
+
+1224
+02:03:06.040 --> 02:03:17.209
+Omar Mansour: It does take processing time. It's a system call, and the kernel has to create a thread, so it has to create an object, a thread control block, has to put an entry with the scheduler.
+
+1225
+02:03:17.570 --> 02:03:22.730
+Omar Mansour: And the thread is going to have a state. All of these take time, processing time.
+
+1226
+02:03:24.350 --> 02:03:26.769
+Omar Mansour: So, it is a lot more efficient
+
+1227
+02:03:27.980 --> 02:03:29.949
+Omar Mansour: To create the thread only once.
+
+1228
+02:03:30.460 --> 02:03:36.710
+Omar Mansour: And have the thread… process, A lot of work.
+
+1229
+02:03:37.710 --> 02:03:42.500
+Omar Mansour: And every Work item is really a function that the user has written.
+
+1230
+02:03:44.200 --> 02:03:52.859
+Omar Mansour: In your program, you create a function, and you pass a pointer to that function and the parameter that you wish to pass to that function, and the thread pool would execute it at some point.
+
+1231
+02:03:53.040 --> 02:03:58.540
+Omar Mansour: And, possibly, In parallel as well, so you can also achieve the speedom.
+
+1232
+02:04:00.930 --> 02:04:03.369
+Omar Mansour: So the advantages? Faster.
+
+1233
+02:04:04.310 --> 02:04:09.939
+Omar Mansour: To create at the beginning and never exit, instead of creating a thread for every function that you wish to execute.
+
+1234
+02:04:11.000 --> 02:04:13.990
+Omar Mansour: You create the thread once, and then you push.
+
+1235
+02:04:14.600 --> 02:04:17.889
+Omar Mansour: Or you enqueue a work item into the thread.
+
+1236
+02:04:18.730 --> 02:04:21.699
+Omar Mansour: Also, separates the mechanics of creating threads.
+
+1237
+02:04:22.570 --> 02:04:28.350
+Omar Mansour: As an example we gave, mechanical engineers running Fortran, they want to use implicit threading.
+
+1238
+02:04:28.830 --> 02:04:42.420
+Omar Mansour: This all happens automatically. They don't want to be involved with creating threads, exiting threads, finding a thread function, passing a parameter to the threads, the parameter has to be a generic pointer, because, let me ask you this, what happens
+
+1239
+02:04:43.080 --> 02:04:48.230
+Omar Mansour: Let's take a look at this example. What happens if I want this function to take 5 parameters?
+
+1240
+02:04:49.850 --> 02:04:51.430
+Omar Mansour: I have no choice.
+
+1241
+02:04:52.410 --> 02:05:03.950
+Omar Mansour: But this particular prototype, the function, the thread function takes only one parameter that's a generic pointer. What happens if I want to pass it five things? Let's say I want to pass it 5 integers.
+
+1242
+02:05:04.180 --> 02:05:05.410
+Omar Mansour: How would I pass them?
+
+1243
+02:05:07.330 --> 02:05:08.920
+Omar Mansour: Put them all in the same string.
+
+1244
+02:05:09.460 --> 02:05:12.180
+Omar Mansour: A string, well, I want to pass 5 integers.
+
+1245
+02:05:12.940 --> 02:05:15.180
+Omar Mansour: Like, you could separate it by a space, right?
+
+1246
+02:05:15.330 --> 02:05:17.320
+Omar Mansour: Wait, what, sorry? This space?
+
+1247
+02:05:18.640 --> 02:05:22.290
+Omar Mansour: Well, I want to pass 5 actual integers, 5 integer variables.
+
+1248
+02:05:23.610 --> 02:05:27.309
+Omar Mansour: There must be an idea for passing 5 integer variables. What did you say?
+
+1249
+02:05:28.110 --> 02:05:32.890
+Omar Mansour: an integer array. Okay, so he wants to use an integer array, and what would I pass here?
+
+1250
+02:05:37.700 --> 02:05:43.350
+Omar Mansour: the address of that integer array, okay? And then the function can look at every entry of the array.
+
+1251
+02:05:43.540 --> 02:05:48.340
+Omar Mansour: Okay, what happens if I wish to pass two integers and two chars?
+
+1252
+02:05:48.960 --> 02:05:52.850
+Omar Mansour: how would I pass them through this narrow single pointer?
+
+1253
+02:05:53.600 --> 02:05:56.229
+Omar Mansour: I want to pass two integers and 2 charts, how would I pass them?
+
+1254
+02:05:57.920 --> 02:05:59.020
+Omar Mansour: Quite hurry.
+
+1255
+02:05:59.170 --> 02:06:00.949
+Omar Mansour: Couldn't hurt me.
+
+1256
+02:06:01.940 --> 02:06:06.259
+Omar Mansour: I can use a pointer array, okay? I can do that, or I can use a struct.
+
+1257
+02:06:07.190 --> 02:06:15.049
+Omar Mansour: So I would have to create a struct that contains two integers and two chores, and I pass the address of that struct, or I can create a pointer array.
+
+1258
+02:06:15.610 --> 02:06:18.239
+Omar Mansour: And pass the address of that pointer array.
+
+1259
+02:06:19.710 --> 02:06:26.100
+Omar Mansour: More difficulty. Again, mechanical engineers do not want to deal with this type of difficulty.
+
+1260
+02:06:26.420 --> 02:06:36.379
+Omar Mansour: They don't want to. So for them, they use implicit threading. We create the implicit threading to separate mechanics of creating the threads.
+
+1261
+02:06:37.310 --> 02:06:40.229
+Omar Mansour: But we still want to give them the ability for speed up.
+
+1262
+02:06:41.430 --> 02:06:43.449
+Omar Mansour: All they have to do is to provide.
+
+1263
+02:06:43.610 --> 02:06:44.660
+Omar Mansour: the functions.
+
+1264
+02:06:44.960 --> 02:06:48.420
+Omar Mansour: And we run it for them in parallel, using thread pools.
+
+1265
+02:06:48.680 --> 02:06:50.930
+Omar Mansour: And those functions could be one-shot.
+
+1266
+02:06:51.100 --> 02:06:52.889
+Omar Mansour: Meaning a function that runs once?
+
+1267
+02:06:53.130 --> 02:07:00.450
+Omar Mansour: Or, it could actually be functions that run periodically. For example, I can tell, you know, we can have a function that runs every second.
+
+1268
+02:07:00.750 --> 02:07:04.799
+Omar Mansour: Maybe every 2 seconds, and so on, like a file save function.
+
+1269
+02:07:05.330 --> 02:07:06.799
+Omar Mansour: maybe I can feed it.
+
+1270
+02:07:07.590 --> 02:07:15.450
+Omar Mansour: A file save function into, for example, one of these threads in the thread pools that can run it every so many milliseconds.
+
+1271
+02:07:17.150 --> 02:07:18.300
+Omar Mansour: Very good.
+
+1272
+02:07:18.800 --> 02:07:26.380
+Omar Mansour: I'm actually going to ditch this particular slide, I'm going to remove it, I'm going to delete it, this is not going to be part of our discussion, it's a waste of time.
+
+1273
+02:07:27.100 --> 02:07:44.050
+Omar Mansour: I'm going to talk about Grand Social Dispatch, which is an implementation of ThreadPools. It's an Apple technology. It's, apple has a bad tendency to modify standard languages, like C. They have an unlikely tendency to modify C, like Objective-C.
+
+1274
+02:07:44.750 --> 02:07:45.799
+Omar Mansour: You know.
+
+1275
+02:07:46.150 --> 02:07:50.579
+Omar Mansour: Google has that ugly tendency, again, like Kotlin and this and that.
+
+1276
+02:07:50.860 --> 02:07:54.240
+Omar Mansour: I personally prefer standardized languages.
+
+1277
+02:07:55.560 --> 02:07:56.630
+Omar Mansour: Here we go.
+
+1278
+02:07:56.820 --> 02:08:03.460
+Omar Mansour: So, Apple, Dictates that you create a block like this, with this hat symbol.
+
+1279
+02:08:03.820 --> 02:08:11.620
+Omar Mansour: Followed by an opening curly brace and a closing curly brace, and in them, you're gonna be putting code that's gonna be fed into a thread pool.
+
+1280
+02:08:12.140 --> 02:08:17.469
+Omar Mansour: It's gonna be dispatched, that's why it's called Grand Central Dispatch. What a good name.
+
+1281
+02:08:18.340 --> 02:08:23.640
+Omar Mansour: And it provides extensions to see, again, extensions. That's an ugly thing, in my opinion.
+
+1282
+02:08:24.250 --> 02:08:26.329
+Omar Mansour: Stick to the standard language, but anyways.
+
+1283
+02:08:28.340 --> 02:08:36.470
+Omar Mansour: And we provide, or we dispatch, a work item, like this?
+
+1284
+02:08:37.950 --> 02:08:43.709
+Omar Mansour: by putting this work item, And two curly braces preceded by a hat.
+
+1285
+02:08:44.100 --> 02:08:47.169
+Omar Mansour: So how does it work? How does… how do you do this? Well…
+
+1286
+02:08:47.680 --> 02:08:54.689
+Omar Mansour: The first thing you do is to realize that there are WorkQs that already exist in this Apple technology.
+
+1287
+02:08:54.820 --> 02:09:02.450
+Omar Mansour: Some of them are system-wide, others are for each process. Every process has a serial queue, meaning
+
+1288
+02:09:03.930 --> 02:09:10.700
+Omar Mansour: A queue that takes a work item, executes it, and only when it finishes executing it, then it can pick the next work item.
+
+1289
+02:09:11.830 --> 02:09:13.590
+Omar Mansour: So that's why it's called a serial queue.
+
+1290
+02:09:14.120 --> 02:09:25.759
+Omar Mansour: This is per process, so all you have to do is to get that queue using a system called… a library call, that is, a library to the Grand Central Dispatch Library. Dispatch, get main queue, you get it.
+
+1291
+02:09:25.890 --> 02:09:28.579
+Omar Mansour: And then you dispatch sync.
+
+1292
+02:09:29.670 --> 02:09:36.279
+Omar Mansour: take because every work item has to finish before the next work item can execute. So it is more or less synchronous.
+
+1293
+02:09:36.450 --> 02:09:44.590
+Omar Mansour: Using the QID that you've obtained earlier, then you can see this work item in this format that Apple dictates.
+
+1294
+02:09:45.160 --> 02:09:51.519
+Omar Mansour: Alternatively, You can use… you can have concurrent execution as opposed to serial execution.
+
+1295
+02:09:51.980 --> 02:10:05.809
+Omar Mansour: Remember, we know the difference between concurrent versus serial, because we discussed Abdahl's Law. We already emphasized that some parts of your code are parallelizable. These are concurrent. Other parts of your code are serial.
+
+1296
+02:10:05.920 --> 02:10:08.420
+Omar Mansour: They are not paralyzable, they are serial.
+
+1297
+02:10:09.190 --> 02:10:12.869
+Omar Mansour: There's the fraction that we call S. We've discussed Abdull's Law.
+
+1298
+02:10:14.140 --> 02:10:18.659
+Omar Mansour: If your code has to run to be serial, your work items use disk queue.
+
+1299
+02:10:18.820 --> 02:10:21.819
+Omar Mansour: If they have to be concurrent to use the system-wide queues.
+
+1300
+02:10:21.960 --> 02:10:24.469
+Omar Mansour: High priority, low priority, and default.
+
+1301
+02:10:24.580 --> 02:10:26.040
+Omar Mansour: You get one of them.
+
+1302
+02:10:26.300 --> 02:10:29.199
+Omar Mansour: Whatever one that you like, and then you dispatch.
+
+1303
+02:10:29.380 --> 02:10:37.370
+Omar Mansour: a work item into them. Alternatively, this is what we are more interested in in this course, because our case study is Linux.
+
+1304
+02:10:37.640 --> 02:10:42.520
+Omar Mansour: and GNU compile, tools, so that's the one we're gonna be using.
+
+1305
+02:10:43.040 --> 02:10:45.360
+Omar Mansour: We're gonna use OpenMP.
+
+1306
+02:10:47.280 --> 02:10:50.429
+Omar Mansour: You have to include OpenMP.h, open P.H.
+
+1307
+02:10:51.090 --> 02:10:57.560
+Omar Mansour: And we're gonna be using Something that is called a pragma.
+
+1308
+02:10:58.120 --> 02:11:03.490
+Omar Mansour: a pragma in C or C++ means. Anytime you see a pragma, it means whatever
+
+1309
+02:11:03.830 --> 02:11:10.890
+Omar Mansour: is after the pragma, whatever comes after the fragment is very specific to one of the compilers.
+
+1310
+02:11:11.200 --> 02:11:18.229
+Omar Mansour: I mean, there's not a single C compiler, there is a GNUCNU compiler collection, GCC, that's a C compiler.
+
+1311
+02:11:19.150 --> 02:11:22.320
+Omar Mansour: there is Microsoft C Compiler.
+
+1312
+02:11:22.630 --> 02:11:30.099
+Omar Mansour: There is Clang C compiler. There are many C compilers. They all follow the C standard language, of course.
+
+1313
+02:11:30.640 --> 02:11:34.790
+Omar Mansour: But there are different implementations of the C compiler. There are many, many implementations.
+
+1314
+02:11:34.900 --> 02:11:45.149
+Omar Mansour: Pragma means only one of them is going to understand what comes next. So that means it's not standardized, it is really unique to every compiler implementation.
+
+1315
+02:11:45.780 --> 02:11:50.239
+Omar Mansour: So this is unique to GNU CC, GNU Compiler Collection.
+
+1316
+02:11:51.570 --> 02:12:02.799
+Omar Mansour: OMP standard, and… sorry, OMP parallel is the information we give to the compiler, and you have to have this information prior to any block that is
+
+1317
+02:12:03.270 --> 02:12:10.499
+Omar Mansour: parallelizable. This is the 1 minus S in Abdall's law. Remember this… well, I erased it.
+
+1318
+02:12:11.080 --> 02:12:12.359
+Omar Mansour: this array.
+
+1319
+02:12:12.860 --> 02:12:15.109
+Omar Mansour: The two vectors that we were adding.
+
+1320
+02:12:16.850 --> 02:12:19.869
+Omar Mansour: So anytime you have code that is parallelizable.
+
+1321
+02:12:20.090 --> 02:12:23.360
+Omar Mansour: You go, you go ahead and do pragma OF P parallel.
+
+1322
+02:12:23.520 --> 02:12:29.090
+Omar Mansour: And then you have an opening curly brace and a closing curly brace that is standard C stuff. All of that is standard C.
+
+1323
+02:12:29.660 --> 02:12:33.430
+Omar Mansour: So it's completely fine. And, whoa, here's what's important.
+
+1324
+02:12:33.680 --> 02:12:37.170
+Omar Mansour: This… can be used with Fortrend.
+
+1325
+02:12:37.300 --> 02:12:48.370
+Omar Mansour: That's very important. Why is that? Our fellow aerospace engineers, they only use Fortran, so you might have to develop an OpenMP maybe for a different operating system.
+
+1326
+02:12:48.490 --> 02:12:56.060
+Omar Mansour: Maybe for an Android system, but nobody would do, speed up an Android, but let's say, you know, maybe a supercomputer that someone is developing.
+
+1327
+02:12:56.920 --> 02:13:06.689
+Omar Mansour: Maybe you wish someone would hire you to actually take the OpenMP library and port it to some system, that OpenAI is developing, for example, or what have you.
+
+1328
+02:13:08.170 --> 02:13:12.279
+Omar Mansour: So, really, Every time you had
+
+1329
+02:13:12.700 --> 02:13:20.480
+Omar Mansour: You have a portion of your program that is parallelizable, means that's allowed to run in parallel. You close it.
+
+1330
+02:13:20.670 --> 02:13:23.920
+Omar Mansour: with an open… with an OMP parallel directive.
+
+1331
+02:13:25.390 --> 02:13:29.169
+Omar Mansour: Here's an example. This is exactly the vector addition we're talking about.
+
+1332
+02:13:29.280 --> 02:13:33.970
+Omar Mansour: If I have Pragma OpenMP here, this means this loop
+
+1333
+02:13:34.120 --> 02:13:38.680
+Omar Mansour: Can have iterations, and every iteration can run in parallel with every other iteration.
+
+1334
+02:13:39.470 --> 02:13:43.679
+Omar Mansour: Okay, so what happens if you take a loop like that one.
+
+1335
+02:13:48.410 --> 02:13:50.949
+Omar Mansour: And declare it with OpenMP parallel.
+
+1336
+02:13:51.860 --> 02:13:53.200
+Omar Mansour: It would be parallel.
+
+1337
+02:13:54.220 --> 02:13:55.459
+Omar Mansour: It is a little peer.
+
+1338
+02:13:56.640 --> 02:13:58.399
+Omar Mansour: It may be paralyzed.
+
+1339
+02:13:59.090 --> 02:14:00.689
+Omar Mansour: But it's gonna be problematic.
+
+1340
+02:14:01.000 --> 02:14:03.779
+Omar Mansour: This loop cannot be paralyzed.
+
+1341
+02:14:03.960 --> 02:14:13.719
+Omar Mansour: Why? Every iteration depends on the result from the prior iteration. See this? Plus equal, meaning sum is equal to sum plus I.
+
+1342
+02:14:14.000 --> 02:14:18.919
+Omar Mansour: the prior sum, that is, some from the prior iteration. If every iteration
+
+1343
+02:14:19.140 --> 02:14:23.390
+Omar Mansour: Depends on the prior iteration that this is data dependency.
+
+1344
+02:14:24.110 --> 02:14:30.970
+Omar Mansour: This means this code is not parallelizable. It has to run sequentially. One iteration computes a result.
+
+1345
+02:14:31.360 --> 02:14:38.090
+Omar Mansour: used in the next iteration. That's a… that's a recursive formula, if you will, or, like, an iterative formula.
+
+1346
+02:14:38.390 --> 02:14:47.629
+Omar Mansour: used for the next iteration, and the third iteration uses the result from the second. The fourth iteration uses the result from the third. I can call it a recursive formula.
+
+1347
+02:14:48.520 --> 02:14:54.210
+Omar Mansour: And it cannot be parallelized. If you always need the prior result, then it's not parallelizable.
+
+1348
+02:14:54.430 --> 02:15:02.350
+Omar Mansour: it would be wrong to declare a loop like this to be parallelizable. So, it is your job, so that puts a burden on you a little bit.
+
+1349
+02:15:03.160 --> 02:15:17.949
+Omar Mansour: If you wish to take advantage, not to implement, but actually to use OpenMP, you have to figure out which part of your code is parallelizable. If you see that it is parallelizable, then you use Pragma or OpenMP parallel, and then you start a code block.
+
+1350
+02:15:19.140 --> 02:15:21.080
+Omar Mansour: And of course, as always.
+
+1351
+02:15:21.520 --> 02:15:29.400
+Omar Mansour: It starts with… you can set the number of threads manually, but typically, it is actually set to the number of CPU cores that you have in your system.
+
+1352
+02:15:30.000 --> 02:15:36.930
+Omar Mansour: How do you do it? Actually, every one of you has GCC version 4.6 or above. You're 5-something.
+
+1353
+02:15:37.280 --> 02:15:39.859
+Omar Mansour: Which version do you have? 5.4? 7.
+
+1354
+02:15:39.970 --> 02:15:43.880
+Omar Mansour: 7.6 minus 5.4, okay. 7.6.
+
+1355
+02:15:44.350 --> 02:15:50.720
+Omar Mansour: Way above. You have OpenMP. All you have to do, if you want to take advantage of that, use the dash F, OpenMP.
+
+1356
+02:15:51.870 --> 02:15:56.060
+Omar Mansour: HF, OpenMP, and then start using that business, and try it out.
+
+1357
+02:15:56.980 --> 02:16:02.279
+Omar Mansour: Okay, threading issues. We have 5 minutes to finish this. What are the threading issues that we have here?
+
+1358
+02:16:03.990 --> 02:16:06.860
+Omar Mansour: The first issue I want to talk about is fork.
+
+1359
+02:16:07.860 --> 02:16:09.729
+Omar Mansour: What is the problem with fork?
+
+1360
+02:16:10.160 --> 02:16:17.489
+Omar Mansour: well, with multiple threads, fork may be problematic. We have used fork before, but we had a single-threaded process.
+
+1361
+02:16:17.670 --> 02:16:20.320
+Omar Mansour: What happens if I had a process with 10 friends?
+
+1362
+02:16:20.600 --> 02:16:25.170
+Omar Mansour: When I fork, I create a child process. Would it also have 10 threads?
+
+1363
+02:16:27.720 --> 02:16:38.740
+Omar Mansour: Huh? No. If I just invoke fork, so clearly, if I invoke it, it has to be from one of the threads. Let's say one of the threads invokes fork.
+
+1364
+02:16:40.070 --> 02:16:50.619
+Omar Mansour: Let's say… let's say the second thread involves four. So then that's specific… specific grade, or… Create the child.
+
+1365
+02:16:51.730 --> 02:16:56.949
+Omar Mansour: A child process, though? Does the child process have 10 threads or 1 thread?
+
+1366
+02:16:57.950 --> 02:16:58.660
+Omar Mansour: What?
+
+1367
+02:16:59.240 --> 02:17:01.250
+Omar Mansour: It's only the one that you're forking.
+
+1368
+02:17:01.650 --> 02:17:06.449
+Omar Mansour: I don't know, but I'm forking, I'm creating a child… I'm creating a child process.
+
+1369
+02:17:06.719 --> 02:17:14.699
+Omar Mansour: So the parent process has 10 threads, I'm creating a very different process, it's a child process. So it is confusing, and there are disagreements.
+
+1370
+02:17:14.950 --> 02:17:21.349
+Omar Mansour: And different systems actually implemented differently. Gladly for us, I can tell you what Linux does. Linux…
+
+1371
+02:17:22.190 --> 02:17:27.840
+Omar Mansour: If a parent process had 10 threads, and then you fork a child, the child has 1 thread.
+
+1372
+02:17:28.010 --> 02:17:33.080
+Omar Mansour: That is exactly as what she suggested. It is the same thread that invoked the fork.
+
+1373
+02:17:33.200 --> 02:17:41.199
+Omar Mansour: But that is not in every Unix variant. Different Unix variants implemented differently. So bottom line, avoid, if you can.
+
+1374
+02:17:41.650 --> 02:17:46.349
+Omar Mansour: for portability, and that's actually not uncommon at all. Avoid…
+
+1375
+02:17:46.650 --> 02:17:49.660
+Omar Mansour: Forking if you have a multi-threaded process.
+
+1376
+02:17:49.830 --> 02:17:55.039
+Omar Mansour: not the greatest of ideas. May work differently for different Unix-like systems.
+
+1377
+02:17:55.440 --> 02:17:59.490
+Omar Mansour: It is not standardized. Exact. No issue there. Exec?
+
+1378
+02:17:59.959 --> 02:18:01.989
+Omar Mansour: If one of the 10 threads
+
+1379
+02:18:03.540 --> 02:18:07.479
+Omar Mansour: evokes the exact system call. What does exact do? Who remembers?
+
+1380
+02:18:09.330 --> 02:18:10.819
+Omar Mansour: What does Exec do?
+
+1381
+02:18:11.980 --> 02:18:13.969
+Omar Mansour: It changes the executable.
+
+1382
+02:18:15.280 --> 02:18:16.680
+Omar Mansour: a process…
+
+1383
+02:18:16.940 --> 02:18:23.590
+Omar Mansour: at any point of time may change the executable that is actually running. The executable is a passive entity.
+
+1384
+02:18:24.059 --> 02:18:25.780
+Omar Mansour: It's in secondary storage.
+
+1385
+02:18:26.219 --> 02:18:28.790
+Omar Mansour: The executable gets loaded into main memory.
+
+1386
+02:18:29.440 --> 02:18:37.900
+Omar Mansour: And then the process can start running that executable. A process actually can change its own executable. We have done before… we've done that before in an example.
+
+1387
+02:18:39.850 --> 02:18:40.809
+Omar Mansour: Okay.
+
+1388
+02:18:41.780 --> 02:18:50.730
+Omar Mansour: So what happens if I had a 10 threader process, one of the threads issues the exec system call. That means everything, all 10 threads are removed.
+
+1389
+02:18:52.230 --> 02:19:01.890
+Omar Mansour: And now we have a brand new, single-threaded process that is running that particular executable, whose path is given as a parameter in the exec system.
+
+1390
+02:19:04.780 --> 02:19:08.340
+Omar Mansour: I'm gonna come back to this, but let me talk about threat cancellation.
+
+1391
+02:19:08.930 --> 02:19:10.619
+Omar Mansour: What is a threat cancellation?
+
+1392
+02:19:10.969 --> 02:19:15.229
+Omar Mansour: Well, I can create a thread, the thread itself can exit.
+
+1393
+02:19:16.270 --> 02:19:27.460
+Omar Mansour: But I can actually, from a different thread, cancel another thread. So one thread can cancel another thread. That is the target thread. How does it do it? Well, using a cancel.
+
+1394
+02:19:29.719 --> 02:19:31.350
+Omar Mansour: So the question is…
+
+1395
+02:19:31.469 --> 02:19:36.539
+Omar Mansour: Using a Pthread cancel. You just have to give the thread ID. If you know the thread ID, then you can cancel it.
+
+1396
+02:19:37.070 --> 02:19:40.660
+Omar Mansour: The question is, the threat that is the target of cancellation.
+
+1397
+02:19:42.129 --> 02:19:49.849
+Omar Mansour: It may be in the middle of doing something. Maybe it's modifying a record in a database, a record of many fields.
+
+1398
+02:19:50.360 --> 02:19:55.019
+Omar Mansour: You know, maybe it's accessing an account that has a field that is the name.
+
+1399
+02:19:55.480 --> 02:20:02.610
+Omar Mansour: Another field that is the salary, another field that is the student ID, whatever, graduate student ID, if, like, a student assistant.
+
+1400
+02:20:03.070 --> 02:20:15.519
+Omar Mansour: Maybe, you know, maybe it's in the middle of modifying the record that modified one or two fields, it didn't get a chance to modify the rest of the fields, so now the record is inconsistent, and all of a sudden, the thread has been canceled.
+
+1401
+02:20:17.820 --> 02:20:22.390
+Omar Mansour: Not a good thing. Now we have data inconsistency, we have problems.
+
+1402
+02:20:22.870 --> 02:20:28.389
+Omar Mansour: So, there's a way to avoid that by giving a thread a chance to clean up.
+
+1403
+02:20:28.980 --> 02:20:30.240
+Omar Mansour: Before it gets canceled.
+
+1404
+02:20:31.170 --> 02:20:33.910
+Omar Mansour: And we're gonna do that using…
+
+1405
+02:20:34.920 --> 02:20:38.379
+Omar Mansour: a mode that is called deferred cancellation.
+
+1406
+02:20:39.650 --> 02:20:49.690
+Omar Mansour: So, for any thread, we can change, and this is part of the attributes. Remember, I promised. I promised to tell you some of the attributes of the threads. One of the attributes, remember the attributes object?
+
+1407
+02:20:49.970 --> 02:20:52.770
+Omar Mansour: When you create a thread, you have to provide an attributes object?
+
+1408
+02:20:53.160 --> 02:21:01.349
+Omar Mansour: Some of the attributes are how that thread can be canceled. Now, how do we cancel the thread? Well, we can disable cancellation, meaning
+
+1409
+02:21:01.520 --> 02:21:12.530
+Omar Mansour: If one thread issues a cancel, it's completely ignored. I can disable cancellation, okay? So a thread cannot be… may select, or may choose, at the creation.
+
+1410
+02:21:13.310 --> 02:21:14.840
+Omar Mansour: Not to be ever canceled.
+
+1411
+02:21:16.000 --> 02:21:20.910
+Omar Mansour: at creation. Also, a thread can change its cancellation type.
+
+1412
+02:21:21.420 --> 02:21:23.769
+Omar Mansour: As well as its cancellation state.
+
+1413
+02:21:24.180 --> 02:21:34.309
+Omar Mansour: after it started running. It can actually invoke Bread set cancellation type to be deferred or asynchronous. It can set its cancellation state to be disabled.
+
+1414
+02:21:34.500 --> 02:21:37.230
+Omar Mansour: If it wants to disable anywhere from canceling it.
+
+1415
+02:21:37.480 --> 02:21:51.550
+Omar Mansour: Deferred is the preferred approach, it's the default setting. A thread is always deferred, meaning it will have… it will get a chance to clean up before it exits. So it will only exit when it gets to something that's called a cancellation point.
+
+1416
+02:21:52.370 --> 02:21:56.610
+Omar Mansour: So a thread can create some cancellation points.
+
+1417
+02:21:57.280 --> 02:22:15.380
+Omar Mansour: Every time a thread calls, Pthread test cancel, that means it can be canceled right when it does this call. So that's a cancellation point. Alternatively, every time you do a Pthread join, that's a cancellation point. Every time you do sig weight, Pthread condition wait, condition means it's an event. Gonna study that later, next lecture.
+
+1418
+02:22:15.700 --> 02:22:18.050
+Omar Mansour: Any of these are cancellation points.
+
+1419
+02:22:18.150 --> 02:22:29.979
+Omar Mansour: So, whenever your thread does any of these functions or library calls, that means it may be canceled then. So you cannot do these until you have consistency in your data.
+
+1420
+02:22:30.240 --> 02:22:36.320
+Omar Mansour: Like a record, for example, until all the fields are consistent, then maybe you can check if you're gonna be hints.
+
+1421
+02:22:39.700 --> 02:22:48.660
+Omar Mansour: Another issue, so now we've studied two issues. Forking in multi-threaded systems, and the fact that it's not standardized.
+
+1422
+02:22:48.850 --> 02:23:01.820
+Omar Mansour: We've started thread cancellation and the fact that it can really mess up your data, but you can avoid it by the thread attributes being deferred cancellation and cancellation points. Now, the third issue is, in many cases.
+
+1423
+02:23:02.510 --> 02:23:06.560
+Omar Mansour: You can have global variables shared between all the threads.
+
+1424
+02:23:06.780 --> 02:23:12.229
+Omar Mansour: Such as global variable i. However, in many cases, it is desirable
+
+1425
+02:23:13.020 --> 02:23:21.739
+Omar Mansour: to not have them as shared. You want to have the same exact global variable, the same exact global variable name, that you want for each thread to have its own
+
+1426
+02:23:22.310 --> 02:23:25.240
+Omar Mansour: Very separate instance of that mobile variable.
+
+1427
+02:23:25.350 --> 02:23:29.970
+Omar Mansour: If this is desired, We'll have to use double underscore thread.
+
+1428
+02:23:30.120 --> 02:23:37.149
+Omar Mansour: keyword prior to declaring a global variable. A global variable is a variable declared outside of any function, as we have
+
+1429
+02:23:37.390 --> 02:23:38.910
+Omar Mansour: repeatedly emphasized.
+
+1430
+02:23:40.280 --> 02:23:52.089
+Omar Mansour: This might be actually very useful, because in many cases, a thread function might make a call, and then a nested call, and then a nested call, and sometimes you wish to pass information using a global variable.
+
+1431
+02:23:52.140 --> 02:24:10.079
+Omar Mansour: or the nested calls of the threads would like to use a global variable that is not shared with other threads. So this kind of removes the sharing of global variables only for the variable i, and sometimes it is kind of desired. Finally, I want to talk about signals.
+
+1432
+02:24:10.260 --> 02:24:16.529
+Omar Mansour: Signals are two processes the same as interrupts are to CPUs.
+
+1433
+02:24:16.790 --> 02:24:20.989
+Omar Mansour: Or the same, you know, so every time… Every process.
+
+1434
+02:24:22.120 --> 02:24:24.659
+Omar Mansour: Typically has its main thread executing.
+
+1435
+02:24:25.600 --> 02:24:31.780
+Omar Mansour: But also, it may receive a signal from another process, or actually from the kernel.
+
+1436
+02:24:32.810 --> 02:24:41.080
+Omar Mansour: So every process can send a signal to another process. The way you send a signal to another process is the kill system call.
+
+1437
+02:24:41.600 --> 02:24:46.880
+Omar Mansour: You have to specify the target process, and you have to give an integer that is the signal itself.
+
+1438
+02:24:47.590 --> 02:24:48.400
+Omar Mansour: Okay?
+
+1439
+02:24:49.210 --> 02:24:54.100
+Omar Mansour: Signals, Could be a sig abort, that is the value of the integer.
+
+1440
+02:24:54.740 --> 02:24:57.650
+Omar Mansour: It could be a CAIC, terminate.
+
+1441
+02:24:58.600 --> 02:24:59.800
+Omar Mansour: It could be.
+
+1442
+02:25:00.090 --> 02:25:01.590
+Omar Mansour: user-defined.
+
+1443
+02:25:01.700 --> 02:25:04.869
+Omar Mansour: You set the particular integer that is user-defined.
+
+1444
+02:25:05.030 --> 02:25:13.889
+Omar Mansour: to a particular target process. So immediately, this is a form of inter-process communications. One process can send a signal to another process.
+
+1445
+02:25:14.150 --> 02:25:16.659
+Omar Mansour: And it can send a value as well.
+
+1446
+02:25:17.330 --> 02:25:18.980
+Omar Mansour: And that's a form of…
+
+1447
+02:25:20.200 --> 02:25:27.740
+Omar Mansour: direct message passing. It's a form of direct communication. Why is it direct? Because I'm sending something
+
+1448
+02:25:28.060 --> 02:25:33.339
+Omar Mansour: directly to a process ID. I'm not sending to a mailbox, also known as a port.
+
+1449
+02:25:33.840 --> 02:25:37.009
+Omar Mansour: No, I'm sending directly to a process ID.
+
+1450
+02:25:38.620 --> 02:25:47.829
+Omar Mansour: And of course, we know the downsides of direct message passing. But in all cases, that's how signals work in a Unix-like system.
+
+1451
+02:25:48.020 --> 02:25:51.860
+Omar Mansour: a signal handler, is then involved.
+
+1452
+02:25:52.240 --> 02:25:55.520
+Omar Mansour: So, if I have only a single threaded process.
+
+1453
+02:25:57.910 --> 02:26:00.800
+Omar Mansour: Let's say, actually, even multi-threaded processing.
+
+1454
+02:26:01.310 --> 02:26:09.040
+Omar Mansour: let's say thread A is executing, and all of a sudden, a signal appears, Thread A pauses executing.
+
+1455
+02:26:09.990 --> 02:26:14.049
+Omar Mansour: The handler starts executing, and only when the handler returns.
+
+1456
+02:26:14.600 --> 02:26:18.229
+Omar Mansour: that the threat can resume. So the signal handler is…
+
+1457
+02:26:18.520 --> 02:26:25.439
+Omar Mansour: kind of like an interrupt service routine. The moment we receive a signal, the thread that was running, the thread that is receiving the signal.
+
+1458
+02:26:26.190 --> 02:26:27.669
+Omar Mansour: It's gonna be paused.
+
+1459
+02:26:29.530 --> 02:26:32.369
+Omar Mansour: What is going to be executed is the signal handler.
+
+1460
+02:26:32.740 --> 02:26:37.610
+Omar Mansour: And then after the signal handler returns, then the thread resumes.
+
+1461
+02:26:38.710 --> 02:26:46.269
+Omar Mansour: Okay? It's kind of similar to an interrupt service routine to the CPU. A signal is the same concept to a process.
+
+1462
+02:26:47.040 --> 02:26:57.739
+Omar Mansour: But with Bonsai Threaded, if a signal appears, which thread is going to receive that signal? That is the difficulty. I have 10 threads of my process. Well, the first thing is, we know how to send a signal.
+
+1463
+02:26:58.210 --> 02:26:59.550
+Omar Mansour: We can also…
+
+1464
+02:26:59.780 --> 02:27:10.290
+Omar Mansour: declare a signal handler. You declare a signal handler during the signal system call for a particular value, for a particular signal number, then you have a function pointer that is the handler.
+
+1465
+02:27:10.450 --> 02:27:18.539
+Omar Mansour: For a single threaded, no issue. Multi-threaded, I have multiple threads. Which one of them It's gonna pause.
+
+1466
+02:27:18.760 --> 02:27:22.450
+Omar Mansour: and execute the signal handler. I'm sure you say thread A.
+
+1467
+02:27:22.710 --> 02:27:31.440
+Omar Mansour: But that's actually problematic, and it is actually… could be system-dependent, but I tell you what Linux does. Why? Because maybe the system can randomly
+
+1468
+02:27:31.830 --> 02:27:38.209
+Omar Mansour: take one of the threads and have it execute the signal handler. Maybe all of them execute the signal handlers.
+
+1469
+02:27:38.790 --> 02:27:40.000
+Omar Mansour: Or maybe some of them.
+
+1470
+02:27:40.170 --> 02:27:51.390
+Omar Mansour: In Linux, only one thread executes the signal handler. It is actually the first thread that accepts that particular signal. So, that's another thing of the thread attributes.
+
+1471
+02:27:51.650 --> 02:27:53.500
+Omar Mansour: You have to have a mask.
+
+1472
+02:27:53.670 --> 02:27:57.300
+Omar Mansour: That specifies which signals can the thread accept.
+
+1473
+02:27:58.080 --> 02:27:58.920
+Omar Mansour: Okay?
+
+1474
+02:27:59.160 --> 02:28:12.060
+Omar Mansour: So, the Linux kernel looks for the threads of the process, it finds… it delivers the signal only to one of them. The first one that does accept the signal is going to execute the signal head.
+
+1475
+02:28:13.370 --> 02:28:14.200
+Omar Mansour: Okay?
+
+1476
+02:28:15.380 --> 02:28:19.190
+Omar Mansour: Alternatively, You can actually send…
+
+1477
+02:28:19.330 --> 02:28:26.820
+Omar Mansour: a signal to one particular thread. How do you do it? Using pthread underscore kill, and instead of intending.
+
+1478
+02:28:26.940 --> 02:28:35.049
+Omar Mansour: to a process ID, instead of sending to the entire process that has multiple threads, I'm going to actually send it to a particular thread within the process.
+
+1479
+02:28:36.810 --> 02:28:39.360
+Omar Mansour: And of course, I'm going to send a particular signal number.
+
+1480
+02:28:39.840 --> 02:28:50.790
+Omar Mansour: So this concludes our discussion of today. Everything we talked about today is going to be in the midterm exam. If you have any questions, let me know. If you wish to have… if you feel like you have more than one question.
+
+1481
+02:28:51.320 --> 02:28:55.600
+Omar Mansour: that needs a Zoom meeting, email me, Tomorrow.
+
+1482
+02:28:56.280 --> 02:28:58.340
+Omar Mansour: And we can set up a session
+
+1483
+02:28:58.820 --> 02:29:05.499
+Omar Mansour: for Zoom, for the, you know, if I see, like, a few people are requesting that, we're gonna set up a Zoom session on Saturday or something.
+
+1484
+02:29:05.750 --> 02:29:07.649
+Omar Mansour: And handle questions and answers.
+
+1485
+02:29:07.970 --> 02:29:13.510
+Omar Mansour: Thank you so much, and I'll see you next week in the exam in this room at 6pm.
+
+1486
+02:29:13.680 --> 02:29:16.150
+Omar Mansour: Not for GANs. Okay, thank you so much.
+
+1487
+02:29:16.580 --> 02:29:19.110
+Omar Mansour: That's how… Okay.
+
+1488
+02:29:21.010 --> 02:29:24.049
+Omar Mansour: But, like, from the trip, it's like hell.
+
