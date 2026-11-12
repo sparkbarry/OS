@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <sys/socket.h>
 #define INIT_VALUE ('C' + 'Y' / 10.0)
 #define PORT 8123
