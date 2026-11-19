@@ -1,0 +1,305 @@
+CS-GY 6233 - Introduction to Operating Systems (I)
+Wed, Nov 4, 2026
+
+0:01 - Participant 1
+It's gonna get a chance to execute the test and set and then see that the lock is false, thus allowed, be allowed to exit this white loop and go into the critical section. Okay? So this guarantees mutual exclusion. The question is, is this a correct solution to the critical section problem? What did you say about a correct solution? It must have three elements. Let's examine them using the locking mechanism with an atomic instruction.
+
+ Do we achieve mutual exclusion? Let's think about it. Did we achieve mutual exclusion? What does mutual exclusion mean? Exclusive access to a critical section. Exclusive means one and only one. That's what exclusive means. Okay? Did we achieve exclusion? I think we did. Because atomically, the winner atomically sets the flag to true. Atomically means unbreakable. That's what atomic that's the importance of atomic.
+
+ Okay? We don't want to be having uh a hazard in the log variable itself. We don't want to be having a breakable structure in which five of them tested to be true and you know because of preemption. We don't want that, so it has to be an atomic operation for that reason. We don't want every thread of the ten so I've tested at the same time and then preempted, test, and then preempt, test, and then preempt without selling it.
+
+ Because then you'll all test the false and then you all set the true and they all think they're at the critical section. That's why it has to be atomic. Unbreakable. You test and set. Only one of them is going to see it as false.
+
+1:47 - Unidentified Speaker
+So mutual exclusion, because of the atomic.
+
+1:50 - Participant 1
+listen to the keyboard atomic test and set it has to be atomic all right this is going to guarantee mutual exclusion what about progress what does progress mean if the critical section is not used nobody's in the critical section someone has to be allowed in does this solution that we talked about does it produce progress imagine I have ten threads Are we guaranteed that if nobody is in the critical section, that someone is going to be able to go in?
+
+ I think we are. So that's progress. So we have the second element. Let's examine the third element. A bounded weight. A bounded weight, meaning no process should be started. Every process has to wait for a maximum amount of time. And the typical thing we say here, every process has to wait for no more than n minus one other processes to go in and out critical section. So if I have ten processes, no process should wait more than nine, for nine times for the nine other processes to get in.
+
+ Meaning a process should not be allowed to go in and out of the critical section without allowing anybody else in. Let's take a look. Is this achieved here? Can a process go into it out of its critical section and go back in immediately? Let's think about this for a few seconds. It's an important topic. Can a process be starved, being unable to go to a critical session? The answer is yes, a process may be starved.
+
+ Because I can have one process, maybe I can have actually nine processes being able to get out of a critical session and go back in. And the tenth process or the tenth friend really never getting a chance to go in because the scheduling is so kind of unforgiving for the tenth process. By the time it gets to execute or resumes to execute a swile loop, one of the other nine has gotten there already.
+
+ There's no guarantee that every process goes in once and then allows somebody else to go in. We don't guarantee that at all. All. So, unfortunately, this is not a proper solution because it doesn't meet the third requirement. The third requirement, the value weighting, is not guaranteed. I can have one process that goes in and out of its critical section without allowing the remaining nine. I can have five of them going in and out without the remaining five of the ten.
+
+ I can have seven going in and out.
+
+5:06 - Unidentified Speaker
+without allowing the remaining three.
+
+5:10 - Participant 1
+So how do we solve this? How do we assure ourselves? Maybe a good solution is maybe to assure ourselves that every process goes in the critical session, doesn't try to go back in right away. Maybe it needs to give a chance to the other nine processes to go in before it tries to go to the critical session a second time. Maybe I need to have some fairness. We don't want to be starving. We don't want to have one process going in and out and another process be starved, not allowed to go into a critical section.
+
+ That would not be a good solution. It would not be a proper solution. It's not going to work. So we have to allow other processes. We're going to present that solution. But before I do that, I want to tell you that other atomic instructions provided, not by LBCPU, this one is almost provided by LBCPU.
+
+6:02 - Participant 2
+Other atomic operations are fashion end, a leading assignment.
+
+6:06 - Participant 1
+We are not going to be able to spend the time for that.
+
+6:08 - Participant 2
+And then we have a compare and swap, a very similar, slightly more complex, still easy to read, so that still is a leading assignment.
+
+6:16 - Participant 1
+And then we can move on. To the solution, that guarantees a bounded weight. It guarantees mutual exclusion. It guarantees progress. Which is the second element, also guarantees a bounded weight, which is the third element of equal importance. And that solution typically is going to be implemented inside the kernel. All of that is be inside the kernel. And our job is to design the kernel and develop the kernel.
+
+ And also use the facilities provided by the kernel is the second job that we have to do in this course. So let's try to gain some understanding. And by the way, some of you are probably wondering, where is that? Where are the curves of margins? Why are I not having a second one? Well, rest assured you'll get a second one very soon, okay? It won't be, for some people, nightmarish. For others, it's gonna be offensive from how easy it is.
+
+ It depends, okay? Don't be offended if you find it to be easy. But I doubt that uh probably five or six of you are gonna find it to find it too easy. The remainder of the class is probably gonna be finding it too difficult. Okay, so uh let's take a look.
+
+7:33 - Unidentified Speaker
+What is a good solution?
+
+7:34 - Participant 1
+Well, we're gonna complicate things a little. Instead of just a log variable shared between all the threads, we're gonna add a flag called a waiting flag. And there's only one log variable for the ten threads. It doesn't have to be 10 threads. I mean we can have critical section between 20 threads.
+
+7:55 - Unidentified Speaker
+I'm just giving an example.
+
+7:56 - Unidentified Speaker
+Don't be stuck with that number.
+
+7:57 - Unidentified Speaker
+It's just a number for an example.
+
+8:01 - Unidentified Speaker
+I'm going to have waiting flags for each one of the threads.
+
+8:05 - Unidentified Speaker
+Every thread only it can look at the flag of any other threads, but it uses its own flag.
+
+8:13 - Participant 1
+And the log variable is common between all of them. This is how we lock the critical section. Using this voolum. So the way this works is we have an entry section in gray, an exit section in gray, and then we have the critical section. So if the critical section is locked up, we have to wait here. Locked up because it has to be accessed exclusively by one friend. This is a mutual exclusion. This is a very important stuff.
+
+ Stuff. So every thread that wants to go into a critical section, it's going have to declare its intent by asserting its waiting plan. So for thread I, this is the code for thread I, I have 10 threads thread 0 or processes, process 0, assuming every process. Oh, let me ask you a question on an added, just to make sure everyone is still alert. We're still early at night. I mean it's it's dark at very very early today.
+
+ It went dark at five, but we're still early though. It's only seven o'clock. I keep saying the single-threaded process. Let me ask you this. I can have a multi-threaded process, I can a single threaded process, can I have a process with no threads, a zero-threaded process? Is that possible? Of course not. You cannot. That doesn't make no sense. A process is at least at least single threaded, okay?
+
+ At least single threaded, but it could also be multi-threaded. It sounds trivial, but some people confuse that. Okay? A process starts as a single threaded process. Always. It starts as a single threaded, and then it may create more and more and more threads to become multi-threaded. Alright, so I have ten processes. Each one of them is single threaded. Ten single threaded processes. P0s will be nine.
+
+ I have ten of them. Ten processes, ten waiting flags. Process I asserts its waiting flag, meaning it sets it to truth. That's what asserts mean, okay? It sets it to truth. And then it's going to go to a spin block. It's a slightly more complex spin block. It's going to look at its own weighting flag that it just asserted, and it's going to do a logical end with the test and set on the lock. Again, the lock is initialized to false as always, meaning the section is not locked, as always.
+
+ And out of the ten processes, one of them is going to be successful in finding that the section was not locked. Because we have a raise condition, we have ten processes basing, one of them is going to execute its test and set first. Atomically, it says. Sets meaning true. Okay? When you set a variable, when you set a Boolean variable, setting meaning you make it true. Clearing meaning you make it false.
+
+ False is zero. Anything that is not zero is true. Please remember that. Alt is zero. Not zero is true. Including negative numbers. Okay. So the winner of this, meaning that we have racing, we have a race condition. Every process that gets in is execute the test and set. One of them succeeds in executing the test and set first. That is the winner. It's going to see a false. Returning back from the test.
+
+
+
+12:01 - Participant 2
+And as a side effect, atomically, the log variable becomes true. So every loser is going to see the test and set returning a true. So every loser would have set its own flag to true. What is true and true? True. So every loser is going to see a true for the combined conditions.
+
+12:23 - Participant 1
+Every loser. Is going to have a wild condition that is true, so every loser is going to be stuck in the wild loop. What about the winner? What does the test and set return for the winner? False. So the winner, what is anything ended with a false? It's false. Anything ended with a false is a false. So the moment the winner gets tests for a false, it's going to exit the while loop.
+
+12:50 - Unidentified Speaker
+You all agree?
+
+12:53 - Participant 1
+So the winner is now going to de-assert its flag and then it goes into the critical section. All of that is cool, but we haven't achieved, or we haven't discussed how does this result in bounded weight, meaning fair access to the critical section.
+
+13:15 - Participant 2
+You access the critical section once, the critical section once, and you let somebody else be able to access the critical section.
+
+13:22 - Participant 1
+That is the whole goal. So the way we achieve this is when a s when a process is done with the critical section, it's not going to go immediately and try to access the critical section again. It's going to instead do something else. And by the way, you can actually take this code and implement it in ten different processes. And you can run them and maybe you can report put a printf statement when we access the critical section saying hey I'm in a critical section and you will see that it does work.
+
+ So how does it happen? Well process I I'm going to use an example. Sometimes I say a picture is worth a thousand words. Now I'm going to say an example is worth a thousand words as well. I'm gonna say, let's say process five is the winner. I wanna put an it doesn't have to be always process five, it's just merely an example. Let's say process five is the winner. So I is five. Process five now is gonna execute this code when it tries to exit the critical section.
+
+ So this code, process number five, is gonna have a variable called JD. Which is the process number 5 plus 1 that is a 6 module 10 because I have total of 10 processes so then we say it's going to go through a while loop so it initially starts with at a equals 6 it's going to go through a while loop j is not equal to 5 because we are process 5 and we just said j is equal to 5 plus 1, so clear is not equal to I.
+
+ I'm explain to you why this is there. So we look at whether process 6 is waiting or not. If process 6 is waiting, then the waiting flag of process 6 is true. That means it is trying to go into a critical section. Then the not true would be a false. Then we exit the while loop and we say, okay, we're gonna de-assert the waiting flag for process 6 so we can control the waiting flag of other processes.
+
+ And at this point I'm gonna go further with a simulation example. We're gonna do a manual simulation actually to demonstrate how the code works. This is actually essential to explain the problem. So in this manual simulation, we start with 10 processes. The waiting flags are zeros at the beginning, and the lock is a zero, false, as we have already established. The lock has to be initialized to false.
+
+ And then, in this particular simulation example, we're going to assume that three processes of the ten, because not necessary that every process in the system is trying to go to the critical section at the same exact time.
+
+16:36 - Participant 2
+Let's now say three of the processes in the system are trying to access the critical section.
+
+16:43 - Participant 1
+And in this example I'm saying P3, P4 and P5 all of a sudden are now trying to access the critical section, trying to execute. So then they erase, that's what the first thing they do, they erase the rating flags. They are waiting to go into a critical section. And the lock is still zero. Now we have a race condition. I have three processes with attend racing to go inside that critical section. I'm going to scoop process five wins.
+
+ So what happens to the winner? The winner is going to test and set as false. And as a side effect, the lock would be set. It's gonna test false and set to one. The losers are gonna be testing true, so the losers are gonna be stuck in the while loop. The winner is gonna go through the next statement in which it sets its waiting flag to false. That is precisely what happened. P five is the winner, it sets its waiting flag to false to zero, and the lock is now one.
+
+ So now the critical section is locked. And P5 is the one that's going to go to the critical section. When P5 is done with the critical section, it goes to the critical section. Now it's done. It's going to set J to six and then it's going to go into a loop with multiple iterations. In the first iteration, J will be six. So we're going to be testing the way it's worked for process six. What weighting fact for process six?
+
+ Zero. Six is not requesting access. Six is not trying to go into the critical section. Only three processes. In this example, only three processes, P3, P4 and P5, are trying to go in. Six is not trying to go in. Are we gonna allow it to go to the critical section if it doesn't want to? No, that doesn't make sense. Six doesn't want to go into a critical section.
+
+18:47 - Participant 2
+Do we have to skip it? It.
+
+18:49 - Participant 2
+So in the first iteration, j is equal to 6.
+
+18:54 - Participant 1
+We skip process 6, we increment j. That is what this does. We increment j. So maybe it's a good point to stop at. Is this statement a part of the while loop or is it outside the while loop? If you think it is a part of the while loop, raise your hands. Okay, so everybody who did not raise your hand they think it's outside of the while loop. Why do you think it's outside the while loop? Yes? I understand it just now.
+
+ Huh? A sense of my loop just now. Okay, who else thinks it's outside the wild loop? Everybody finds a whole eye contact on the asset. Who thinks it's outside the while loop? Do you think it's outside of our loop?
+
+19:50 - Participant 2
+You think it's inside of our loop? Why?
+
+19:53 - Participant 1
+Or you have no opinion. No opinion.
+
+19:55 - Participant 1
+It's easy.
+
+19:57 - Participant 2
+Is it inside of Aloop?
+
+19:59 - Unidentified Speaker
+Why is it inside of our loop?
+
+20:05 - Participant 1
+Exactly, thank you so much. If it's a single line, I don't have to put the curly braces. The curly braces are there to make a code block if I need to have two or three or four or five lines statements inside the while loop.
+
+20:24 - Participant 2
+If I only have one statement that needs to be inside the loop, I don't need to put the curly braces.
+
+20:30 - Participant 1
+I don't need to remind you this is in C, C and in Java. Please remember. I don't have pairlog graces, which is completely fine. All it means is that there's only one statement that is inside the while loop. Okay? That is this statement here. If I want to have multiple statements inside the while loop, meaning multiple statements execute in every iteration, I need to have a pair of grace perform a block, a code block.
+
+ I need to have an only pair of grace. And a code in curly brace. Can I use curly braces if I have a single statement? Of course I can, why not? It might even make my code look more readable. But you guys are not really novice observers and you already know I don't need to use curly braces. It means there's only one statement in the while loop.
+
+21:30 - Participant 2
+With one statement I can use curly braces or not? I chose not to use them.
+
+21:36 - Participant 1
+Any questions about this? So this statement executes in every loop iteration.
+
+21:42 - Unidentified Speaker
+Meaning, if the waving flag is false, the inversion of that becomes true.
+
+21:48 - Unidentified Speaker
+So the loop condition is true, then we execute the iteration.
+
+21:53 - Unidentified Speaker
+That's how our loops work.
+
+21:55 - Unidentified Speaker
+What is in the iteration?
+
+21:57 - Unidentified Speaker
+We move from six into seven.
+
+22:02 - Participant 1
+So in the first iteration, j was six, all within inside the iteration is incrementiate, so it became seven. We look at process seven. Is process seven requesting? No, nobody else is requesting. So we move from seven in the four in the in the first iteration all the way until process nine in the fourth iteration. Process nine is not requesting. So here's the deal. We're not gonna look at process ten because process ten doesn't exist.
+
+ We're going to loop back and start looking at process zero. So we're going to increment the process number using modular arithmetic. If I have 10 processes and I reach the end, I go back to the beginning. So I'm going to be scanning forward all the way until the end, and because I'm using modular arithmetic after the increment, then I start again. In iteration number five. I'm going to start again from process zero.
+
+ Process zero is not requesting, so I increment.
+
+23:07 - Participant 2
+Process one is not requesting, so I increment. Process two not requests, I increment. Oh, process three is requesting.
+
+23:14 - Participant 1
+So in the eighth iteration, process three is requesting. So the waiting flag for process three is one. So the waiting flag is true, I invert that, it becomes a false. Anything added with a false is a false. So now the loop condition is false, so I have to exit the while loop without executing the iteration, without executing this single statement, okay? So only if a process is waiting, meaning it wants to go to a critical section, waiting on the critical section, only then that the while loop will have a false condition, and then I can proceed.
+
+ So for process 3, We can now proceed. So, what does this mean? The moral picture, the higher-level picture, is that when Process 5 finishes, it's going to be scanning, scanning, until it finds a process that is requesting access to our critical section. Only then, that it's going to give that process access. How does it do it?
+
+24:17 - Unidentified Speaker
+It does it.
+
+24:21 - Participant 1
+by setting its waiting flag to false. So a process that is waiting here, the test has set already is determined a true. So if this flag is negated, then that process can exit the while loop and go into a direct section. So this means the while loop, the entry, the while loop in the entry section, in the waiting process, process number three, we deassert this one false. The process that free now can go into a critical section, then execute and it does the same thing when it's done.
+
+ So this guarantees that every process when it's done, it stands forward, trying to find a process that is waiting to go in and then allows it in before it even tries to go back in again. So process five will not try and try go back in again until it allows process number three. And the process number three, when it's done, it's going to allow process number four. And then process number five will be able to access the critical section again.
+
+ So this guarantees all three elements of a proper solution to the critical section. It guarantees mutual exclusion. It guarantees progress. It also guarantees a valid weight. Every process waits for no more, more no more than n minus one terms. If I have ten processes, whom requesting, all of whom requesting, that's why I'm saying no more than, then none of them is going to have to wait for more than nine terms, more than nine accesses or a critical section, and then it will be allowed in.
+
+ And that is a typical implementation of a value weight. Any questions? Okay, so the kernel actually gives exactly that facility in something that is called a mutex lock. In a mutex lock, which does exist in pthreads as well, so pthreads is the library we're going to be using to access the locks. That's one way. PSFreads implements mutex locks and then does system calls to start using them. So you're going to use the library polls.
+
+
+
+26:36 - Participant 2
+What is a mutex lock? It is exactly what we've talked about.
+
+26:40 - Participant 1
+Every thread is going to have to acquire a mutex, go to the critical section, and then release the mutex. So the mutex is an object. It's a synchronization object. It is not a single log variable. It's actually an object called a mutex. You acquire the mutex, you go to the critical section. Then you release a mutex from the button. So it has two operations: acquire and release. It's an object that contains, so it's not a Boolean, it's an object that contains a Boolean.
+
+
+
+27:15 - Participant 2
+So the mutex is an object that contains a Boolean.
+
+27:20 - Participant 1
+And it does, in one implementation, it may be implemented in two different ways. In one implementation, it uses the spin locks we talked about, it uses the same exact implementation we're talking about in here. That is one approach, one implementation. That implementation has a big huge downside. The big huge downside is the inefficiency. Why is there inefficiency using spin locks? So we can take a break, but before we can take a break, I want to take a look and try to have you think about this.
+
+ Why is there any kind of inefficiency in using spin locks? Let's take the opposite of example. In here, actually, let's take a look at the example we talked about.
+
+28:08 - Participant 2
+The test concept.
+
+28:09 - Participant 1
+This is a spin lock. Why am I saying spin locks are inefficient? They are inefficient, but why?
+
+28:23 - Participant 2
+can.
+
+28:24 - Participant 1
+So what's wrong with busy reading? Why is that inefficient? You just do nothing and but keep the CPU. You're gonna keep holding the CPU while doing nothing. And for how long can you be doing nothing?
+
+28:37 - Unidentified Speaker
+A tip.
+
+28:39 - Unidentified Speaker
+For a timer tick?
+
+28:41 - Participant 2
+That's not a good thing.
+
+28:43 - Participant 1
+How about if I have ten processes competing, then I can have ten timer tips of ten processes. Pictorially. Let's actually do this pictorially. If I have multiple CPUs in my system, I'm going to say four, even though you have more, but I want to have an easier example. And every CPU is time-shared, so every process gets a chance to run, you know, for one slot. Let's say one process here was able to, let's say, process five.
+
+ Was able to go into the critical section. And in the middle of the critical section, it got preempted. So process V is in the critical section and then it got preempted. Okay? Now I can have other processes in the same CPU or in another CPU. Maybe in the same CPU I can have process 4 and process 7 and process 8 and process 9 and process 10. I can have nine other processes executing this while loop for an entire time slice because the while loop is always going to return a true because the critical section is already locked.
+
+ So, what happens here is I can have a process go for an entire time slice and be locked. Well, sorry, where the section is locked, and it's not doing any useful work. So, that's a highly efficient way of preventing things. Two implementations are possible for muted slots.
+
+30:39 - Participant 2
+And one of them uses fit locks and it's highly inefficient.
+
+30:43 - Participant 1
+Another way is to use wait queues which we shall talk about after the break. The wave queues are a bit more efficient, a lot more efficient, because instead of using a while loop for a process that lost a base, a loser of the base, start waiting in a while loop, testing for a flag that would never be set for the entire duration of its time slice. That's a waste of CPU cycles.
+
+31:10 - Unidentified Speaker
+What did we say about the model of operating systems?
+
+31:13 - Unidentified Speaker
+Yes, providing an environment for applications, but we have to do it efficiently.
+
+31:19 - Unidentified Speaker
+We have to manage the resources efficiently.
+
+31:22 - Unidentified Speaker
+The most important resource here we have is the CPU time, the CPU.
+
+31:27 - Unidentified Speaker
+the most expensive resource that we have.
+
+31:30 - Unidentified Speaker
+So have the CPU running a wide loop not doing any useful work is inefficient.
+
+31:37 - Unidentified Speaker
+So now we have failed in achieving our second goal of efficient usage of the system resources of which the CPU is the most important.
+
+31:48 - Unidentified Speaker
+So we're going have to come up with a better way and that better way is be using wake use.
+
+31:53 - Unidentified Speaker
+which we're going to be introducing after I finish semaphores first.
+
+31:57 - Unidentified Speaker
+Alright so who wants to take a break or talk about semaphores?
+
+32:03 - Unidentified Speaker
+Who wants to take a break now?
+
+32:06 - Unidentified Speaker
+Oh okay so let's take a five minute break.
+
+32:09 - Unidentified Speaker
+Right now it is it is seventh A let's reconvene at seventh day five because we still have a lot to accomplish.

@@ -1,0 +1,6178 @@
+WEBVTT
+
+1
+00:00:03.060 --> 00:00:07.129
+Omar Mansour: Y… We're gonna be talking about deadlocks.
+
+2
+00:00:14.280 --> 00:00:16.850
+Omar Mansour: Last week, we talked about synchronization.
+
+3
+00:00:17.550 --> 00:00:19.470
+Omar Mansour: We talked about the critical section.
+
+4
+00:00:20.320 --> 00:00:27.229
+Omar Mansour: How to protect a critical section. We've learned a few things. Some of them use spin locks, not advisable.
+
+5
+00:00:27.550 --> 00:00:29.330
+Omar Mansour: It's, busy week.
+
+6
+00:00:29.740 --> 00:00:35.030
+Omar Mansour: The process spends all of its time sliced in a while loop, waiting for a flag that it has no control of.
+
+7
+00:00:35.240 --> 00:00:42.580
+Omar Mansour: And then we talked about mutex locks and semaphores, and the implementation in modern operating systems uses a WAITQ.
+
+8
+00:00:42.580 --> 00:00:56.230
+Omar Mansour: To the moment you're unable to acquire a mutex lock, the moment you're unable to acquire the semaphore, your process is blocked, meaning your process is in a state of waiting, in a wait queue.
+
+9
+00:00:57.720 --> 00:01:11.389
+Omar Mansour: Several types of wait queues exist. We can have a wait queue for a semaphore, we can have a wait queue for an event, we can also have a wait queue for a device. If you have requested an IV, it's going to take a lengthy amount of time, you're going to be blocked in a wait queue.
+
+10
+00:01:12.460 --> 00:01:13.560
+Omar Mansour: Today.
+
+11
+00:01:15.060 --> 00:01:29.170
+Omar Mansour: Oh, by the way, last week we also talked about readers and writers problem, which is a critical section that is very peculiar, particularly in database design, if you are designing the inside… the internals of a database, not if you're using a database.
+
+12
+00:01:29.170 --> 00:01:36.829
+Omar Mansour: Today, we're going to be talking about another problem that is called deadlocks. It is a synchronization problem. It is called deadlocks.
+
+13
+00:01:37.010 --> 00:01:38.090
+Omar Mansour: And…
+
+14
+00:01:38.300 --> 00:01:48.520
+Omar Mansour: We're going to actually demonstrate this problem in the context of the dining philosopher's problem. What is this dining philosopher's problem? Why is the name so funny?
+
+15
+00:01:48.960 --> 00:01:52.040
+Omar Mansour: The name is funny because it is funny, not my business.
+
+16
+00:01:53.020 --> 00:01:54.290
+Omar Mansour: It is what it is.
+
+17
+00:01:54.930 --> 00:01:57.789
+Omar Mansour: It's a very common synchronization problem.
+
+18
+00:01:58.080 --> 00:02:01.990
+Omar Mansour: That results in deadlocks if the timing is so wrong.
+
+19
+00:02:02.170 --> 00:02:06.990
+Omar Mansour: Let's examine this. We have… 5 individuals.
+
+20
+00:02:07.570 --> 00:02:15.399
+Omar Mansour: 1, or actually 0, 1, 2, 3, 4. Each one of them is a philosopher. Philosophers are not social…
+
+21
+00:02:15.600 --> 00:02:21.840
+Omar Mansour: beings, they're not that social, they don't communicate together, they don't speak together, they don't do anything. Look at the sky.
+
+22
+00:02:22.420 --> 00:02:24.740
+Omar Mansour: Think as they look at the sky.
+
+23
+00:02:25.300 --> 00:02:27.650
+Omar Mansour: And then suddenly, they decide to eat.
+
+24
+00:02:28.530 --> 00:02:32.749
+Omar Mansour: So they only think, and they eat the philosophers that they are.
+
+25
+00:02:32.980 --> 00:02:37.220
+Omar Mansour: They don't talk, they don't watch a movie. They think and eat, think and eat.
+
+26
+00:02:38.270 --> 00:02:39.839
+Omar Mansour: That's why it's a tidying.
+
+27
+00:02:41.280 --> 00:02:42.810
+Omar Mansour: philosopher's problem.
+
+28
+00:02:43.460 --> 00:02:53.400
+Omar Mansour: When they eat, They want to grab some food, some rice that is, from a shared… Bowl of rice.
+
+29
+00:02:54.390 --> 00:02:58.670
+Omar Mansour: And to do that, each one of them needs to acquire two chopsticks.
+
+30
+00:02:59.650 --> 00:03:02.570
+Omar Mansour: Most of you, I'm sure, have used chopsticks before.
+
+31
+00:03:03.090 --> 00:03:11.519
+Omar Mansour: In order to use them, you need two of them. You can't have a single chopstick and eat a piece of maki, or sashimi. You really need two.
+
+32
+00:03:12.420 --> 00:03:15.630
+Omar Mansour: So every philosopher needs to acquire two chopsticks.
+
+33
+00:03:16.350 --> 00:03:19.240
+Omar Mansour: Then they grab, from the shared bowl.
+
+34
+00:03:19.660 --> 00:03:22.240
+Omar Mansour: Into their own plate, and then they can start eating.
+
+35
+00:03:24.310 --> 00:03:27.369
+Omar Mansour: Now, there's a problem here. Can anyone see what the problem is?
+
+36
+00:03:30.010 --> 00:03:36.360
+Omar Mansour: No, chopsticks are not shared. I don't know about you, I've never went to a restaurant seeing two people eating from the same chopstick.
+
+37
+00:03:37.280 --> 00:03:44.480
+Omar Mansour: only one philosopher, well, can use one chopstick at a time. But yes, you're right, they need two chopsticks.
+
+38
+00:03:44.930 --> 00:03:47.569
+Omar Mansour: Shared meaning, I guess…
+
+39
+00:03:49.180 --> 00:03:57.710
+Omar Mansour: what you meant is they can timeshare it. They can timeshare it, yes, but not simultaneously, not simultaneously, not at the same exact instance of time.
+
+40
+00:03:58.020 --> 00:04:01.389
+Omar Mansour: That's… that's difficult. But yes, timeshare in the chopsticks, yes.
+
+41
+00:04:01.620 --> 00:04:05.249
+Omar Mansour: So why is there a sharing problem? Why do they have to timeshare it?
+
+42
+00:04:05.390 --> 00:04:07.420
+Omar Mansour: Because there aren't enough chopsticks.
+
+43
+00:04:08.480 --> 00:04:10.959
+Omar Mansour: Ideally, you would have 10 chopsticks.
+
+44
+00:04:11.220 --> 00:04:15.809
+Omar Mansour: For 5 philosophers, so that each one can have his own two chopsticks.
+
+45
+00:04:16.399 --> 00:04:19.230
+Omar Mansour: Without actually timesharing with anybody else.
+
+46
+00:04:19.899 --> 00:04:24.430
+Omar Mansour: Ideally, but we don't live in an ideal world. So, what happens here?
+
+47
+00:04:25.680 --> 00:04:27.400
+Omar Mansour: What happens here is…
+
+48
+00:04:27.890 --> 00:04:37.100
+Omar Mansour: Some philosophers are gonna succeed in picking the chopsticks, others will not. So some will be eating, others will not be able to eat. You're just gonna have to wait.
+
+49
+00:04:37.500 --> 00:04:39.199
+Omar Mansour: And that's not an issue, actually.
+
+50
+00:04:39.330 --> 00:04:40.500
+Omar Mansour: That's not the problem.
+
+51
+00:04:40.990 --> 00:04:43.250
+Omar Mansour: That's not the dining philosopher's problem.
+
+52
+00:04:44.110 --> 00:04:47.930
+Omar Mansour: The problem here is, if the timing is so wrong.
+
+53
+00:04:48.750 --> 00:04:51.830
+Omar Mansour: Indeed, if the timing is extremely wrong.
+
+54
+00:04:52.110 --> 00:04:57.970
+Omar Mansour: That each one of those five philosophers, philosophers 0, 1, 2, 3, 4, each one of them
+
+55
+00:04:58.570 --> 00:05:01.639
+Omar Mansour: Simultaneously grab the left chopstick.
+
+56
+00:05:01.940 --> 00:05:10.840
+Omar Mansour: Philosopher 0 grabbed Chopstick 0, Philosopher 1 grabbed Chopstick 1, 2 grabbed 2, 3 grabbed 3, Philosopher 4,
+
+57
+00:05:11.270 --> 00:05:13.110
+Omar Mansour: grab chopstick forward.
+
+58
+00:05:13.890 --> 00:05:17.410
+Omar Mansour: All of that happened simultaneously at the same time.
+
+59
+00:05:17.780 --> 00:05:22.480
+Omar Mansour: And that would be such a poor luck. Such a bad luck. Because…
+
+60
+00:05:23.080 --> 00:05:27.420
+Omar Mansour: Now, every philosopher grabbed his left chopstick.
+
+61
+00:05:28.370 --> 00:05:35.119
+Omar Mansour: And now, every philosopher is going to attempt to grab the right chopstick. What happens when they try to do that?
+
+62
+00:05:37.030 --> 00:05:39.949
+Omar Mansour: They find out that it's already taken.
+
+63
+00:05:42.070 --> 00:05:47.600
+Omar Mansour: So, they grab the first chopstick, the left chopsticks, each one of them does it.
+
+64
+00:05:47.750 --> 00:05:53.829
+Omar Mansour: And now at this point, all 5 chopsticks are taken. They move on and try to grab the right chopstick.
+
+65
+00:05:54.120 --> 00:05:55.679
+Omar Mansour: But it's not available.
+
+66
+00:05:55.930 --> 00:05:59.360
+Omar Mansour: It's just not available. And let's draw the analogy here.
+
+67
+00:05:59.900 --> 00:06:11.320
+Omar Mansour: We don't care about philosophers, really. We care about processes, okay? Every philosopher here is a process. That shared bowl of rice, we don't care about rice. That's actually shared data.
+
+68
+00:06:12.060 --> 00:06:20.009
+Omar Mansour: The chopsticks, we don't care about that either. These are semaphores. In fact, I'm gonna generalize. These are resources.
+
+69
+00:06:20.580 --> 00:06:24.529
+Omar Mansour: But the best way to visualize them now is they are semaphored.
+
+70
+00:06:26.180 --> 00:06:27.820
+Omar Mansour: binary semaphores.
+
+71
+00:06:27.960 --> 00:06:34.789
+Omar Mansour: not just semaphores, binary semaphores, or mutix locks. Now, what is so peculiar about binary semaphores?
+
+72
+00:06:35.790 --> 00:06:43.599
+Omar Mansour: mutual exclusion. Only one… Just like a mutex is. These are mutex locks, or binary semaphores.
+
+73
+00:06:44.520 --> 00:06:46.690
+Omar Mansour: Only one can acquire them.
+
+74
+00:06:47.500 --> 00:06:52.559
+Omar Mansour: If you initialize a semaphore 201, that's a binary semaphore usage.
+
+75
+00:06:52.940 --> 00:07:01.830
+Omar Mansour: The moment one of the philosophers acquires the semaphore, like semaphore 0, It acquires it exclusively.
+
+76
+00:07:01.990 --> 00:07:05.410
+Omar Mansour: Exclusively, here's the keyboard. Not only that.
+
+77
+00:07:05.890 --> 00:07:09.370
+Omar Mansour: We also know that once you acquire a mutex lock.
+
+78
+00:07:09.790 --> 00:07:19.480
+Omar Mansour: or a semaphore, a binary semaphore, you do that, typically, to go and access some shared data. Typically, you do that to access a critical section.
+
+79
+00:07:19.660 --> 00:07:29.110
+Omar Mansour: So while you're inside the critical section, no one can take away that music slot from you. No one can take it away from you. It is not a resource that can ever be taken away from you.
+
+80
+00:07:29.760 --> 00:07:31.829
+Omar Mansour: So, two things here we have established.
+
+81
+00:07:32.590 --> 00:07:34.990
+Omar Mansour: Exclusive access.
+
+82
+00:07:35.700 --> 00:07:38.229
+Omar Mansour: To the resource, a semaphore or a matrix lock.
+
+83
+00:07:38.750 --> 00:07:40.270
+Omar Mansour: And it can't be taken away.
+
+84
+00:07:42.830 --> 00:07:49.989
+Omar Mansour: So, in a scenario in which every philosopher picks up the left, meaning every process acquired one semaphore.
+
+85
+00:07:50.490 --> 00:07:53.470
+Omar Mansour: And then every process moves on and attempts.
+
+86
+00:07:53.800 --> 00:07:57.089
+Omar Mansour: But fails to acquire the second semaphone.
+
+87
+00:07:57.460 --> 00:08:00.009
+Omar Mansour: Then we reach a state of deadlock.
+
+88
+00:08:01.670 --> 00:08:03.940
+Omar Mansour: Why do we reach a state of deadlock?
+
+89
+00:08:04.270 --> 00:08:09.020
+Omar Mansour: Because we're just gonna be completely unable to get out of that situation.
+
+90
+00:08:09.910 --> 00:08:18.140
+Omar Mansour: Why are we unable to get out of that situation? Again, philosophers are just an analogy. Let's actually start thinking about processes.
+
+91
+00:08:20.400 --> 00:08:23.890
+Omar Mansour: Every process, It's gonna wait?
+
+92
+00:08:26.060 --> 00:08:29.460
+Omar Mansour: Process 0, on semaphore 0.
+
+93
+00:08:29.980 --> 00:08:37.789
+Omar Mansour: Assuming i is a 0, and then process 0, waits in semaphore… 0 plus 1.
+
+94
+00:08:38.429 --> 00:08:40.810
+Omar Mansour: Module 5, that is settle for number 1.
+
+95
+00:08:41.429 --> 00:08:44.270
+Omar Mansour: Why am I using modular arithmetic? Because…
+
+96
+00:08:44.800 --> 00:08:50.910
+Omar Mansour: This could have been actually… in fact, let's take a look at Process number four.
+
+97
+00:08:51.490 --> 00:09:06.050
+Omar Mansour: Process number 4 is gonna wait… now I is equal to 4. Process 4 is gonna wait on semaphore number 4, then it's gonna wait on semaphore number 4 plus 1 is 5, modulo 5 is 0, which is exactly
+
+98
+00:09:07.720 --> 00:09:10.440
+Omar Mansour: The one to the right. So, obtaining…
+
+99
+00:09:10.630 --> 00:09:15.700
+Omar Mansour: The semaphore on the right involves modular arithmetic, Gonna add one.
+
+100
+00:09:16.710 --> 00:09:24.870
+Omar Mansour: But there's no semaphore number 5. You go back to semaphore number 0. So there is some circular dependency, that's why we have a circular table.
+
+101
+00:09:27.460 --> 00:09:32.690
+Omar Mansour: Okay, so… And then…
+
+102
+00:09:33.410 --> 00:09:42.559
+Omar Mansour: That process is going to be able to access the shared data. When it's done, then it releases the two semaphores, and so on, then it can repeat the problem again.
+
+103
+00:09:42.700 --> 00:09:45.130
+Omar Mansour: So, if this is the code for every.
+
+104
+00:09:45.360 --> 00:09:47.930
+Omar Mansour: philosopher, it goes into an infinite loom.
+
+105
+00:09:49.640 --> 00:09:54.670
+Omar Mansour: Acquiring a couple of semaphores, accessing shared data, releasing the semaphores.
+
+106
+00:09:54.770 --> 00:09:58.409
+Omar Mansour: And if the timing is so wrong, that each and every one of them
+
+107
+00:09:58.810 --> 00:10:06.719
+Omar Mansour: acquired the first one, then this means each and every one of them is not going to be able to acquire the second semaphore, because we only have 5.
+
+108
+00:10:08.410 --> 00:10:11.760
+Omar Mansour: But why is this a problem we can never get out of?
+
+109
+00:10:12.140 --> 00:10:14.950
+Omar Mansour: The moment this happened, there was a lock.
+
+110
+00:10:15.210 --> 00:10:16.380
+Omar Mansour: a deadlock.
+
+111
+00:10:17.070 --> 00:10:22.219
+Omar Mansour: locked in a situation, that's why it's called a deadlock. We are locked in a situation.
+
+112
+00:10:22.400 --> 00:10:26.979
+Omar Mansour: That we can never get out of. Why can't we get out of this situation? Why can't…
+
+113
+00:10:27.510 --> 00:10:38.150
+Omar Mansour: you know, why can't philosopher I, let's say Philosopher 4, find out that he can't acquire the second semaphore and go back and release the first one? Why is that not possible?
+
+114
+00:10:42.250 --> 00:10:44.870
+Omar Mansour: They don't talk to each other. They don't know where they are.
+
+115
+00:10:45.350 --> 00:10:51.569
+Omar Mansour: Yeah, that's okay, but you know that you failed in acquiring. You know you were trying to acquire the right semaphore, and you're unable to.
+
+116
+00:10:52.090 --> 00:10:58.739
+Omar Mansour: You're not communicating with nobody, you were trying to acquire it, you weren't able to, why don't you just let go of the last semaphore?
+
+117
+00:11:00.210 --> 00:11:02.230
+Omar Mansour: Why am I saying you can't do that?
+
+118
+00:11:03.310 --> 00:11:06.649
+Omar Mansour: There's a reason. It might appear to be subtle, but it's not subtle.
+
+119
+00:11:07.070 --> 00:11:09.600
+Omar Mansour: It might be a solid reason, but it's an important reason.
+
+120
+00:11:10.820 --> 00:11:15.099
+Omar Mansour: Why can't a philosopher or a process let go
+
+121
+00:11:16.150 --> 00:11:20.510
+Omar Mansour: Of the first semaphore, the moment it's unable to get the second one.
+
+122
+00:11:26.260 --> 00:11:29.839
+Omar Mansour: Okay, let's wait a second, let's give everybody… who else wants to answer?
+
+123
+00:11:30.190 --> 00:11:32.490
+Omar Mansour: Anybody wants to answer, except him.
+
+124
+00:11:35.110 --> 00:11:37.089
+Omar Mansour: No? What is your answer?
+
+125
+00:11:37.190 --> 00:11:41.270
+Omar Mansour: Is it because then it violates the rule that we need to make progress?
+
+126
+00:11:42.110 --> 00:11:48.569
+Omar Mansour: Like, if everybody lets go, then we went nowhere. No, not everybody, we can do something random.
+
+127
+00:11:51.150 --> 00:11:57.749
+Omar Mansour: And we're still going somewhere, because they can try again. That's wrong timing that happens only once in a blue moon.
+
+128
+00:11:58.100 --> 00:12:06.509
+Omar Mansour: Where everybody grabbed the left semaphore, the timing has to be so wrong for that to happen, it's probably not going to happen every time. We will have progress.
+
+129
+00:12:08.100 --> 00:12:09.440
+Omar Mansour: There's another reason.
+
+130
+00:12:10.040 --> 00:12:12.110
+Omar Mansour: Let me give you a hint.
+
+131
+00:12:13.670 --> 00:12:15.500
+Omar Mansour: Yes.
+
+132
+00:12:15.910 --> 00:12:20.970
+Omar Mansour: Because, okay, so if we're using, like, the philosopher thing, they need to think…
+
+133
+00:12:21.500 --> 00:12:26.920
+Omar Mansour: Like, they need to help process it in order to work, so wouldn't that same logic work for this?
+
+134
+00:12:27.120 --> 00:12:31.890
+Omar Mansour: Well, it is the same logic, but the moment they got into this second line here.
+
+135
+00:12:31.990 --> 00:12:36.749
+Omar Mansour: Why can't they just decide, why can't we add code that says, oh, let's go with the first one?
+
+136
+00:12:37.590 --> 00:12:40.270
+Omar Mansour: I mean, we can change the behavior. Because you need it.
+
+137
+00:12:40.880 --> 00:12:44.619
+Omar Mansour: Yes. But I can't get both of them, so why would I need the first one?
+
+138
+00:12:45.370 --> 00:12:47.759
+Omar Mansour: I can't eat anyways, I cannot progress.
+
+139
+00:12:48.480 --> 00:12:53.369
+Omar Mansour: The answer is, it has a lot to do with the implementation and how semaphores work.
+
+140
+00:12:53.650 --> 00:12:57.549
+Omar Mansour: Let's remember what happens if you cannot acquire a semaphore.
+
+141
+00:12:59.490 --> 00:13:06.719
+Omar Mansour: Let's remember, go back to last week's lecture. There's a reason why we have to set up a quiz. I should have had a quiz this lecture.
+
+142
+00:13:07.600 --> 00:13:10.969
+Omar Mansour: I shouldn't, at the beginning of the lecture, because it's too late now.
+
+143
+00:13:12.300 --> 00:13:17.570
+Omar Mansour: Let's remember the operation of a semaphore. What happens when you wait on a semaphore and it's not available?
+
+144
+00:13:18.650 --> 00:13:20.360
+Omar Mansour: Last week, who remembers?
+
+145
+00:13:21.040 --> 00:13:23.759
+Omar Mansour: If you don't remember, go back to your notes.
+
+146
+00:13:24.030 --> 00:13:25.780
+Omar Mansour: Yes? I'll still wait.
+
+147
+00:13:25.890 --> 00:13:34.220
+Omar Mansour: It goes into a wait queue, that's a very good… in fact, that is the correct answer. If you cannot acquire, meaning if the semaphore is not available.
+
+148
+00:13:34.370 --> 00:13:37.769
+Omar Mansour: And you wait in a semaphore, you go into a wait queue.
+
+149
+00:13:38.100 --> 00:13:49.560
+Omar Mansour: What are the three core states of a process? We've discussed this a million times. What are the three core states of a process? Running. Running, waiting, and what is the third one?
+
+150
+00:13:49.710 --> 00:13:51.970
+Omar Mansour: Huh? Ready. Ready.
+
+151
+00:13:52.800 --> 00:13:57.299
+Omar Mansour: If you're waiting on a queue, on a wait queue, what is the state of your process?
+
+152
+00:14:00.320 --> 00:14:01.540
+Omar Mansour: What win?
+
+153
+00:14:02.060 --> 00:14:04.210
+Omar Mansour: Okay, now we're getting somewhere.
+
+154
+00:14:04.880 --> 00:14:08.330
+Omar Mansour: We're getting somewhere. Do you now see the answer? You now see what the problem is?
+
+155
+00:14:10.680 --> 00:14:14.000
+Omar Mansour: What happens when you're blocked waiting? Do you get a chance to execute code?
+
+156
+00:14:15.270 --> 00:14:16.389
+Omar Mansour: Why not?
+
+157
+00:14:18.590 --> 00:14:27.989
+Omar Mansour: Because you're not in the ready queue, the scheduler doesn't even give you a second look. Nobody cares about you. You're just gonna be staying there.
+
+158
+00:14:28.100 --> 00:14:31.519
+Omar Mansour: Until… you're out of the WQ.
+
+159
+00:14:31.730 --> 00:14:33.519
+Omar Mansour: You're back onto the ready list.
+
+160
+00:14:33.860 --> 00:14:36.710
+Omar Mansour: Really, you don't get a chance to execute code.
+
+161
+00:14:37.120 --> 00:14:40.979
+Omar Mansour: Not a single statement, not a single machine instruction.
+
+162
+00:14:41.260 --> 00:14:46.749
+Omar Mansour: So, the moment you cannot acquire the second chopstick, you are not running, you are blocked.
+
+163
+00:14:47.390 --> 00:14:59.330
+Omar Mansour: We keep saying waiting, waiting, but whenever I say the process is waiting, you need to keep understanding that blocked waiting means you don't get a chance to run. You can't go back and change your mind. Tough luck.
+
+164
+00:14:59.900 --> 00:15:03.109
+Omar Mansour: You're already not running, you're already
+
+165
+00:15:03.290 --> 00:15:09.990
+Omar Mansour: Will not be looked at, you will never be given a chance to run not a single line of code until you get out of that wait queue.
+
+166
+00:15:10.940 --> 00:15:17.440
+Omar Mansour: So this means every single philosopher of the five of them His blocked VIN.
+
+167
+00:15:17.900 --> 00:15:20.919
+Omar Mansour: So who the heck is gonna release a semaphore
+
+168
+00:15:21.320 --> 00:15:26.290
+Omar Mansour: If they're all unable to run, Nobody.
+
+169
+00:15:26.980 --> 00:15:30.379
+Omar Mansour: That's why it's a dead luck.
+
+170
+00:15:31.290 --> 00:15:33.640
+Omar Mansour: A live lock, Rakuten at some point.
+
+171
+00:15:33.780 --> 00:15:43.719
+Omar Mansour: Maybe wait 10 minutes and somebody then decides to release something randomly. No, that's a deadlock. You will never… you're locked for dead.
+
+172
+00:15:43.840 --> 00:15:46.150
+Omar Mansour: You will never be able to get out of this.
+
+173
+00:15:47.000 --> 00:15:48.429
+Omar Mansour: Another example.
+
+174
+00:15:48.690 --> 00:15:51.309
+Omar Mansour: With two philosophers, P0 and P1.
+
+175
+00:15:51.840 --> 00:15:53.400
+Omar Mansour: There are really two processes.
+
+176
+00:15:54.600 --> 00:15:56.480
+Omar Mansour: A more trivial example.
+
+177
+00:15:57.340 --> 00:15:58.930
+Omar Mansour: two processes.
+
+178
+00:16:01.040 --> 00:16:09.599
+Omar Mansour: Like, 2 philosophers, 2 chopsticks. Just, like, 5 philosophers, 5 chopsticks, 2 philosophers, 2 chopsticks, S and Q.
+
+179
+00:16:09.820 --> 00:16:13.139
+Omar Mansour: P0 acquires S, P1 acquires Q,
+
+180
+00:16:13.490 --> 00:16:19.050
+Omar Mansour: In some cases, when the timing is so wrong that these two happen simultaneously.
+
+181
+00:16:19.510 --> 00:16:25.330
+Omar Mansour: Now, P0 moves to acquire Q, unable to, because Q is already taken by P1.
+
+182
+00:16:25.650 --> 00:16:27.930
+Omar Mansour: P1 is trying to acquire S.
+
+183
+00:16:28.280 --> 00:16:32.280
+Omar Mansour: But it's no avail, because S was already taken by P0.
+
+184
+00:16:32.550 --> 00:16:34.069
+Omar Mansour: So at this point.
+
+185
+00:16:34.430 --> 00:16:47.329
+Omar Mansour: P0 blocks, P1 blocks, they are both blocked, they are both unable to run, they are both unable to release anything, unable to do anything at all, they are blocked waiting in a wait queue for Centapores S and Q.
+
+186
+00:16:47.860 --> 00:16:52.999
+Omar Mansour: So that's a second example, similar to the first example, except that now we only have two.
+
+187
+00:16:53.390 --> 00:17:02.389
+Omar Mansour: processes instead of 5. So I can have at least 2 processes in order to have a deadlock. I can have 2, 3, 4, 5, 10, or 50.
+
+188
+00:17:03.430 --> 00:17:06.280
+Omar Mansour: So here's the formal definition of a deadlock.
+
+189
+00:17:07.060 --> 00:17:08.779
+Omar Mansour: I need to have at least
+
+190
+00:17:09.530 --> 00:17:14.140
+Omar Mansour: I have a set of processes, not one. I need to have a set of processes, meaning two or more.
+
+191
+00:17:18.130 --> 00:17:24.810
+Omar Mansour: They're gonna be in a deadlocked state when every process in the set, each and every process in the set.
+
+192
+00:17:25.630 --> 00:17:27.590
+Omar Mansour: He's waiting for an event.
+
+193
+00:17:30.910 --> 00:17:38.280
+Omar Mansour: Not only that, And that event can only be produced by one of the waiting processes in the setup.
+
+194
+00:17:39.940 --> 00:17:43.189
+Omar Mansour: Every process is blocked, waiting in a wait queue.
+
+195
+00:17:44.330 --> 00:17:47.399
+Omar Mansour: Waiting here means blocked waiting in a wait queue.
+
+196
+00:17:48.210 --> 00:18:03.230
+Omar Mansour: Immediately, that drives your mind to understanding that when you're blocked waiting in a wait queue, you're unable to execute code. That's what blocked means. Blocked doesn't mean you can just decide, oh, I want to execute this, I want to do that. You cannot do nothing if you're blocked.
+
+197
+00:18:03.420 --> 00:18:04.960
+Omar Mansour: You can't do anything at all.
+
+198
+00:18:05.700 --> 00:18:08.789
+Omar Mansour: So here's the formal definition. I have a bunch of processes.
+
+199
+00:18:09.510 --> 00:18:16.370
+Omar Mansour: Each and every process in the set is blocked, unable to execute code. However.
+
+200
+00:18:16.900 --> 00:18:29.959
+Omar Mansour: We need to have an event, and that event can only be produced by one of these blocked processes, so that event will never be produced. As a result, no process is able to change its state. They're all blocked waiting.
+
+201
+00:18:30.320 --> 00:18:36.620
+Omar Mansour: A process will never finish. Resources are held indefinitely, holding the rest of the system.
+
+202
+00:18:36.820 --> 00:18:38.249
+Omar Mansour: The rest of the computer system.
+
+203
+00:18:39.270 --> 00:18:41.439
+Omar Mansour: Not a good situation to be in.
+
+204
+00:18:42.430 --> 00:18:44.099
+Omar Mansour: Not a good situation at all.
+
+205
+00:18:47.260 --> 00:18:50.049
+Omar Mansour: What… how do we characterize this situation?
+
+206
+00:18:50.450 --> 00:18:52.220
+Omar Mansour: What are the conditions?
+
+207
+00:18:52.660 --> 00:18:55.639
+Omar Mansour: So we have the definition of what happened.
+
+208
+00:18:56.170 --> 00:18:59.749
+Omar Mansour: The definition of a deadlock, but what are the conditions?
+
+209
+00:19:00.010 --> 00:19:07.040
+Omar Mansour: that can, not always will, but that can result in a deadlock. The first thing is, I need to have exclusive access.
+
+210
+00:19:07.530 --> 00:19:08.740
+Omar Mansour: to a resource.
+
+211
+00:19:08.900 --> 00:19:10.260
+Omar Mansour: My music's lock.
+
+212
+00:19:10.980 --> 00:19:20.309
+Omar Mansour: A mutex lock… a mutex lock cannot be accessed by two processes, or else it's not a mutex lock. A mutex is short for mutual exclusion.
+
+213
+00:19:20.440 --> 00:19:22.910
+Omar Mansour: Mute text. Mutual exclusion.
+
+214
+00:19:23.020 --> 00:19:30.120
+Omar Mansour: That's what it means. A binary semaphore plays like a mutex lock. These are resources
+
+215
+00:19:31.120 --> 00:19:38.970
+Omar Mansour: A mutex lock or a binary semaphore, these are resources That provide mutual exclusion.
+
+216
+00:19:39.530 --> 00:19:40.990
+Omar Mansour: Like a chopstick.
+
+217
+00:19:41.730 --> 00:19:56.550
+Omar Mansour: can be timeshared, meaning one process can access the mutex at one point of time, release it, and then another process can access the mutex at a different point of time. Simultaneously, only one process at a time. One chopstick can be used by one philosopher at a time.
+
+218
+00:20:00.160 --> 00:20:05.720
+Omar Mansour: The second condition, So we have mutual exclusion. The second condition is preemption.
+
+219
+00:20:05.900 --> 00:20:07.700
+Omar Mansour: No preemption is allowed.
+
+220
+00:20:07.900 --> 00:20:16.260
+Omar Mansour: Why? Mutex locks cannot be preempted. The moment I access a mutex lock, I'm telling the system I'm in a critical section.
+
+221
+00:20:16.540 --> 00:20:19.999
+Omar Mansour: I'm modifying a record. I'm halfway through it.
+
+222
+00:20:20.170 --> 00:20:22.190
+Omar Mansour: you cannot take away that Blueto's log.
+
+223
+00:20:22.420 --> 00:20:30.919
+Omar Mansour: That will screw up and mess up the whole critical section completely. Anybody gets in, the data, the shared record is messed up.
+
+224
+00:20:31.040 --> 00:20:38.890
+Omar Mansour: So not only that mutex locks and binary semihores and many other resources in the system, are mutually exclusive.
+
+225
+00:20:39.510 --> 00:20:41.999
+Omar Mansour: They also do not provide preemption.
+
+226
+00:20:43.970 --> 00:20:46.599
+Omar Mansour: The third condition that must exist
+
+227
+00:20:47.110 --> 00:20:52.419
+Omar Mansour: For us to have a possibility. Not always gonna happen, but if the timing is too long.
+
+228
+00:20:52.580 --> 00:21:00.579
+Omar Mansour: Maybe a once in a blue moon, a chance of one in a million. We will have a deadlock, but we will have it. And when we have it, the system can't get out of it.
+
+229
+00:21:01.970 --> 00:21:10.480
+Omar Mansour: Another condition is a hold and wait. We've realized here, every philosopher held water source.
+
+230
+00:21:10.690 --> 00:21:12.720
+Omar Mansour: And it's waiting on the second.
+
+231
+00:21:13.440 --> 00:21:16.730
+Omar Mansour: Held one chopstick, waiting on the second.
+
+232
+00:21:17.130 --> 00:21:19.290
+Omar Mansour: That is a condition that must happen.
+
+233
+00:21:20.300 --> 00:21:32.360
+Omar Mansour: holding and blocked waiting on the second. If you're blocked waiting on a resource, but you're not holding nothing, you didn't cause any damage. You have to hold something, and you're blocked waiting on something. That's a hold and wait.
+
+234
+00:21:33.470 --> 00:21:42.690
+Omar Mansour: to the fact that you're holding a resource, meaning you're preventing somebody else from getting that resource. And now, you are blocked meeting, so you'll never let go of that.
+
+235
+00:21:43.270 --> 00:21:46.340
+Omar Mansour: That's a condition that must happen, a hold and wait.
+
+236
+00:21:46.500 --> 00:21:51.329
+Omar Mansour: And then, we need to have a circular weight, a circular dependency, where
+
+237
+00:21:53.200 --> 00:21:58.450
+Omar Mansour: One philosopher is waiting for his neighbor to let go of chopstick 1,
+
+238
+00:21:58.690 --> 00:22:02.350
+Omar Mansour: His neighbor, philosopher one, is waiting for his right neighbor.
+
+239
+00:22:02.640 --> 00:22:09.170
+Omar Mansour: Number two, to let go of chopstick 2, and so on, until we reach philosopher number four, waiting in
+
+240
+00:22:09.520 --> 00:22:18.080
+Omar Mansour: waiting on Philosopher Zero to let go of Chopstick Zero. That is a circular dependent weight, or circular dependency, or circular weight.
+
+241
+00:22:18.750 --> 00:22:21.150
+Omar Mansour: Their condition also must exist.
+
+242
+00:22:21.550 --> 00:22:26.110
+Omar Mansour: In order to have… A deadlock problem.
+
+243
+00:22:27.150 --> 00:22:30.330
+Omar Mansour: they must roll simultaneously. So this also means
+
+244
+00:22:30.780 --> 00:22:36.929
+Omar Mansour: If I prevent one of these conditions from happening, then I've prevented deadlocks.
+
+245
+00:22:38.440 --> 00:22:44.229
+Omar Mansour: And that's what we need to do today. We're gonna have to prevent these conditions from happening.
+
+246
+00:22:45.250 --> 00:22:50.550
+Omar Mansour: So we're gonna provide… two solutions. Actually, we're gonna focus on one solution.
+
+247
+00:22:52.420 --> 00:22:54.710
+Omar Mansour: That is preventing a hold on wheat.
+
+248
+00:22:54.880 --> 00:22:58.670
+Omar Mansour: But other solutions do exist. For example, we can prevent circular waste.
+
+249
+00:22:59.130 --> 00:23:03.510
+Omar Mansour: using an asymmetric solution, which I'm going to present very soon, right now.
+
+250
+00:23:03.740 --> 00:23:18.810
+Omar Mansour: This is not an easy thing. It requires kernel support in a certain way. We're not going to be studying this today. Today, we're going to focus on the most common solution in which you are going to prevent, that is the most commonly used solution to avoid deadlocks.
+
+251
+00:23:18.890 --> 00:23:24.669
+Omar Mansour: In which we're gonna prevent the hold and wait, and we're gonna do that using monitors.
+
+252
+00:23:25.260 --> 00:23:32.520
+Omar Mansour: Monitors are a synchronization primitive that we're going to be talking about today to help us prevent a hold and wait.
+
+253
+00:23:42.150 --> 00:23:48.610
+Omar Mansour: Okay, so I feel like there's a slide missing.
+
+254
+00:23:56.040 --> 00:23:59.460
+Omar Mansour: Yeah, okay. Alright, so how do we use monitors?
+
+255
+00:23:59.680 --> 00:24:02.139
+Omar Mansour: We want to prevent the hold on weeds.
+
+256
+00:24:02.600 --> 00:24:05.029
+Omar Mansour: Meaning, we would like to present
+
+257
+00:24:05.510 --> 00:24:10.489
+Omar Mansour: An all-or-nothing solutions. Pick up the chopsticks only if both are available.
+
+258
+00:24:11.960 --> 00:24:14.920
+Omar Mansour: If both chopsticks are available, you picked up both.
+
+259
+00:24:15.460 --> 00:24:26.519
+Omar Mansour: If they're not both available, you pick up nothing. So every philosopher has to make sure that both chopsticks are available, and all of a sudden, he picks both of them before anybody else picks anything.
+
+260
+00:24:27.790 --> 00:24:29.880
+Omar Mansour: We're never gonna be picking one.
+
+261
+00:24:30.380 --> 00:24:34.589
+Omar Mansour: And then getting stuck with it, and not be able to pick up the second chopstick.
+
+262
+00:24:35.200 --> 00:24:39.000
+Omar Mansour: Gonna pick them up both at the same time for nothing at all.
+
+263
+00:24:39.980 --> 00:24:42.280
+Omar Mansour: Through this, we're gonna be using monitors.
+
+264
+00:24:42.710 --> 00:24:46.750
+Omar Mansour: A monitor is something that is similar to a class.
+
+265
+00:24:47.390 --> 00:24:50.550
+Omar Mansour: The class is in some languages, like Ada.
+
+266
+00:24:50.680 --> 00:24:52.600
+Omar Mansour: It's a language you probably will never see.
+
+267
+00:24:53.460 --> 00:24:55.450
+Omar Mansour: It's called an abstract data type.
+
+268
+00:24:56.950 --> 00:24:58.810
+Omar Mansour: It doesn't matter, a class.
+
+269
+00:24:58.940 --> 00:25:01.960
+Omar Mansour: A class always has methods.
+
+270
+00:25:02.770 --> 00:25:08.100
+Omar Mansour: Always has data, and some initialization code, often referred to as a constructor.
+
+271
+00:25:09.410 --> 00:25:14.229
+Omar Mansour: We have a constructor right here, we have a bunch of methods, we have some shared data inside the class.
+
+272
+00:25:15.320 --> 00:25:25.460
+Omar Mansour: So, why is a monitor different from a class? What is the difference? Well, the difference here is classes in general do not understand concurrency. Monitors do.
+
+273
+00:25:26.820 --> 00:25:36.550
+Omar Mansour: A monitor does not allow concurrency, meaning only one process, or thread.
+
+274
+00:25:36.900 --> 00:25:41.929
+Omar Mansour: can be active inside the monitor. Active meaning executing code inside the monitor.
+
+275
+00:25:43.560 --> 00:25:48.010
+Omar Mansour: So, if one process is executing code in any of the methods.
+
+276
+00:25:49.210 --> 00:25:53.850
+Omar Mansour: If you could encode in method number 2, or the third, or the fourth method, it doesn't matter.
+
+277
+00:25:53.960 --> 00:25:58.450
+Omar Mansour: If a process is executing code in any of the methods of the monitor.
+
+278
+00:25:58.670 --> 00:26:03.060
+Omar Mansour: No other process can be executed code inside the monitor.
+
+279
+00:26:06.700 --> 00:26:22.029
+Omar Mansour: That's very good. That means only one process can be active, so executing code is too long of a word, too long of a phrase. I'm just gonna say active. Active meaning executing code in one of the methods of the monitor. That's too long. I'm just gonna say active.
+
+280
+00:26:22.460 --> 00:26:31.700
+Omar Mansour: Only one process can be active inside the monitor. What happens if some other process wants to execute? It waits. It waits outside.
+
+281
+00:26:32.020 --> 00:26:37.069
+Omar Mansour: Until the process that is active inside the monitor lets go of the monitor.
+
+282
+00:26:37.380 --> 00:26:38.330
+Omar Mansour: Okay?
+
+283
+00:26:38.670 --> 00:26:40.380
+Omar Mansour: Why is that advantageous?
+
+284
+00:26:40.840 --> 00:26:46.139
+Omar Mansour: Well… We are going to be testing for the chopsticks.
+
+285
+00:26:46.830 --> 00:26:48.539
+Omar Mansour: Inside the monitor.
+
+286
+00:26:49.160 --> 00:26:54.230
+Omar Mansour: Meaning nobody else is active inside the monitor, we're gonna put all of the chopsticks inside the monitor.
+
+287
+00:26:55.760 --> 00:27:03.089
+Omar Mansour: All the traffics, all the… Synchronization resources, all the semaphores, everything, we're gonna put them inside the monitor.
+
+288
+00:27:03.900 --> 00:27:06.480
+Omar Mansour: And one process at a time.
+
+289
+00:27:06.750 --> 00:27:09.149
+Omar Mansour: It's going to be active inside the monitor.
+
+290
+00:27:09.720 --> 00:27:16.459
+Omar Mansour: It's gonna allow it to look at the tool, at the resources. If they are available, it catches them all at the same time.
+
+291
+00:27:17.250 --> 00:27:26.090
+Omar Mansour: No other process will be able to get in and bother it, interrupt it, and take away the second chopstick before we are able to catch it.
+
+292
+00:27:28.280 --> 00:27:33.399
+Omar Mansour: So that is the solution we are going to be using. Only one process is active inside the monitor.
+
+293
+00:27:33.620 --> 00:27:37.640
+Omar Mansour: The chopsticks are inside the monitor, so then we should be able to do that.
+
+294
+00:27:43.670 --> 00:27:49.369
+Omar Mansour: Very good. So, how are monitors implemented? Well, we can have monitors without condition variables.
+
+295
+00:27:51.000 --> 00:27:54.819
+Omar Mansour: And the implementation of monitors without condition variables is very easy.
+
+296
+00:27:54.980 --> 00:27:59.900
+Omar Mansour: To make sure and ensure that only one process is active inside the monitor.
+
+297
+00:28:00.110 --> 00:28:02.840
+Omar Mansour: We can just create one single semaphore.
+
+298
+00:28:03.860 --> 00:28:07.450
+Omar Mansour: And every method, every one of those methods.
+
+299
+00:28:09.370 --> 00:28:14.899
+Omar Mansour: It's gonna have a line at the beginning that says, wait for mutex, and then the body of the method T,
+
+300
+00:28:15.080 --> 00:28:17.030
+Omar Mansour: And then finally, it signals.
+
+301
+00:28:17.380 --> 00:28:23.440
+Omar Mansour: So we're really locking up the entire monitor, whatever…
+
+302
+00:28:23.610 --> 00:28:28.190
+Omar Mansour: A process is accessing or executing inside any of the methods of that monitor.
+
+303
+00:28:29.250 --> 00:28:32.249
+Omar Mansour: By the way, a method is also a procedure.
+
+304
+00:28:32.580 --> 00:28:40.200
+Omar Mansour: In this course, a method is a procedure is a member function, okay? Member procedure, member function, or method, they all mean the same thing.
+
+305
+00:28:45.260 --> 00:28:53.620
+Omar Mansour: Now, this is not gonna be enough for solving the… Dining philosopher's problem.
+
+306
+00:28:54.090 --> 00:29:00.279
+Omar Mansour: We need something else. We need something additional. We actually need to be having condition variables inside the monitor.
+
+307
+00:29:01.280 --> 00:29:08.529
+Omar Mansour: So inside the monitor, we're also going to be having condition variables. The reason why we need condition variables is because
+
+308
+00:29:11.000 --> 00:29:12.050
+Omar Mansour: If…
+
+309
+00:29:13.880 --> 00:29:29.089
+Omar Mansour: we try to acquire the two chopsticks inside a method in the monitor. Let's say a pickup method. So we're going to create two methods. One method is called pickup, the two chopsticks. Another method is going to say let go, or release the two chopsticks.
+
+310
+00:29:29.480 --> 00:29:33.220
+Omar Mansour: What happens if the two chopsticks are not available? What do we do?
+
+311
+00:29:34.060 --> 00:29:42.469
+Omar Mansour: Do we exit the monitor at the back of the queue and try again? Do we keep trying in a while loop? We've established while loops are not the best way.
+
+312
+00:29:44.630 --> 00:29:49.499
+Omar Mansour: While loops eat up a lot of resources. We would like to have an efficient way. We're not going to be using while loops.
+
+313
+00:29:49.810 --> 00:29:52.109
+Omar Mansour: We're gonna be using condition variables.
+
+314
+00:29:52.730 --> 00:29:57.780
+Omar Mansour: But we haven't defined condition variables. What are they? How do they work? Well, let's do it now.
+
+315
+00:29:57.920 --> 00:30:00.040
+Omar Mansour: What is a condition variable?
+
+316
+00:30:01.440 --> 00:30:07.939
+Omar Mansour: It is something… It is similar to a semaphore, but not the same. It's actually very different.
+
+317
+00:30:09.250 --> 00:30:19.560
+Omar Mansour: A semaphore is an object that contains at least a couple of things that we talked about before. One thing is an integer data member. What else does a semaphore contain from last week?
+
+318
+00:30:19.970 --> 00:30:23.040
+Omar Mansour: Aside from the data member, the integer, what else?
+
+319
+00:30:26.080 --> 00:30:31.590
+Omar Mansour: Feel free to look at last week's notes. It's not a test, you can look and answer. I just want to make this an interactive session.
+
+320
+00:30:31.810 --> 00:30:34.480
+Omar Mansour: What else does a semaphore object contain?
+
+321
+00:30:39.530 --> 00:30:40.660
+Omar Mansour: a queue.
+
+322
+00:30:41.230 --> 00:30:43.979
+Omar Mansour: Every semaphore has a cue.
+
+323
+00:30:44.090 --> 00:30:56.039
+Omar Mansour: a wait queue, because we're always expecting that someone is going to be blocked at that semaphore, so we better create a wait queue for that semaphore. Every semaphore has an integer data member, but it also has a queue.
+
+324
+00:30:58.200 --> 00:31:01.750
+Omar Mansour: a condition variable Also has a queue.
+
+325
+00:31:02.270 --> 00:31:06.349
+Omar Mansour: But it absolutely does not have a data member. It doesn't have an integer.
+
+326
+00:31:07.960 --> 00:31:09.170
+Omar Mansour: He just doesn't.
+
+327
+00:31:10.880 --> 00:31:16.530
+Omar Mansour: And how it operates, you can wait on a condition variable. Let's say I have a condition variable X.
+
+328
+00:31:17.680 --> 00:31:19.640
+Omar Mansour: Inside the monitor, for example.
+
+329
+00:31:20.080 --> 00:31:24.050
+Omar Mansour: X doesn't have any data members, X merely has a weak cube.
+
+330
+00:31:26.620 --> 00:31:31.010
+Omar Mansour: It has a bunch of operations, two operations, similar in name.
+
+331
+00:31:31.130 --> 00:31:33.639
+Omar Mansour: But not similar at all in behavior.
+
+332
+00:31:34.090 --> 00:31:37.870
+Omar Mansour: I mean, somewhat similar, but with subtle differences.
+
+333
+00:31:38.000 --> 00:31:39.730
+Omar Mansour: We have the WAIT operation.
+
+334
+00:31:43.250 --> 00:31:52.189
+Omar Mansour: And we have a signal operation, just like we did with semaphores. Semaphores also had a weight operation, semaphores also had a signal operation.
+
+335
+00:31:55.500 --> 00:32:01.239
+Omar Mansour: Now, When you issue, or when you invoke the weight operation on a semaphore.
+
+336
+00:32:01.630 --> 00:32:08.690
+Omar Mansour: the behavior is very clear. If the semaphore is available, You will succeed.
+
+337
+00:32:09.310 --> 00:32:13.220
+Omar Mansour: The weight will return. And the semaphore will be decremented.
+
+338
+00:32:13.960 --> 00:32:20.960
+Omar Mansour: the integer variable would be decremented. In here, we don't have integer variables. Not only that.
+
+339
+00:32:21.100 --> 00:32:25.790
+Omar Mansour: The moment you invoke the weight on a conditioned variable X,
+
+340
+00:32:26.870 --> 00:32:29.540
+Omar Mansour: The moment you invoke the weight, you're blocked.
+
+341
+00:32:29.970 --> 00:32:39.779
+Omar Mansour: 100% chance. You're always going to be blocked the moment you invoke the weight on a conditioned variable. That is not the case with a semaphore. In the semaphore, you may be blocked.
+
+342
+00:32:40.070 --> 00:32:43.080
+Omar Mansour: Meaning, thrown in a wake queue, or not.
+
+343
+00:32:43.610 --> 00:32:48.389
+Omar Mansour: Alertness awakeness test. If you issue a wait operation on a semaphore.
+
+344
+00:32:48.500 --> 00:32:51.439
+Omar Mansour: What is the situation in which you will not be blocked?
+
+345
+00:32:53.360 --> 00:32:55.220
+Omar Mansour: Let's see… Huh?
+
+346
+00:32:55.560 --> 00:32:56.500
+Omar Mansour: Signal?
+
+347
+00:32:57.570 --> 00:33:01.959
+Omar Mansour: No, I'm saying you're not blocked in the first place. You go through the wait, and you go through it. You're not blocked.
+
+348
+00:33:03.190 --> 00:33:07.870
+Omar Mansour: Why… how can you not be blocked? What is the situation in which you're not going to be blocked?
+
+349
+00:33:10.370 --> 00:33:11.929
+Omar Mansour: Wait, repeat that?
+
+350
+00:33:12.770 --> 00:33:19.710
+Omar Mansour: Repeat it one more time. Okay. If I have a semaphore, Visualized to a certain value.
+
+351
+00:33:21.410 --> 00:33:25.540
+Omar Mansour: And I invoked a weight, Operation on that semaphore.
+
+352
+00:33:25.970 --> 00:33:27.520
+Omar Mansour: I may be blocked.
+
+353
+00:33:27.770 --> 00:33:29.060
+Omar Mansour: Or not blocked.
+
+354
+00:33:29.370 --> 00:33:32.669
+Omar Mansour: When will I be blocked? When would I be not blocked?
+
+355
+00:33:34.030 --> 00:33:40.809
+Omar Mansour: I will be blocked if it's 0 only, so if it's minus 5, I will not be blocked.
+
+356
+00:33:41.610 --> 00:33:44.609
+Omar Mansour: If it's less than one. If it's less than 1.
+
+357
+00:33:44.850 --> 00:33:50.150
+Omar Mansour: I will be blocked if the semaphore is less than 1. What happens if it's 1? Will I be blocked?
+
+358
+00:33:51.540 --> 00:33:54.639
+Omar Mansour: No. What happens if it's 15?
+
+359
+00:33:56.740 --> 00:33:59.459
+Omar Mansour: Okay, so sometimes I will be blocked.
+
+360
+00:33:59.600 --> 00:34:06.989
+Omar Mansour: If I invoke the weight on a semaphore, other times I will not be blocked, depending on the value of the semaphore. The value is 1 or above.
+
+361
+00:34:07.170 --> 00:34:08.539
+Omar Mansour: I will not be lost.
+
+362
+00:34:08.870 --> 00:34:12.029
+Omar Mansour: That is not the case with condition variables.
+
+363
+00:34:13.940 --> 00:34:19.490
+Omar Mansour: You invoke the weight on a condition variable, you are going to be blocked, assuredly, 100%.
+
+364
+00:34:22.989 --> 00:34:25.800
+Omar Mansour: There are no other cases. You will be blocked.
+
+365
+00:34:26.110 --> 00:34:27.479
+Omar Mansour: No other choice.
+
+366
+00:34:28.560 --> 00:34:29.440
+Omar Mansour: Okay?
+
+367
+00:34:30.190 --> 00:34:36.279
+Omar Mansour: And there's no side effect of decrementing an integer. There's no integer that decrements, it just doesn't exist.
+
+368
+00:34:36.960 --> 00:34:43.499
+Omar Mansour: That is the weight operation. So that is different. A condition variable is different from a semaphore. It actually…
+
+369
+00:34:43.610 --> 00:34:48.959
+Omar Mansour: is more like an event in a Windows operating system. So condition variables exist in Linux.
+
+370
+00:34:49.710 --> 00:34:51.130
+Omar Mansour: with the P threads.
+
+371
+00:34:51.989 --> 00:34:59.810
+Omar Mansour: implementation, they do not exist, events do not exist, but a condition variable is very similar to an event.
+
+372
+00:35:00.380 --> 00:35:01.410
+Omar Mansour: In redos.
+
+373
+00:35:02.750 --> 00:35:04.870
+Omar Mansour: You can wait on an event.
+
+374
+00:35:05.280 --> 00:35:07.199
+Omar Mansour: You can also signal an event.
+
+375
+00:35:08.530 --> 00:35:10.170
+Omar Mansour: What happens when you signal?
+
+376
+00:35:10.770 --> 00:35:16.740
+Omar Mansour: Again, this is different from signaling a semaphore. When you signal a semaphore, the value
+
+377
+00:35:17.580 --> 00:35:22.609
+Omar Mansour: increments. Here, there's no value. Again, there's no integer value. Nothing increments.
+
+378
+00:35:24.570 --> 00:35:30.570
+Omar Mansour: So, if there is no one in the wait queue for the condition variable, then the signal goes to trash.
+
+379
+00:35:31.380 --> 00:35:35.439
+Omar Mansour: For the semaphore, that is not the case. If there's no one waiting on the semaphore.
+
+380
+00:35:36.190 --> 00:35:46.020
+Omar Mansour: the signal doesn't go to refresh, it increments the value of the semaphore by 1. Every time you signal a semaphore, value increments by 1. If there's someone waiting.
+
+381
+00:35:46.450 --> 00:35:51.310
+Omar Mansour: We unblock that waiting process. If there isn't no one waiting, we just increment.
+
+382
+00:35:52.920 --> 00:35:56.120
+Omar Mansour: look at the implementation of the semaphor from last week.
+
+383
+00:35:56.940 --> 00:35:58.510
+Omar Mansour: Condition variables.
+
+384
+00:35:59.100 --> 00:36:05.060
+Omar Mansour: there is no integer that gets incremented. There's no such a thing. If there's anyone in the wait queue.
+
+385
+00:36:05.560 --> 00:36:11.410
+Omar Mansour: We unblock it, No one in the WQ, then the signal goes to trash.
+
+386
+00:36:11.740 --> 00:36:17.449
+Omar Mansour: We signal a conditioned variable, no one is waiting on it, that signal is wasted, it just goes to trash.
+
+387
+00:36:17.700 --> 00:36:20.309
+Omar Mansour: Any questions about condition variables?
+
+388
+00:36:20.960 --> 00:36:25.019
+Omar Mansour: Well, how are we going to use them? Well, we're going to be creating condition variables.
+
+389
+00:36:26.410 --> 00:36:31.930
+Omar Mansour: Actually, I'm gonna create one event or condition variable for every philosopher.
+
+390
+00:36:32.350 --> 00:36:38.799
+Omar Mansour: And then I'm gonna be creating a pickup routine, a pickup method inside the monitor.
+
+391
+00:36:39.030 --> 00:36:46.830
+Omar Mansour: a put-down method inside the monitor and a couple of other things, including some initialization code. So let's get to it and see how we can fix it.
+
+392
+00:36:48.260 --> 00:36:52.259
+Omar Mansour: Well, by the way, every philosopher now, as opposed to what we did before.
+
+393
+00:36:52.680 --> 00:37:06.360
+Omar Mansour: We're going to actually fix the situation by saying, every philosopher, instead of waiting for one chopstick, waiting for the second chopstick, we're not going to do that at all. Every philosopher is going to invoke a method in the monitor
+
+394
+00:37:07.120 --> 00:37:08.989
+Omar Mansour: That method is pickup.
+
+395
+00:37:10.210 --> 00:37:19.729
+Omar Mansour: Then we eat, we meaning the philosopher, and then the philosopher is gonna invoke another method in the monitor, and that method is put down.
+
+396
+00:37:20.820 --> 00:37:27.450
+Omar Mansour: the pickup, They're gonna do all or nothing. Either picks them both up, or nothing at all.
+
+397
+00:37:27.660 --> 00:37:30.300
+Omar Mansour: The put-down lets go of both chopsticks.
+
+398
+00:37:32.520 --> 00:37:34.570
+Omar Mansour: So that is the new implementation.
+
+399
+00:37:37.560 --> 00:37:50.130
+Omar Mansour: We use a monitor called The Dining Philosophers, and we gotta either pick up, then eat, then put down. That's a modification. Instead of waiting on Semma for one, waiting on Sema for two, no, no, no, we just pick up and then put down.
+
+400
+00:37:51.050 --> 00:37:55.319
+Omar Mansour: So let's get to the code that actually implements this behavior.
+
+401
+00:37:56.640 --> 00:37:58.480
+Omar Mansour: We have a monitor.
+
+402
+00:37:59.610 --> 00:38:10.629
+Omar Mansour: called Dining Philosophers. Again, it was like a class, so instead of saying class, and then defining a name, we created a monitor, and that monitor is called Dining Philosophy.
+
+403
+00:38:13.470 --> 00:38:19.229
+Omar Mansour: Okay, so now… We're gonna create a bunch of…
+
+404
+00:38:19.920 --> 00:38:23.460
+Omar Mansour: variable, data members. Enum. Who's familiar with Enum?
+
+405
+00:38:24.470 --> 00:38:26.100
+Omar Mansour: Who used an in-up before?
+
+406
+00:38:26.720 --> 00:38:32.970
+Omar Mansour: Okay, an enum is… A type, a particular data type.
+
+407
+00:38:34.870 --> 00:38:36.709
+Omar Mansour: Like, an integer or something.
+
+408
+00:38:37.900 --> 00:38:40.059
+Omar Mansour: But, it can assume
+
+409
+00:38:41.200 --> 00:38:52.899
+Omar Mansour: smaller number of possibilities. For example, a char can assume any value from 2 to 255. A chart can assume any of possible 256 values.
+
+410
+00:38:53.700 --> 00:38:58.440
+Omar Mansour: An unsigned integer can assume one, 600…
+
+411
+00:38:59.510 --> 00:39:06.959
+Omar Mansour: 5,000… well, actually, unsigned short integer can assume any value from 65… 65,536.
+
+412
+00:39:07.610 --> 00:39:13.059
+Omar Mansour: An enum can only assume the values that you give. So in this case.
+
+413
+00:39:13.330 --> 00:39:15.779
+Omar Mansour: We're declaring a variable called state.
+
+414
+00:39:17.280 --> 00:39:19.290
+Omar Mansour: Seeds can only have 3 values.
+
+415
+00:39:19.810 --> 00:39:21.810
+Omar Mansour: State can only be thinking.
+
+416
+00:39:23.000 --> 00:39:25.079
+Omar Mansour: Hungry, or eating.
+
+417
+00:39:26.010 --> 00:39:32.839
+Omar Mansour: Clearly, at the machine level code, these are encoded into, possibly, most likely, 0, 1, and 2.
+
+418
+00:39:34.660 --> 00:39:37.189
+Omar Mansour: But the code is a lot easier to read.
+
+419
+00:39:37.660 --> 00:39:44.720
+Omar Mansour: when you're really giving them names, when you're giving the values names. That's how enums work, you give them names. The compiler assigns them value.
+
+420
+00:39:44.940 --> 00:39:47.640
+Omar Mansour: Your compiled machine code.
+
+421
+00:39:50.490 --> 00:39:55.110
+Omar Mansour: And in this case, I'm not only creating a state.
+
+422
+00:39:55.570 --> 00:39:59.189
+Omar Mansour: as a scaler, I'm creating an array of states.
+
+423
+00:39:59.670 --> 00:40:07.909
+Omar Mansour: An array of how many elements? Five elements. Why? Because I have five philosophers. So this would have to match the number of processes you have in your system.
+
+424
+00:40:09.070 --> 00:40:11.920
+Omar Mansour: I'm creating a state for each philosopher.
+
+425
+00:40:12.250 --> 00:40:17.999
+Omar Mansour: And in the past, we said every philosopher is either thinking or eating.
+
+426
+00:40:18.830 --> 00:40:23.139
+Omar Mansour: In one of the two states, now I'm gonna provide a third state for the philosopher.
+
+427
+00:40:23.470 --> 00:40:25.169
+Omar Mansour: A philosopher, maybe.
+
+428
+00:40:25.580 --> 00:40:26.660
+Omar Mansour: Thinking.
+
+429
+00:40:27.030 --> 00:40:31.979
+Omar Mansour: Maybe eating, but also… In some state in the middle, in which is hungry.
+
+430
+00:40:32.800 --> 00:40:35.060
+Omar Mansour: The philosopher gets hungry.
+
+431
+00:40:35.440 --> 00:40:42.720
+Omar Mansour: And sometimes he has to wait and remain hungry for a bit of time until he can acquire the two chopsticks.
+
+432
+00:40:44.300 --> 00:40:48.820
+Omar Mansour: Hungry means a desire to eat, because that's what hungry… definition of hungry.
+
+433
+00:40:48.960 --> 00:40:54.930
+Omar Mansour: The philosopher is desiring to eat, unable to eat, because he cannot get the two chopsticks.
+
+434
+00:40:55.370 --> 00:41:03.330
+Omar Mansour: He just has to wait, linger for a bit of time in the state of Hungary until he's capable of transitioning to the eating state.
+
+435
+00:41:04.680 --> 00:41:09.109
+Omar Mansour: And every philosopher has a state. So we have an array of five.
+
+436
+00:41:09.220 --> 00:41:12.000
+Omar Mansour: And I'm gonna create events.
+
+437
+00:41:12.910 --> 00:41:19.129
+Omar Mansour: Except that we don't call them events in Linux, we call them condition variables. I'm gonna create an array
+
+438
+00:41:20.050 --> 00:41:23.640
+Omar Mansour: Of five condition variables, one for each philosopher.
+
+439
+00:41:25.660 --> 00:41:28.649
+Omar Mansour: And let's implement the pickup method together.
+
+440
+00:41:30.460 --> 00:41:35.149
+Omar Mansour: What do we have in the pickup method? Well, the first thing is, I want to test
+
+441
+00:41:35.450 --> 00:41:37.810
+Omar Mansour: If both chopsticks are available.
+
+442
+00:41:38.560 --> 00:41:43.769
+Omar Mansour: So I'm gonna use another method, also inside the monitor, that's called Test and Signal.
+
+443
+00:41:45.150 --> 00:41:48.330
+Omar Mansour: Destin Signal, we're gonna go through that very soon.
+
+444
+00:41:49.130 --> 00:41:53.409
+Omar Mansour: Listen Signal is going to be testing to see if the chopsticks are available.
+
+445
+00:41:55.360 --> 00:42:01.109
+Omar Mansour: If they are available, then I would transition.
+
+446
+00:42:02.480 --> 00:42:10.660
+Omar Mansour: Or at least, destined signal, If the chopsticks are available, it's gonna transition me from Hungary To eat it.
+
+447
+00:42:12.170 --> 00:42:18.930
+Omar Mansour: So, the test and signal, Finds that the two chopsticks are available is going to transition me to eating.
+
+448
+00:42:19.410 --> 00:42:22.010
+Omar Mansour: So if I have transitioned, fantastic.
+
+449
+00:42:23.010 --> 00:42:26.799
+Omar Mansour: If the two chopsticks are not available, it's gonna keep me
+
+450
+00:42:27.290 --> 00:42:29.229
+Omar Mansour: in the same state of Hungary.
+
+451
+00:42:31.380 --> 00:42:43.669
+Omar Mansour: So I'm going to invoke the test and signal. If I find myself to be in the same state of hungry, then I'm going to say, okay, let's say this is condition… this is actually Philosopher 4, so I is equal to 4.
+
+452
+00:42:43.850 --> 00:42:46.910
+Omar Mansour: Then we actually… Are gonna wait?
+
+453
+00:42:47.520 --> 00:42:50.030
+Omar Mansour: On event number 4.
+
+454
+00:42:50.590 --> 00:42:52.689
+Omar Mansour: Gonna wait for the event to be signaled.
+
+455
+00:42:52.800 --> 00:43:02.349
+Omar Mansour: We're gonna wait for condition variable number 4 to be signaled. That's what this one does. Wait means you're gonna be waiting in a wait queue until you are signaled.
+
+456
+00:43:03.420 --> 00:43:04.370
+Omar Mansour: Alright?
+
+457
+00:43:05.930 --> 00:43:12.599
+Omar Mansour: Now, why do we have to wait for it? This is the reason why we introduced condition variables. Why do we have to wait on a conditioned variable?
+
+458
+00:43:13.510 --> 00:43:16.159
+Omar Mansour: Because I don't want to wait in a while loop.
+
+459
+00:43:17.930 --> 00:43:21.690
+Omar Mansour: First of all, if I wait in a while loop inside the monitor.
+
+460
+00:43:23.360 --> 00:43:28.469
+Omar Mansour: nobody else is going to be active inside the monitor, so I cannot be waiting in a while loop inside the monitor.
+
+461
+00:43:28.770 --> 00:43:30.029
+Omar Mansour: That is the first thing.
+
+462
+00:43:30.480 --> 00:43:32.150
+Omar Mansour: The second thing is…
+
+463
+00:43:35.320 --> 00:43:42.010
+Omar Mansour: If I decide to exit the monitor and try again, then that means I have to implement code outside the monitor
+
+464
+00:43:42.310 --> 00:43:52.949
+Omar Mansour: That keeps picking up, and if it fails, it waits 10 milliseconds or something, or it waits in a while loop, and tries to pick up again, and waits in a while loop outside the monitor.
+
+465
+00:43:53.120 --> 00:43:57.129
+Omar Mansour: So that really is a busy wait, not an efficient implementation.
+
+466
+00:43:57.340 --> 00:44:06.460
+Omar Mansour: The correct implementation is to use a condition variable, and I block myself waiting on that condition variable. If I cannot access the chopsticks.
+
+467
+00:44:06.980 --> 00:44:09.029
+Omar Mansour: I wait for someone to signal me.
+
+468
+00:44:09.590 --> 00:44:12.580
+Omar Mansour: We're gonna figure out who that someone very, very soon.
+
+469
+00:44:14.120 --> 00:44:18.560
+Omar Mansour: That's all what waiting on a condition variable means. I wait for someone to signal me.
+
+470
+00:44:19.980 --> 00:44:21.860
+Omar Mansour: Any questions about that part?
+
+471
+00:44:24.140 --> 00:44:26.050
+Omar Mansour: Well, let's examine the pickup.
+
+472
+00:44:28.070 --> 00:44:31.830
+Omar Mansour: In fact, at this point, Let's go with an example.
+
+473
+00:44:32.610 --> 00:44:35.009
+Omar Mansour: Let's say Philosopher 4
+
+474
+00:44:35.460 --> 00:44:39.739
+Omar Mansour: Let's say we start the system. In fact, I want to go through the initialization code.
+
+475
+00:44:40.320 --> 00:44:43.230
+Omar Mansour: The initialization code, or the constructor.
+
+476
+00:44:45.020 --> 00:44:50.609
+Omar Mansour: is gonna initialize every philosopher to think. So, when I start the system, every philosopher is thinking.
+
+477
+00:44:50.730 --> 00:44:52.379
+Omar Mansour: Let's do a simulation.
+
+478
+00:44:53.330 --> 00:44:57.190
+Omar Mansour: Philosopher 4, Decided he wants to eat.
+
+479
+00:44:57.520 --> 00:45:01.309
+Omar Mansour: So, Philosopher 4, Invokes the pickup.
+
+480
+00:45:04.140 --> 00:45:05.920
+Omar Mansour: So i is equal to a 4.
+
+481
+00:45:06.510 --> 00:45:09.760
+Omar Mansour: the state of Philosopher 4 is gonna change.
+
+482
+00:45:10.110 --> 00:45:14.760
+Omar Mansour: Because initially, all states were thinking. So philosopher, for now.
+
+483
+00:45:15.420 --> 00:45:18.670
+Omar Mansour: You have moved states from thinking to hungry.
+
+484
+00:45:19.060 --> 00:45:22.770
+Omar Mansour: Philosopher 4 is right here. And I like Philosopher 4,
+
+485
+00:45:23.200 --> 00:45:24.930
+Omar Mansour: For one and only one reason.
+
+486
+00:45:26.360 --> 00:45:30.550
+Omar Mansour: That is… His right chopstick is zero.
+
+487
+00:45:30.970 --> 00:45:34.129
+Omar Mansour: to explain to you, or remind you that I need modular arithm.
+
+488
+00:45:37.430 --> 00:45:42.199
+Omar Mansour: So, the pickup method changed the state of Philosopher 4,
+
+489
+00:45:42.670 --> 00:45:52.910
+Omar Mansour: 200. And then it invokes the test and signal on Philosopher 4. What is the test and signal? I need to see the availability of the two chopsticks. How do I do it?
+
+490
+00:45:53.710 --> 00:45:55.130
+Omar Mansour: Here's how we do it.
+
+491
+00:45:56.450 --> 00:46:00.099
+Omar Mansour: The chopstick is available in one and only one condition.
+
+492
+00:46:01.140 --> 00:46:03.430
+Omar Mansour: Can anyone name what that condition is?
+
+493
+00:46:06.720 --> 00:46:11.100
+Omar Mansour: If the state… if Philosopher 3 is not eating.
+
+494
+00:46:12.780 --> 00:46:20.320
+Omar Mansour: What about chopstick number zero? It will only be available if the state of philosopher zero is not eating.
+
+495
+00:46:21.350 --> 00:46:29.500
+Omar Mansour: So, if both my neighbors are not eating, This signifies That the chopsticks are available.
+
+496
+00:46:30.210 --> 00:46:32.020
+Omar Mansour: That's exactly what we test for.
+
+497
+00:46:32.250 --> 00:46:38.530
+Omar Mansour: My left neighbor, Like I said, I'm philosopher 4. My left neighbor is not 3.
+
+498
+00:46:41.180 --> 00:46:47.339
+Omar Mansour: Well, sorry, my left neighbor is 3, but it's not 4 minus 1, it's actually… you add 4,
+
+499
+00:46:47.850 --> 00:46:51.289
+Omar Mansour: and you do modular arithmetic again. Why is that?
+
+500
+00:46:52.360 --> 00:47:01.970
+Omar Mansour: Because if I just subtract 1… yes, please subtract 1 from 0. Exactly, because if I'm Philosopher 0, if I subtract a 1,
+
+501
+00:47:03.170 --> 00:47:06.369
+Omar Mansour: That will give me a minus one. There's no philosopher minus one.
+
+502
+00:47:06.720 --> 00:47:08.950
+Omar Mansour: So really, you don't subtract a 1.
+
+503
+00:47:09.680 --> 00:47:14.049
+Omar Mansour: After the modules, minus 1 will become 4.
+
+504
+00:47:15.380 --> 00:47:20.300
+Omar Mansour: Well, yeah, but how… well… If you do, you have the Unimodular.
+
+505
+00:47:20.890 --> 00:47:28.930
+Omar Mansour: You're right, but… so you have to do it that way as well, but actually the negative implementation is exactly implemented that way. Taking the subtract.
+
+506
+00:47:29.060 --> 00:47:31.940
+Omar Mansour: It's actually adding the reduced ratings.
+
+507
+00:47:32.350 --> 00:47:36.250
+Omar Mansour: So that's exactly what we're doing. But yes, you're right, I could have subtracted
+
+508
+00:47:38.500 --> 00:47:41.910
+Omar Mansour: and then it becomes a minus 1, then I can do a modular.
+
+509
+00:47:42.080 --> 00:47:43.150
+Omar Mansour: modulo.
+
+510
+00:47:43.330 --> 00:47:49.870
+Omar Mansour: But I'm gonna add a 4. The reduced ratings. If I have 5 philosophers, I add… N minus 1.
+
+511
+00:47:49.990 --> 00:47:51.230
+Omar Mansour: So I add a 4.
+
+512
+00:47:51.630 --> 00:47:53.120
+Omar Mansour: Module 5.
+
+513
+00:47:54.160 --> 00:47:56.339
+Omar Mansour: It becomes a 3, which is my left neighbor.
+
+514
+00:47:57.480 --> 00:47:58.410
+Omar Mansour: Alright?
+
+515
+00:48:02.270 --> 00:48:06.990
+Omar Mansour: Very good. I could have done it with subtraction, but I need to do the modular.
+
+516
+00:48:07.120 --> 00:48:08.520
+Omar Mansour: I need to use the module.
+
+517
+00:48:10.940 --> 00:48:13.329
+Omar Mansour: By the same argument, the right neighbor.
+
+518
+00:48:13.850 --> 00:48:22.090
+Omar Mansour: It's not gonna be 4 plus 1, it's gonna be 4 plus 1, Module 5, because I also… Indeed.
+
+519
+00:48:22.260 --> 00:48:24.339
+Omar Mansour: To have zero as my right name.
+
+520
+00:48:24.590 --> 00:48:25.480
+Omar Mansour: Alright?
+
+521
+00:48:25.790 --> 00:48:28.380
+Omar Mansour: Because 5 modulum 5 is 0.
+
+522
+00:48:28.790 --> 00:48:30.760
+Omar Mansour: This has to be Module 5.
+
+523
+00:48:31.690 --> 00:48:43.590
+Omar Mansour: So now I got my right neighbor and my left neighbor. If they're both not eating, that means that two chopsticks are available. And if I'm requesting a chopstick, meaning if I'm hungry, that means I'm making a request to eat.
+
+524
+00:48:44.430 --> 00:48:46.729
+Omar Mansour: If all three conditions are true.
+
+525
+00:48:47.080 --> 00:48:49.000
+Omar Mansour: Then the if statement is true.
+
+526
+00:48:49.120 --> 00:48:50.949
+Omar Mansour: Then you execute these two statements.
+
+527
+00:48:52.030 --> 00:48:59.269
+Omar Mansour: If the two chopsticks are available, immediately my state is eating. That means I'm holding the two chopsticks.
+
+528
+00:48:59.700 --> 00:49:08.319
+Omar Mansour: And then, I'm gonna signal myself, this is 4. Signaling 4 doesn't really do anything, I'm not blocked waiting on 4 at this point.
+
+529
+00:49:08.920 --> 00:49:10.980
+Omar Mansour: What did we say? If you signal.
+
+530
+00:49:11.470 --> 00:49:17.010
+Omar Mansour: A condition variable, and no one is in the wait queue, then that signal is thrown to trash, which is completely fine for now.
+
+531
+00:49:20.190 --> 00:49:21.210
+Omar Mansour: Okay.
+
+532
+00:49:21.610 --> 00:49:23.569
+Omar Mansour: Let's continue with our simulation.
+
+533
+00:49:25.660 --> 00:49:30.290
+Omar Mansour: Step number two of the simulation is philosopher number 3.
+
+534
+00:49:31.890 --> 00:49:36.030
+Omar Mansour: In fact, Yeah, philosopher number 3.
+
+535
+00:49:36.470 --> 00:49:40.050
+Omar Mansour: Philosopher number 3 now decides that it wants to eat.
+
+536
+00:49:42.500 --> 00:49:43.889
+Omar Mansour: Who wants to guess?
+
+537
+00:49:45.030 --> 00:49:57.100
+Omar Mansour: So the first step is philosopher number 4 is now eating. Philosopher number 4 picked up, and now philosopher number 4 is eating. Now, if philosopher number 3, meaning I is equal to 3,
+
+538
+00:49:57.700 --> 00:49:59.220
+Omar Mansour: Attempts to pick up.
+
+539
+00:50:00.510 --> 00:50:01.649
+Omar Mansour: What happens?
+
+540
+00:50:02.020 --> 00:50:03.880
+Omar Mansour: Does he succeed? No.
+
+541
+00:50:04.250 --> 00:50:06.030
+Omar Mansour: Test that signal first.
+
+542
+00:50:06.900 --> 00:50:11.989
+Omar Mansour: So, philosopher number 3 is going to be testing and signaling. He's going to declare himself
+
+543
+00:50:12.480 --> 00:50:18.289
+Omar Mansour: wanting to eat by declaring his state to be hungry. Philosophy number 3 is going to invoke the test and signal.
+
+544
+00:50:18.750 --> 00:50:23.210
+Omar Mansour: on 3. Look at the left neighbor. Who is the left neighbor of 3?
+
+545
+00:50:25.970 --> 00:50:32.190
+Omar Mansour: 2 is not eating, that's fantastic. Who is the right neighbor of 3? 4. We've already established that 4 is eating.
+
+546
+00:50:32.660 --> 00:50:36.529
+Omar Mansour: So, 4 is eating, that means chopstick number 4 is taken.
+
+547
+00:50:37.310 --> 00:50:38.590
+Omar Mansour: to three.
+
+548
+00:50:39.130 --> 00:50:41.309
+Omar Mansour: It's not going to be able to acquire the chopsticks.
+
+549
+00:50:42.350 --> 00:50:43.610
+Omar Mansour: What does it do?
+
+550
+00:50:45.550 --> 00:50:53.089
+Omar Mansour: It's not gonna execute this code, it's not gonna execute this statement or that statement. The if is a… is a false.
+
+551
+00:50:53.360 --> 00:50:55.930
+Omar Mansour: It actually returns back.
+
+552
+00:50:56.220 --> 00:51:04.570
+Omar Mansour: And now, oh, look at the condition variable. Now it's gonna block itself in a wait queue for the condition variable.
+
+553
+00:51:06.170 --> 00:51:13.639
+Omar Mansour: At this point, Here's what's very important. At this point, philosopher number 3 is not active
+
+554
+00:51:13.770 --> 00:51:16.339
+Omar Mansour: Absolutely not active inside the monitor.
+
+555
+00:51:16.780 --> 00:51:20.820
+Omar Mansour: It let go of the monitor, it is blocked waiting outside the monitor.
+
+556
+00:51:21.470 --> 00:51:29.079
+Omar Mansour: Not outside the monitor, but it's not active. It's still block waiting inside the monitor, because the condition variables are inside, so pictorially.
+
+557
+00:51:29.840 --> 00:51:34.789
+Omar Mansour: It is… Blocked waiting inside the monitor, but it's not active.
+
+558
+00:51:35.730 --> 00:51:40.550
+Omar Mansour: Active means… Running, or… Ready.
+
+559
+00:51:41.640 --> 00:51:44.130
+Omar Mansour: These two states are sometimes called active.
+
+560
+00:51:44.460 --> 00:51:51.790
+Omar Mansour: It is not active inside the monitor. It's not running any code inside the monitor, it's not ready to run any code inside the monitor, it is really blocked.
+
+561
+00:51:53.160 --> 00:51:54.940
+Omar Mansour: But it's not active inside the market.
+
+562
+00:51:55.460 --> 00:52:02.460
+Omar Mansour: So this allows any other process to execute code inside the market. That's what's very important here, that's why we need condition variable.
+
+563
+00:52:05.240 --> 00:52:06.280
+Omar Mansour: Okay.
+
+564
+00:52:07.360 --> 00:52:12.489
+Omar Mansour: Going with the same simulation, let's say 4 that's already eating.
+
+565
+00:52:13.550 --> 00:52:16.900
+Omar Mansour: 4 now decides to finish eating.
+
+566
+00:52:17.240 --> 00:52:21.639
+Omar Mansour: What happens when Ford decides to finish eating? It's gonna invoke the put down.
+
+567
+00:52:22.820 --> 00:52:28.209
+Omar Mansour: Now let's take a look at the put-down. We haven't looked at it before. What does the put-down method do?
+
+568
+00:52:32.560 --> 00:52:38.110
+Omar Mansour: The put-down method, I'm Philosopher 4.
+
+569
+00:52:38.700 --> 00:52:40.660
+Omar Mansour: 4 is the one that finished eating.
+
+570
+00:52:40.930 --> 00:52:41.920
+Omar Mansour: Freedom.
+
+571
+00:52:42.110 --> 00:52:46.270
+Omar Mansour: is blocked on the condition variable number 3. For…
+
+572
+00:52:46.950 --> 00:52:50.300
+Omar Mansour: Finished eating is going to convert its state to thinking.
+
+573
+00:52:52.440 --> 00:52:58.690
+Omar Mansour: That is the first thing it does. So the state of 4 is now thinking. It was eating, now it's flipped to thinking.
+
+574
+00:53:00.850 --> 00:53:02.989
+Omar Mansour: So this means, it's released.
+
+575
+00:53:03.610 --> 00:53:06.089
+Omar Mansour: The moment it changes to thinking, that means
+
+576
+00:53:06.280 --> 00:53:10.649
+Omar Mansour: These two semaphores, 0 and 4, have now become available.
+
+577
+00:53:11.820 --> 00:53:18.960
+Omar Mansour: Now, if it is… if they are available, then we need to check and see if anyone is waiting on them.
+
+578
+00:53:21.150 --> 00:53:27.660
+Omar Mansour: Because we know that 3 is waiting on that particular Number four.
+
+579
+00:53:28.390 --> 00:53:30.720
+Omar Mansour: We know that 3 is waiting on it.
+
+580
+00:53:30.990 --> 00:53:32.310
+Omar Mansour: So we have to check.
+
+581
+00:53:32.790 --> 00:53:37.540
+Omar Mansour: We're gonna test that signal, I is equal to a 4.
+
+582
+00:53:37.780 --> 00:53:43.090
+Omar Mansour: 4 plus 4 is 8, margin of 5, that is 3. We test and signal the left neighbor.
+
+583
+00:53:44.100 --> 00:53:50.420
+Omar Mansour: We're gonna see if the left neighbor, who is 3, Actually.
+
+584
+00:53:53.430 --> 00:53:54.770
+Omar Mansour: Eating.
+
+585
+00:54:02.650 --> 00:54:04.640
+Omar Mansour: 3 is…
+
+586
+00:54:05.610 --> 00:54:10.409
+Omar Mansour: Well, sorry, we're gonna see if 3 is actually hungry. 3 is hungry, because I is equal to 3.
+
+587
+00:54:11.500 --> 00:54:16.049
+Omar Mansour: The I we pass here is equal to 3. We are… we are philosopher 4.
+
+588
+00:54:16.200 --> 00:54:23.950
+Omar Mansour: We're gonna check the left neighbor, we're gonna do a test and signal on 3, 3 is already hungry.
+
+589
+00:54:24.170 --> 00:54:25.770
+Omar Mansour: And it's blocked waiting.
+
+590
+00:54:27.260 --> 00:54:29.980
+Omar Mansour: And the left neighbor of 3 is 2.
+
+591
+00:54:31.330 --> 00:54:37.950
+Omar Mansour: 2 is not eating, 4 is not eating either, because 4 just changed its state to thinking.
+
+592
+00:54:38.660 --> 00:54:43.789
+Omar Mansour: 4 is the one that changed the state. 4 is the one that is invoking the test and signal 4-3.
+
+593
+00:54:44.650 --> 00:54:55.260
+Omar Mansour: So at this point, 3 is good to go, so 3 is going to change its state to eating, and it's going to actually signal condition variable number 3.
+
+594
+00:54:56.630 --> 00:54:58.760
+Omar Mansour: And earlier, we know.
+
+595
+00:54:59.210 --> 00:55:05.419
+Omar Mansour: Then philosopher 3 was unable to acquire the chopstick, and it is blocked waiting on condition number 3.
+
+596
+00:55:05.840 --> 00:55:07.600
+Omar Mansour: So now we signal condition number 3.
+
+597
+00:55:09.310 --> 00:55:11.919
+Omar Mansour: And we do the same.
+
+598
+00:55:13.900 --> 00:55:18.959
+Omar Mansour: And we do the same for the right neighbor, which is zero, that is not actually trying to meet.
+
+599
+00:55:19.750 --> 00:55:23.570
+Omar Mansour: This ensures that… only…
+
+600
+00:55:24.250 --> 00:55:34.350
+Omar Mansour: One process is active inside the monitor, and the solution here is that it is all or nothing. We completely prevented the hold and wait. You either get the two chopsticks.
+
+601
+00:55:34.750 --> 00:55:37.129
+Omar Mansour: The two semaphores there is, or you don't get them at all.
+
+602
+00:55:42.500 --> 00:55:43.750
+Omar Mansour: Any questions?
+
+603
+00:55:48.890 --> 00:55:50.079
+Omar Mansour: Okay, very good.
+
+604
+00:55:52.000 --> 00:55:57.849
+Omar Mansour: Now we've solved the problem of deadlocks by preventing deadlocks, by preventing the hold and wait.
+
+605
+00:55:58.770 --> 00:56:10.169
+Omar Mansour: Of course, deadlocks, we can spend two lectures on deadlocks. We can spend time on cycles and all that stuff, but I think we're going to be stopping here, and we're going to move into the topic of scheduling.
+
+606
+00:56:12.380 --> 00:56:14.510
+Omar Mansour: Oh, right away, I'm gonna leave you.
+
+607
+00:56:14.840 --> 00:56:19.820
+Omar Mansour: with a few slides, here's 1, 2, 3, 4… Five.
+
+608
+00:56:20.100 --> 00:56:21.100
+Omar Mansour: slides…
+
+609
+00:56:21.850 --> 00:56:31.710
+Omar Mansour: for reference only. You will not be examined on them, you don't have to read them, but if you are really, really interested, you're more than welcome to look at them, but they're not going to be in your exam.
+
+610
+00:56:31.900 --> 00:56:36.110
+Omar Mansour: The only takeaway is… Debt.
+
+611
+00:56:37.170 --> 00:56:40.820
+Omar Mansour: Monitors are not implemented inside the kernel.
+
+612
+00:56:41.910 --> 00:56:48.129
+Omar Mansour: Monitors are implemented, that is the implementation here, of the condition variables and the monitors
+
+613
+00:56:49.890 --> 00:56:57.400
+Omar Mansour: that use condition variables, they are implemented as a user mode library. A user mode library on top of semaphores.
+
+614
+00:56:58.260 --> 00:57:03.930
+Omar Mansour: It's a user mode library that uses semaphores to create semaphores. Sorry, to create monitors.
+
+615
+00:57:04.400 --> 00:57:12.209
+Omar Mansour: So monitors are not implemented inside the kernel, they're implemented in a user mode library, and in our case, it's implemented in Pthread.
+
+616
+00:57:15.650 --> 00:57:21.540
+Omar Mansour: Okay, now I want to talk about scheduling. However, You're gonna sleep.
+
+617
+00:57:21.770 --> 00:57:23.470
+Omar Mansour: There's your chance to wake up.
+
+618
+00:57:23.640 --> 00:57:25.010
+Omar Mansour: Brand new topic.
+
+619
+00:57:25.520 --> 00:57:29.180
+Omar Mansour: If you miss the train, That's a brand new train.
+
+620
+00:57:29.570 --> 00:57:31.130
+Omar Mansour: Bend your ears.
+
+621
+00:57:32.200 --> 00:57:35.929
+Omar Mansour: Unfortunately, we cannot talk about scheduling without defining a few things.
+
+622
+00:57:36.260 --> 00:57:47.909
+Omar Mansour: And talk about a few metrics that we can use for evaluating different scheduling algorithms. So let's do it one step at a time. A few concepts here we need to be aware of. You probably are aware of them if you're ultra-alert.
+
+623
+00:57:48.920 --> 00:57:50.479
+Omar Mansour: Let's review them again.
+
+624
+00:57:50.630 --> 00:57:53.810
+Omar Mansour: Every process… Typically.
+
+625
+00:57:54.030 --> 00:58:01.529
+Omar Mansour: I mean, look back at every assignment you've created, look back at assignment number 2, for example, assignment number 1, 2, whatever.
+
+626
+00:58:01.670 --> 00:58:13.220
+Omar Mansour: at some point, You're doing computations, You're loading, adding, subtracting, multiplying, dividing… logical ORing.
+
+627
+00:58:13.690 --> 00:58:27.459
+Omar Mansour: testing a condition, branching, if condition is true, you're doing… all of these are called arithmetic and logic operations. A lot of CPU computations. Arithmetic and logic operations are implemented
+
+628
+00:58:27.720 --> 00:58:29.550
+Omar Mansour: and carried on by the CPU.
+
+629
+00:58:30.210 --> 00:58:31.090
+Omar Mansour: Alright?
+
+630
+00:58:31.500 --> 00:58:34.120
+Omar Mansour: At some point, your program, all of a sudden.
+
+631
+00:58:34.520 --> 00:58:37.909
+Omar Mansour: Tries to read, not all of a sudden, but at some point you try to read.
+
+632
+00:58:38.290 --> 00:58:41.030
+Omar Mansour: Maybe a big, huge file from the hard drive.
+
+633
+00:58:42.090 --> 00:58:50.480
+Omar Mansour: In fact, in assignment number 6, that is due tonight, You have created a process.
+
+634
+00:58:51.630 --> 00:58:57.130
+Omar Mansour: One of them was a server in which you're actually waiting to receive a package.
+
+635
+00:58:57.340 --> 00:59:01.860
+Omar Mansour: In fact, you first wait on a request, which is the reception of a packet.
+
+636
+00:59:03.210 --> 00:59:05.090
+Omar Mansour: A request to conduct first.
+
+637
+00:59:05.380 --> 00:59:12.620
+Omar Mansour: So you may be waiting on a request to connect, and then you might be waiting to receive a packet using the read… using the read system call.
+
+638
+00:59:13.500 --> 00:59:15.160
+Omar Mansour: From a particular socket.
+
+639
+00:59:16.930 --> 00:59:19.439
+Omar Mansour: You have to wait for the packet and the read system call.
+
+640
+00:59:19.670 --> 00:59:26.000
+Omar Mansour: So what happens if the packet doesn't arrive? Then you're still waiting, Until the packet arrives.
+
+641
+00:59:26.440 --> 00:59:28.010
+Omar Mansour: That message arrived.
+
+642
+00:59:28.760 --> 00:59:31.460
+Omar Mansour: The read is how you receive a packet.
+
+643
+00:59:33.980 --> 00:59:35.629
+Omar Mansour: You've done assignment 6.
+
+644
+00:59:36.920 --> 00:59:40.129
+Omar Mansour: The right is how you send the packet into the socket.
+
+645
+00:59:42.870 --> 00:59:44.150
+Omar Mansour: So we're reading.
+
+646
+00:59:44.460 --> 00:59:52.069
+Omar Mansour: And that's an IO operation. You might wait until you read a packet, and that packet is huge, that comes into the network interface card.
+
+647
+00:59:53.140 --> 00:59:57.170
+Omar Mansour: So really, First thing to understand is.
+
+648
+00:59:57.990 --> 01:00:04.610
+Omar Mansour: you cannot access the network interface card. You cannot access… you cannot be putting commands to the NIC
+
+649
+01:00:04.730 --> 01:00:14.119
+Omar Mansour: telling it, hey, I want to read the packet. You cannot be putting commands into the hard drive saying… into the controller of the hard drive saying, please read me this file.
+
+650
+01:00:14.270 --> 01:00:26.240
+Omar Mansour: You cannot do that. You do it by doing a system call, asking the kernel to do it on your behalf, and the kernel doesn't. So this immediately means, anytime you wish to do an I.O. operation, you have to do a system call.
+
+651
+01:00:26.920 --> 01:00:32.699
+Omar Mansour: And the kernel then puts the commands into whichever device. Whether it's a network interface card.
+
+652
+01:00:33.270 --> 01:00:38.499
+Omar Mansour: Or whether it is… A device, a storage device controller.
+
+653
+01:00:40.400 --> 01:00:44.350
+Omar Mansour: But all of that means the CPU is not executing
+
+654
+01:00:44.660 --> 01:00:48.099
+Omar Mansour: anything on your behalf anymore. It is…
+
+655
+01:00:48.250 --> 01:00:53.050
+Omar Mansour: The device controller that grabs the data and puts it in the main memory.
+
+656
+01:00:56.380 --> 01:01:06.540
+Omar Mansour: So, the phase of your process is that some I.O. operation is being executed. That I.O. operation is moving a packet into the memory of your process.
+
+657
+01:01:06.900 --> 01:01:13.400
+Omar Mansour: Or maybe, and this happens by some device controller, a piece of hardware that is not the CPU,
+
+658
+01:01:13.980 --> 01:01:17.230
+Omar Mansour: Or maybe reading an entire file into the memory.
+
+659
+01:01:18.190 --> 01:01:23.030
+Omar Mansour: of your process. Again, this happens by some device controller that is not
+
+660
+01:01:23.450 --> 01:01:26.299
+Omar Mansour: A device controller is a piece of hardware, but it's not the CPU.
+
+661
+01:01:27.080 --> 01:01:29.290
+Omar Mansour: So you go through phases in which…
+
+662
+01:01:29.940 --> 01:01:40.230
+Omar Mansour: you're going through CPU operations, such as addition, subtraction, multiplication, logical ORing, logical ANDing, comparing, conditionally branching.
+
+663
+01:01:41.020 --> 01:01:44.839
+Omar Mansour: If statements there is, and so on, and all of a sudden.
+
+664
+01:01:45.690 --> 01:01:51.619
+Omar Mansour: The CPU is not running any code anymore, the CPU is, for your process, not doing anything.
+
+665
+01:01:52.230 --> 01:01:57.789
+Omar Mansour: Of course, that scheduler would have picked another process to run during that interval of time.
+
+666
+01:01:58.870 --> 01:02:00.109
+Omar Mansour: I'm gonna see how.
+
+667
+01:02:01.920 --> 01:02:08.280
+Omar Mansour: But you go through a phase, your process goes through a phase of CPU bursts, meaning CPU operations.
+
+668
+01:02:08.490 --> 01:02:09.850
+Omar Mansour: I've been waiting.
+
+669
+01:02:10.070 --> 01:02:15.679
+Omar Mansour: On a device controller to do some operation for you, such as reading from a file or reading a text.
+
+670
+01:02:18.090 --> 01:02:34.170
+Omar Mansour: And you go through a cycle of doing this, and then that, CPU burst, then I.O. burst, CPU burst, then I.O. burst, because the moment the packet arrives, you start computing again, computing again, meaning CPU operations, and then you wait on another I.O. operation, and then CPU operation, and so on.
+
+671
+01:02:35.390 --> 01:02:39.160
+Omar Mansour: For scheduling, We care the most.
+
+672
+01:02:39.610 --> 01:02:42.989
+Omar Mansour: about CPU operations, about a CPU burst.
+
+673
+01:02:43.360 --> 01:02:46.460
+Omar Mansour: How long is the CPU burst? That's very important.
+
+674
+01:02:47.620 --> 01:02:49.699
+Omar Mansour: How long we measured that in time.
+
+675
+01:02:49.830 --> 01:02:51.330
+Omar Mansour: Milliseconds, probably.
+
+676
+01:02:54.350 --> 01:02:56.070
+Omar Mansour: But two things are important.
+
+677
+01:02:57.080 --> 01:03:00.640
+Omar Mansour: What delineates The end of a CPU burst.
+
+678
+01:03:03.850 --> 01:03:06.850
+Omar Mansour: How do I say the CPU burst ended right here?
+
+679
+01:03:07.590 --> 01:03:11.669
+Omar Mansour: Well, the moment your process This was a system call.
+
+680
+01:03:12.340 --> 01:03:14.899
+Omar Mansour: that pertains… that requests an eye operation.
+
+681
+01:03:15.370 --> 01:03:17.469
+Omar Mansour: The moment there's an I.O. request.
+
+682
+01:03:17.780 --> 01:03:21.209
+Omar Mansour: That marks the end of the CPU burst, so keep that in mind, please.
+
+683
+01:03:21.780 --> 01:03:24.809
+Omar Mansour: So what marks the beginning of the CPU burst?
+
+684
+01:03:25.780 --> 01:03:27.440
+Omar Mansour: Well, with your state?
+
+685
+01:03:27.980 --> 01:03:32.499
+Omar Mansour: Changes from blocked waiting On a particular device queue.
+
+686
+01:03:33.430 --> 01:03:35.679
+Omar Mansour: To going back into the ready queue.
+
+687
+01:03:36.310 --> 01:03:39.109
+Omar Mansour: That means the start of the CPU work.
+
+688
+01:03:39.900 --> 01:03:43.159
+Omar Mansour: when the CPU starts executing your actual code.
+
+689
+01:03:44.680 --> 01:03:51.029
+Omar Mansour: So this happens in two steps. The first step is the state of your process changes from waiting
+
+690
+01:03:51.140 --> 01:03:55.009
+Omar Mansour: Meaning blocked waiting on I operation, changes until ready.
+
+691
+01:03:55.350 --> 01:03:57.309
+Omar Mansour: That means you are in a ready queue.
+
+692
+01:03:57.570 --> 01:04:01.800
+Omar Mansour: And at some point, the scheduler is gonna pick you, Hopefully.
+
+693
+01:04:02.320 --> 01:04:05.369
+Omar Mansour: And starts executing your machine instructions.
+
+694
+01:04:05.760 --> 01:04:09.700
+Omar Mansour: At this point of time, You're not gonna be ready, you're gonna be running.
+
+695
+01:04:10.430 --> 01:04:11.290
+Omar Mansour: Okay?
+
+696
+01:04:11.640 --> 01:04:13.009
+Omar Mansour: So keep that in mind.
+
+697
+01:04:14.480 --> 01:04:18.669
+Omar Mansour: And of great importance is the length of the CPU burst.
+
+698
+01:04:19.180 --> 01:04:25.250
+Omar Mansour: And to give you an idea of how it looks like, if I run many, many
+
+699
+01:04:25.560 --> 01:04:29.349
+Omar Mansour: processes, and each process goes through cycles of CPU burst.
+
+700
+01:04:29.760 --> 01:04:33.650
+Omar Mansour: And then IOverse, CPU verse, CPU first, and I tabulate
+
+701
+01:04:35.460 --> 01:04:42.910
+Omar Mansour: the number of appearances of each interval. For example, if I tabulate that a CPU burst of 8 milliseconds
+
+702
+01:04:43.030 --> 01:04:44.590
+Omar Mansour: Happened 5 times.
+
+703
+01:04:44.870 --> 01:04:48.949
+Omar Mansour: Then I go to the x-axis being the length of the CPU burst.
+
+704
+01:04:49.190 --> 01:04:53.659
+Omar Mansour: I go to 8 for 8 milliseconds, and I tabulate 5 times.
+
+705
+01:04:53.900 --> 01:05:10.880
+Omar Mansour: If the CPU burst at 2 milliseconds happened 150 times, then I go to the x-axis at 2 milliseconds and make a point here at 150 concurrences. That means a CPU burst of 2 milliseconds occurred 150 times.
+
+706
+01:05:10.920 --> 01:05:15.759
+Omar Mansour: And I keep doing this for every length of a CPU burst.
+
+707
+01:05:15.820 --> 01:05:19.580
+Omar Mansour: on the x-axis, then I would see the number of occurrences.
+
+708
+01:05:19.860 --> 01:05:23.489
+Omar Mansour: You would notice that this is called a histogram.
+
+709
+01:05:23.980 --> 01:05:30.950
+Omar Mansour: number of occurrences of each particular value is a histogram, and if I take
+
+710
+01:05:31.930 --> 01:05:35.669
+Omar Mansour: The number of occurrences and divided by the total number of occurrences.
+
+711
+01:05:36.380 --> 01:05:41.340
+Omar Mansour: That will be the probability of appearance of a particular CPU burst.
+
+712
+01:05:42.990 --> 01:05:46.390
+Omar Mansour: So this is a probability distribution function.
+
+713
+01:05:47.230 --> 01:05:53.949
+Omar Mansour: And you would notice it looks like a Rayleigh distribution, means it never goes negative, because the CPU burst will never be negative in time.
+
+714
+01:05:54.360 --> 01:05:56.830
+Omar Mansour: It's always something more than zero.
+
+715
+01:05:57.120 --> 01:06:04.130
+Omar Mansour: And that kind of, why, really, distributions fit into this particular distribution.
+
+716
+01:06:04.620 --> 01:06:08.400
+Omar Mansour: And you will notice also that the peak…
+
+717
+01:06:09.930 --> 01:06:13.699
+Omar Mansour: Meaning the highest probability distribution function is very close to the mean.
+
+718
+01:06:13.830 --> 01:06:17.900
+Omar Mansour: In a radial distribution, and that's very important. We're going to use it
+
+719
+01:06:18.240 --> 01:06:20.009
+Omar Mansour: In a few slides down the road.
+
+720
+01:06:21.730 --> 01:06:27.339
+Omar Mansour: But I want to remind you of your probability and statistics course.
+
+721
+01:06:28.170 --> 01:06:33.240
+Omar Mansour: Well, one little thing. The mean is the average. We also gave it another name.
+
+722
+01:06:35.290 --> 01:06:42.580
+Omar Mansour: the mean of a random variable is the average, but we also gave it a third name. What was it? Starts with an E. Yes.
+
+723
+01:06:42.690 --> 01:06:44.680
+Omar Mansour: The expected value.
+
+724
+01:06:44.830 --> 01:06:53.150
+Omar Mansour: The expect… the mean is the expected value. This is very important. We're going to use that in four or five slides down the road. Why is the expected value important?
+
+725
+01:06:53.460 --> 01:07:01.280
+Omar Mansour: Because it's the… the value of highest probability. It is, you know, the most expected value of all
+
+726
+01:07:01.630 --> 01:07:03.440
+Omar Mansour: the possible values I can have.
+
+727
+01:07:04.920 --> 01:07:08.280
+Omar Mansour: And we're gonna be using that very, very soon to keep that
+
+728
+01:07:08.420 --> 01:07:13.710
+Omar Mansour: On the back of your mind, for when it's time to use it 10 minutes or 5 minutes down the road.
+
+729
+01:07:13.960 --> 01:07:19.129
+Omar Mansour: So, first things first… Given that now we have an understanding of the phases.
+
+730
+01:07:19.580 --> 01:07:25.629
+Omar Mansour: process. We go through a CPU burst, followed by an I.O. wait, CPU burst, and then an I.O. wait.
+
+731
+01:07:25.830 --> 01:07:26.860
+Omar Mansour: That's on.
+
+732
+01:07:27.480 --> 01:07:30.980
+Omar Mansour: pictorially, We can draw it like this.
+
+733
+01:07:31.800 --> 01:07:34.699
+Omar Mansour: And we wish to talk about
+
+734
+01:07:35.760 --> 01:07:43.330
+Omar Mansour: When does the scheduler, because the topic of our discussion today is CPU scheduling, when does the scheduler get a chance to run?
+
+735
+01:07:46.500 --> 01:07:52.360
+Omar Mansour: This diagram we presented before, when we talked about, process managers, when we talked about processes.
+
+736
+01:07:53.140 --> 01:07:59.220
+Omar Mansour: And in a non-preemptive operating system, meaning an operating system that does not have a timer tick.
+
+737
+01:07:59.390 --> 01:08:03.559
+Omar Mansour: our operating system that never interrupts the CPU burst.
+
+738
+01:08:04.260 --> 01:08:07.930
+Omar Mansour: Meaning… If I have a preemptive operating system.
+
+739
+01:08:08.400 --> 01:08:12.269
+Omar Mansour: A timer interrupt may happen anywhere in the middle of a CPU list.
+
+740
+01:08:13.760 --> 01:08:19.630
+Omar Mansour: If I have a non-preemptive operating system, we never interrupt a running process.
+
+741
+01:08:20.090 --> 01:08:21.959
+Omar Mansour: Until it decides.
+
+742
+01:08:22.979 --> 01:08:24.689
+Omar Mansour: to request an IO operation.
+
+743
+01:08:26.470 --> 01:08:32.279
+Omar Mansour: So in an unpreemptive, we will never be interrupting in the middle of the burst.
+
+744
+01:08:33.120 --> 01:08:34.160
+Omar Mansour: tool.
+
+745
+01:08:35.450 --> 01:08:37.730
+Omar Mansour: A scheduler in a non-preemptive.
+
+746
+01:08:39.399 --> 01:08:45.810
+Omar Mansour: operating system is only invoked when a running process, a running process is sitting right here on the CPU,
+
+747
+01:08:46.460 --> 01:08:56.669
+Omar Mansour: The state of the process that is here is running. The state of processes that are here in the ready queue is ready. The state of processes that are waiting on the ISQ is blocked waiting.
+
+748
+01:08:58.930 --> 01:09:03.559
+Omar Mansour: So only when the running process makes an I.O. operation, or I.O. request.
+
+749
+01:09:04.580 --> 01:09:10.119
+Omar Mansour: That it moves into a device queue, which is a special type of a wait queue.
+
+750
+01:09:10.520 --> 01:09:13.580
+Omar Mansour: Only then that the scheduler is invoked right here.
+
+751
+01:09:14.140 --> 01:09:15.939
+Omar Mansour: What does a scheduler do?
+
+752
+01:09:17.060 --> 01:09:26.039
+Omar Mansour: So… The process that was running was executing its CPU burst.
+
+753
+01:09:26.490 --> 01:09:30.970
+Omar Mansour: And it made an I.O. request, so this marks the end of the CPU burst for that process.
+
+754
+01:09:31.689 --> 01:09:35.329
+Omar Mansour: The end of the CPU burst is when you make an I.O. request.
+
+755
+01:09:36.340 --> 01:09:38.630
+Omar Mansour: It's when you're moved into a wait queue.
+
+756
+01:09:39.710 --> 01:09:40.819
+Omar Mansour: Right here.
+
+757
+01:09:42.470 --> 01:09:45.200
+Omar Mansour: So now the CPU is not going to be executing your code.
+
+758
+01:09:46.319 --> 01:09:50.250
+Omar Mansour: Instead, the scheduler It's gonna be invoked.
+
+759
+01:09:51.720 --> 01:09:58.560
+Omar Mansour: Because you already did a system call to request the I.O. operation, so the kernel is running, so the kernel's gonna block you.
+
+760
+01:09:59.240 --> 01:10:08.319
+Omar Mansour: and make you an await queue, that is a special type of await queue, the device queue. Then the scheduler is invoked, and the scheduler takes a process from the ready list.
+
+761
+01:10:09.130 --> 01:10:11.360
+Omar Mansour: And that process will be dispatched.
+
+762
+01:10:11.510 --> 01:10:13.239
+Omar Mansour: And we'll be running on this evening.
+
+763
+01:10:14.150 --> 01:10:19.349
+Omar Mansour: Alright? Your process is blue, or carrying a lot of the cues, or actually right.
+
+764
+01:10:20.460 --> 01:10:21.710
+Omar Mansour: Any questions?
+
+765
+01:10:22.180 --> 01:10:24.190
+Omar Mansour: So the scheduler is only invoked
+
+766
+01:10:24.370 --> 01:10:28.120
+Omar Mansour: after you make an IO request, But possibly.
+
+767
+01:10:28.530 --> 01:10:31.760
+Omar Mansour: The scheduler may be invoked if you decide to exit.
+
+768
+01:10:32.160 --> 01:10:34.799
+Omar Mansour: Because the moment a process decides to exit.
+
+769
+01:10:35.710 --> 01:10:40.540
+Omar Mansour: Then the kernel will terminate and delete the process from the system.
+
+770
+01:10:41.170 --> 01:10:46.789
+Omar Mansour: it goes through stators, as we mentioned before. It may end up being zombie for a bit of time. Eventually.
+
+771
+01:10:47.010 --> 01:10:50.670
+Omar Mansour: After being zombied, he'll be kicked out of the system eventually.
+
+772
+01:10:51.350 --> 01:10:55.769
+Omar Mansour: However, The scheduler then will pick another process and dispatch it.
+
+773
+01:10:57.570 --> 01:10:59.850
+Omar Mansour: So what does dispatching the process mean?
+
+774
+01:11:00.240 --> 01:11:09.359
+Omar Mansour: taking all the states of the process and loading it into the CPU. All the CPU registers of the process are going to be loaded into the CPU, and then the process will resume
+
+775
+01:11:09.630 --> 01:11:13.920
+Omar Mansour: From the last instruction, were stopped before it was preempted
+
+776
+01:11:14.390 --> 01:11:17.029
+Omar Mansour: That is what dispatching means, okay?
+
+777
+01:11:17.450 --> 01:11:18.960
+Omar Mansour: And we talked about that before.
+
+778
+01:11:19.730 --> 01:11:23.640
+Omar Mansour: Now, in preemptive operating systems, it's different.
+
+779
+01:11:23.970 --> 01:11:33.870
+Omar Mansour: And that is important because we're talking about schedulers for both. We're talking about schedulers for preemptive as well as non-preemptive operating systems. For preemptive operating systems.
+
+780
+01:11:34.480 --> 01:11:35.650
+Omar Mansour: There aren't many.
+
+781
+01:11:36.100 --> 01:11:37.419
+Omar Mansour: A few more.
+
+782
+01:11:37.860 --> 01:11:40.729
+Omar Mansour: Situations in which the scheduler is invoked.
+
+783
+01:11:41.110 --> 01:11:51.370
+Omar Mansour: The first situation is the same. If a process is running, meaning it is on the CPU, makes an IO request, now the process cannot run, it is blocked in a wait queue.
+
+784
+01:11:51.880 --> 01:11:56.220
+Omar Mansour: It finished its I.O. burst, and now the kernel picks another process to run.
+
+785
+01:11:56.790 --> 01:12:02.309
+Omar Mansour: That is, the scheduler, picks another process to run, and then it invokes that… once it makes that decision.
+
+786
+01:12:02.650 --> 01:12:07.610
+Omar Mansour: it gives the dispatcher the process ID, and the dispatcher loads it into the CPU.
+
+787
+01:12:09.050 --> 01:12:10.070
+Omar Mansour: Okay.
+
+788
+01:12:10.750 --> 01:12:17.050
+Omar Mansour: That's one case. Another case… A process may be in the middle of the CPU curve.
+
+789
+01:12:17.180 --> 01:12:19.389
+Omar Mansour: Right? They're in the middle of the CPU burst.
+
+790
+01:12:19.520 --> 01:12:22.120
+Omar Mansour: And the timer interrupt kicks in.
+
+791
+01:12:22.460 --> 01:12:28.539
+Omar Mansour: What happens when the timer interrupt kicks in? That means your CPU burst is bigger than the time slice.
+
+792
+01:12:29.720 --> 01:12:30.620
+Omar Mansour: Okay?
+
+793
+01:12:31.660 --> 01:12:36.720
+Omar Mansour: Immediately. It means your CPU burst is longer than the time slice.
+
+794
+01:12:38.840 --> 01:12:41.149
+Omar Mansour: The time slice is also called a timer tick.
+
+795
+01:12:43.040 --> 01:12:45.510
+Omar Mansour: So what happens with that is the case.
+
+796
+01:12:46.580 --> 01:12:53.949
+Omar Mansour: Your process is now moved. It is still now… it's gonna move from running Too ready.
+
+797
+01:12:55.050 --> 01:12:57.600
+Omar Mansour: is gonna be taken from the CPU,
+
+798
+01:12:58.330 --> 01:13:05.189
+Omar Mansour: And enqueued to the back, or to the rear of the ready list, because you're not blocked on anything.
+
+799
+01:13:05.710 --> 01:13:13.749
+Omar Mansour: Nearly, you were running your CPU first, you want to continue running your CPU first, however, you got preempted.
+
+800
+01:13:14.450 --> 01:13:17.180
+Omar Mansour: Because of the timer tick. You exceeded your time slice.
+
+801
+01:13:18.060 --> 01:13:20.569
+Omar Mansour: Again, the scheduler will be booked.
+
+802
+01:13:20.950 --> 01:13:25.159
+Omar Mansour: So, the schedule now is invoked when the time slice expired, but also
+
+803
+01:13:25.760 --> 01:13:27.560
+Omar Mansour: When you make an IO request.
+
+804
+01:13:29.320 --> 01:13:33.940
+Omar Mansour: A third situation is when the IO is complete.
+
+805
+01:13:34.140 --> 01:13:36.119
+Omar Mansour: The IO operation is complete.
+
+806
+01:13:37.610 --> 01:13:42.559
+Omar Mansour: Now a process that was waiting on some IO operation, for example, in assignment number 6,
+
+807
+01:13:42.990 --> 01:13:48.150
+Omar Mansour: You issued the read, to wait for a message. The moment the read completes.
+
+808
+01:13:48.440 --> 01:13:53.420
+Omar Mansour: Your process is not blocked anymore, your process is back to the end of the ready list.
+
+809
+01:13:53.870 --> 01:14:00.149
+Omar Mansour: Now, you need to understand, and we're gonna get through this very soon, some schedulers use priority scheduling.
+
+810
+01:14:00.490 --> 01:14:07.699
+Omar Mansour: What happens if your process just arrived into the ready list? We're gonna call that the arrival time, by the way.
+
+811
+01:14:08.450 --> 01:14:11.329
+Omar Mansour: If your process just arrived into the ready list.
+
+812
+01:14:13.080 --> 01:14:26.500
+Omar Mansour: Maybe it's a brand new process that just arrived. Maybe it was a process locked and just arrived. Maybe it was a process preempted and then just arrived into the ready list. The question is, when your process arrives into the ready list.
+
+813
+01:14:28.200 --> 01:14:32.419
+Omar Mansour: If your process is of highest priority, it doesn't want to wait.
+
+814
+01:14:33.360 --> 01:14:39.860
+Omar Mansour: With a scheduler, if it is a priority scheduler, you may immediately arrive and may immediately be picked
+
+815
+01:14:40.180 --> 01:14:42.540
+Omar Mansour: and be dispatched into the CPU.
+
+816
+01:14:42.830 --> 01:14:47.739
+Omar Mansour: And the preempted process, is gonna be placed onto the back of the CPU.
+
+817
+01:14:48.600 --> 01:14:57.319
+Omar Mansour: Okay? So preemption may happen if a process has its timer tick, finished, or maybe another process arrived
+
+818
+01:14:57.450 --> 01:15:00.530
+Omar Mansour: And then we want to preempt the running process, okay?
+
+819
+01:15:05.110 --> 01:15:07.660
+Omar Mansour: Of course, a dispatcher, which is that…
+
+820
+01:15:07.950 --> 01:15:15.749
+Omar Mansour: block of code inside the kernel that takes a process that is ready to run and actually loads it into the CPU. There's some latency in the dispatcher.
+
+821
+01:15:17.250 --> 01:15:26.589
+Omar Mansour: it takes time to load things, because it's not just loaded into a CPU, the memory space has to be set up as well for that dispatch process.
+
+822
+01:15:27.460 --> 01:15:30.099
+Omar Mansour: Very importantly now are a few metrics.
+
+823
+01:15:30.480 --> 01:15:35.360
+Omar Mansour: That we are going to be using for evaluating different scheduling algorithms.
+
+824
+01:15:35.600 --> 01:15:43.520
+Omar Mansour: The first metric is the CPU utilization. This is the percentage of time that we spend Running.
+
+825
+01:15:43.960 --> 01:15:46.460
+Omar Mansour: user-bode applications.
+
+826
+01:15:46.850 --> 01:15:48.900
+Omar Mansour: User mode processes in general.
+
+827
+01:15:50.830 --> 01:15:54.709
+Omar Mansour: The time you spend running the scheduler is an overhead.
+
+828
+01:15:54.910 --> 01:15:58.080
+Omar Mansour: The time you spend running the dispatcher is an overhead.
+
+829
+01:15:58.350 --> 01:16:02.770
+Omar Mansour: The time you spend running the kernel is an overhead. The actual payload
+
+830
+01:16:02.940 --> 01:16:06.170
+Omar Mansour: Is the time you spend running user mode processes.
+
+831
+01:16:07.040 --> 01:16:10.410
+Omar Mansour: So, utilization is the percentage of that time.
+
+832
+01:16:10.970 --> 01:16:14.000
+Omar Mansour: The percentage of time, you lose…
+
+833
+01:16:14.180 --> 01:16:19.270
+Omar Mansour: running user code processes, and that is the CPU utilization.
+
+834
+01:16:19.540 --> 01:16:22.180
+Omar Mansour: The goal is to maximize
+
+835
+01:16:22.640 --> 01:16:34.530
+Omar Mansour: EPU utilization, and we're going to talk about that. For some scheduling algorithms, you really want to maximize that. For others, you want to maximize other metrics, such as turnaround time or waiting time.
+
+836
+01:16:34.570 --> 01:16:43.019
+Omar Mansour: So we're going to get into these metrics. But the other metric I want to talk about is the throughput, which is the number of processes that complete their CPU burst execution per unit time.
+
+837
+01:16:43.960 --> 01:16:51.030
+Omar Mansour: This metric is not really going to be used all that often in scheduling, but… Turnaround time.
+
+838
+01:16:51.280 --> 01:16:54.819
+Omar Mansour: This is another metric that we need to look at. Turnaround time is…
+
+839
+01:16:56.470 --> 01:17:03.570
+Omar Mansour: The difference in time between the arrival of a process, arrival pair, not the arrival of the entire process.
+
+840
+01:17:04.170 --> 01:17:07.049
+Omar Mansour: Arrival of a CPU burst of a process.
+
+841
+01:17:07.910 --> 01:17:09.399
+Omar Mansour: Into the ready list.
+
+842
+01:17:11.900 --> 01:17:15.219
+Omar Mansour: So, the completion of the CPU burst.
+
+843
+01:17:18.560 --> 01:17:27.320
+Omar Mansour: The completion of the CPU burst happens at some time, the arrival happens at some other time, you subtract the two, there is a turnaround time.
+
+844
+01:17:28.290 --> 01:17:30.070
+Omar Mansour: By the way, in the middle.
+
+845
+01:17:30.550 --> 01:17:32.099
+Omar Mansour: There may be a wait time.
+
+846
+01:17:33.820 --> 01:17:37.199
+Omar Mansour: So the wait time is the time in which
+
+847
+01:17:37.520 --> 01:17:39.690
+Omar Mansour: A process is ready to run.
+
+848
+01:17:39.960 --> 01:17:43.400
+Omar Mansour: Wanting to run, anxious to run, meaning it's not blocked at all.
+
+849
+01:17:44.000 --> 01:17:45.990
+Omar Mansour: It is in the ready list.
+
+850
+01:17:46.180 --> 01:17:52.330
+Omar Mansour: wanting to run, but it's not selected for running. You would notice Many processes are ready.
+
+851
+01:17:53.260 --> 01:17:59.199
+Omar Mansour: But they're unable to run. Why is that? Because they have to wait for their turn. They have to wait for the scheduler to pick them.
+
+852
+01:17:59.520 --> 01:18:04.370
+Omar Mansour: The time you spend waiting in the ready state, It's called the wait time.
+
+853
+01:18:05.460 --> 01:18:08.010
+Omar Mansour: Not the time you spend waiting in a wait queue.
+
+854
+01:18:08.840 --> 01:18:12.009
+Omar Mansour: The time you spend waiting in a ridicule.
+
+855
+01:18:13.290 --> 01:18:15.730
+Omar Mansour: I know the definition might confuse you.
+
+856
+01:18:15.900 --> 01:18:23.449
+Omar Mansour: Because you would think waiting time is the time you spend waiting in a wait queue. That is not it. Waiting time is the time you spend waiting in the ready queue.
+
+857
+01:18:23.640 --> 01:18:27.799
+Omar Mansour: That's the time when you're ready to run, But you're not really running.
+
+858
+01:18:28.570 --> 01:18:32.110
+Omar Mansour: Because your time sharing the CPU and the scheduler picked somebody else.
+
+859
+01:18:33.370 --> 01:18:36.799
+Omar Mansour: The waiting time is of great importance as well.
+
+860
+01:18:37.130 --> 01:18:38.350
+Omar Mansour: for scheduling.
+
+861
+01:18:39.070 --> 01:18:41.610
+Omar Mansour: That is the time you spend waiting in the ready queue.
+
+862
+01:18:43.080 --> 01:18:50.309
+Omar Mansour: So you can easily conclude Then the total time your burst spent waiting in the ready queue
+
+863
+01:18:50.810 --> 01:18:53.589
+Omar Mansour: Is the turnaround time minus the burst time.
+
+864
+01:18:57.660 --> 01:19:00.790
+Omar Mansour: Because the first time is the time in which we're actually running.
+
+865
+01:19:00.990 --> 01:19:02.959
+Omar Mansour: In which you are in a state of running.
+
+866
+01:19:03.200 --> 01:19:07.930
+Omar Mansour: The turnaround time is when you arrived, minus when you finished.
+
+867
+01:19:09.300 --> 01:19:10.730
+Omar Mansour: You arrived.
+
+868
+01:19:11.040 --> 01:19:17.040
+Omar Mansour: We spent some time running, So you arrived here, you spent some time running.
+
+869
+01:19:17.210 --> 01:19:23.779
+Omar Mansour: and some time waiting. And some time running, and some time waiting. The total waiting, until you finish your CPU burst.
+
+870
+01:19:24.120 --> 01:19:25.509
+Omar Mansour: Is the waiting time.
+
+871
+01:19:26.590 --> 01:19:32.310
+Omar Mansour: Which is the… Completion time minus the arrival time, minus the burst.
+
+872
+01:19:32.800 --> 01:19:36.499
+Omar Mansour: And this is going to be more clear when you go through some examples.
+
+873
+01:19:50.390 --> 01:19:56.790
+Omar Mansour: Okay, so… The first scheduling algorithm I want to talk about is first come, first serve.
+
+874
+01:19:59.470 --> 01:20:05.880
+Omar Mansour: This is an algorithm that is used in non-preemptive operating systems, operating systems that do not use a timer.
+
+875
+01:20:06.360 --> 01:20:09.610
+Omar Mansour: To preempt a process that is in a state of running.
+
+876
+01:20:10.650 --> 01:20:15.120
+Omar Mansour: Meaning, executing, meaning fetching and executing machine instructions.
+
+877
+01:20:16.560 --> 01:20:17.780
+Omar Mansour: process.
+
+878
+01:20:18.920 --> 01:20:23.620
+Omar Mansour: maybe… Running, or maybe ready, or maybe blocked waiting.
+
+879
+01:20:26.140 --> 01:20:30.419
+Omar Mansour: Operating systems that do not preempt a running process are called non-preemptive.
+
+880
+01:20:30.630 --> 01:20:32.780
+Omar Mansour: They can use first come, first serve.
+
+881
+01:20:35.140 --> 01:20:37.499
+Omar Mansour: What is this? It is very simple.
+
+882
+01:20:38.120 --> 01:20:43.019
+Omar Mansour: The first process that arrived, arrived where? You're still awake?
+
+883
+01:20:45.240 --> 01:20:46.440
+Omar Mansour: Correct, where?
+
+884
+01:20:47.030 --> 01:20:48.300
+Omar Mansour: To the ready queue.
+
+885
+01:20:48.630 --> 01:20:52.330
+Omar Mansour: The first process that arrived is the first process that is picked.
+
+886
+01:20:53.290 --> 01:20:54.230
+Omar Mansour: Run.
+
+887
+01:20:55.410 --> 01:20:56.910
+Omar Mansour: So what does that tell you?
+
+888
+01:20:57.010 --> 01:21:00.620
+Omar Mansour: All I have to do is DQ from the ready queue.
+
+889
+01:21:01.780 --> 01:21:04.559
+Omar Mansour: Why? Because that is the definition of a queue.
+
+890
+01:21:05.300 --> 01:21:11.459
+Omar Mansour: The process at the head of the queue is the first one that arrived. A queue is also called FIFO, first in, first out.
+
+891
+01:21:12.050 --> 01:21:16.930
+Omar Mansour: You're all aware of that. First in, first out is a second definition of a queue.
+
+892
+01:21:17.280 --> 01:21:23.880
+Omar Mansour: So, the process at the head of the cube is the oldest one. That's the one that first arrived into the queue.
+
+893
+01:21:24.010 --> 01:21:28.879
+Omar Mansour: So the scheduler, in first come, first serve, all it has to do is to pick
+
+894
+01:21:29.300 --> 01:21:31.519
+Omar Mansour: The process at the head of the queue for running.
+
+895
+01:21:34.840 --> 01:21:36.759
+Omar Mansour: Immediately, what does that tell you?
+
+896
+01:21:38.940 --> 01:21:46.270
+Omar Mansour: In terms of processing time for the scheduler. So we're optimizing Meaning, we're minimizing
+
+897
+01:21:46.410 --> 01:21:50.319
+Omar Mansour: the processing time for the scheduler. We don't have to sort
+
+898
+01:21:50.530 --> 01:22:00.700
+Omar Mansour: the processes and see which one has the highest priority. We don't have to sort the processes to see which one has highest this, highest that. We don't have to do this at all. We have a queue.
+
+899
+01:22:02.040 --> 01:22:03.989
+Omar Mansour: We DQ from the head of the queue.
+
+900
+01:22:05.370 --> 01:22:08.699
+Omar Mansour: It's a zero time, almost. Not zero, but almost zero.
+
+901
+01:22:08.830 --> 01:22:11.449
+Omar Mansour: Constant time, and that constant time is almost zero.
+
+902
+01:22:12.060 --> 01:22:20.050
+Omar Mansour: Doesn't matter if I have 200 processes or 100 processes, this is a constant type, and it's negligible.
+
+903
+01:22:20.670 --> 01:22:25.389
+Omar Mansour: So we're optimizing, The time we spend on the scheduler.
+
+904
+01:22:26.040 --> 01:22:28.860
+Omar Mansour: Minimizing that time. So this means…
+
+905
+01:22:31.130 --> 01:22:34.240
+Omar Mansour: We have just optimized the CPU utilization.
+
+906
+01:22:34.520 --> 01:22:39.409
+Omar Mansour: That is the goal of first come, first, first serve. Optimizing the CPU utilization.
+
+907
+01:22:41.120 --> 01:22:43.819
+Omar Mansour: Here's how it works. I have 3 processes.
+
+908
+01:22:44.150 --> 01:22:46.319
+Omar Mansour: P1, P2, and P3.
+
+909
+01:22:46.780 --> 01:22:49.840
+Omar Mansour: With burst times 24, 3, and 3.
+
+910
+01:22:51.130 --> 01:22:55.680
+Omar Mansour: If I don't state the arrival time in a separate column, Here's what it needs.
+
+911
+01:22:55.870 --> 01:22:58.030
+Omar Mansour: Means they all arrived at time zero.
+
+912
+01:22:58.620 --> 01:23:05.680
+Omar Mansour: P1 and P2 and P3, and they arrived in that sequence from top to bottom. P1, and then P2, and then P3.
+
+913
+01:23:06.380 --> 01:23:10.009
+Omar Mansour: That's how we take this in the exam or in your homework, okay?
+
+914
+01:23:11.410 --> 01:23:16.360
+Omar Mansour: So then, we have a first-come, first-served. P1 came first, it's at the head of the queue.
+
+915
+01:23:16.850 --> 01:23:19.309
+Omar Mansour: This is non-preemptive scheduling.
+
+916
+01:23:19.740 --> 01:23:23.640
+Omar Mansour: Even though the burst time is huge, 24 milliseconds.
+
+917
+01:23:24.200 --> 01:23:27.070
+Omar Mansour: We're gonna run it all the way until its completion.
+
+918
+01:23:27.240 --> 01:23:29.819
+Omar Mansour: Not the completion of the entire process.
+
+919
+01:23:30.180 --> 01:23:37.899
+Omar Mansour: Rather, the completion of the CPU burst phase of the process, delineated by the process making an I.O. request.
+
+920
+01:23:40.280 --> 01:23:41.580
+Omar Mansour: After that.
+
+921
+01:23:41.910 --> 01:23:55.820
+Omar Mansour: we're on P2 for 3 time units, and then P3 for another 3 time units. And now we can examine the wait time, because that's a metric that we have here. The wait time is the time a process spends in the ready queue.
+
+922
+01:23:56.570 --> 01:23:59.369
+Omar Mansour: All of them arrived at time zero.
+
+923
+01:23:59.580 --> 01:24:02.550
+Omar Mansour: Their CPU burst is now ready to run.
+
+924
+01:24:05.490 --> 01:24:08.659
+Omar Mansour: They're all at the ready queue at time zero. That is the arrival time.
+
+925
+01:24:11.550 --> 01:24:12.630
+Omar Mansour: Okay.
+
+926
+01:24:13.240 --> 01:24:17.809
+Omar Mansour: For how long does P1 wait in the ready queue? Zero. What about P2?
+
+927
+01:24:19.080 --> 01:24:20.840
+Omar Mansour: What about P3?
+
+928
+01:24:21.610 --> 01:24:24.349
+Omar Mansour: Exactly. So we take the average of all.
+
+929
+01:24:24.770 --> 01:24:27.920
+Omar Mansour: And it becomes 17. So the average wait time is 17.
+
+930
+01:24:29.340 --> 01:24:32.299
+Omar Mansour: So the wait time is the amount of time you wait.
+
+931
+01:24:32.640 --> 01:24:38.839
+Omar Mansour: In the ready queue. Not on the waiting queue, not on the device queue, but in the ready queue.
+
+932
+01:24:39.820 --> 01:24:43.129
+Omar Mansour: If they arrived in a different order, if they arrive such that
+
+933
+01:24:43.830 --> 01:24:49.249
+Omar Mansour: P2 came in first, with a burst time of 3, and then P3, and then P1 came in last.
+
+934
+01:24:49.910 --> 01:24:58.340
+Omar Mansour: then we're gonna do the first come, first serve, P2, P3, and then P1. So the average wait time, P2 did not wait. P1 waited 6.
+
+935
+01:24:58.600 --> 01:25:06.789
+Omar Mansour: P2 waited for 0, P3 waited for 3 time units, so the average is 3 time units, that's the average waiting time.
+
+936
+01:25:07.130 --> 01:25:11.520
+Omar Mansour: The same exact three processes could have had an average wait time of 17,
+
+937
+01:25:11.640 --> 01:25:13.939
+Omar Mansour: Versus an average wait time of 3.
+
+938
+01:25:14.310 --> 01:25:16.200
+Omar Mansour: Based on the sequence.
+
+939
+01:25:16.520 --> 01:25:17.860
+Omar Mansour: Of how they arrived.
+
+940
+01:25:19.500 --> 01:25:23.510
+Omar Mansour: If the long, long process arrived first.
+
+941
+01:25:24.270 --> 01:25:27.450
+Omar Mansour: It's gonna hold back everybody else behind it.
+
+942
+01:25:28.110 --> 01:25:30.379
+Omar Mansour: Thus, increasing the average wait time.
+
+943
+01:25:30.790 --> 01:25:36.539
+Omar Mansour: That is not a desirable thing. Wait time is not a desirable thing for processes.
+
+944
+01:25:36.990 --> 01:25:39.920
+Omar Mansour: Because it slows down their responsiveness.
+
+945
+01:25:43.410 --> 01:25:44.549
+Omar Mansour: And this…
+
+946
+01:25:44.820 --> 01:25:54.389
+Omar Mansour: The fact that you have a long process arriving at the beginning is a very bad thing about the first-come, first-served, and it's called the convoy effect.
+
+947
+01:25:56.840 --> 01:26:02.570
+Omar Mansour: So, we need to solve this problem by using a different method of scheduling.
+
+948
+01:26:03.460 --> 01:26:09.589
+Omar Mansour: that avoids the convoy effect, and we're gonna call that the shortest job first. However.
+
+949
+01:26:10.660 --> 01:26:14.330
+Omar Mansour: Let's take a 5-minute break. Right now, it is 7.40.
+
+950
+01:26:14.770 --> 01:26:20.690
+Omar Mansour: Let's take a 5-minute break and reconvene at 7.45. Go to the bathroom, drink some water, or do whatever.
+
+951
+01:26:21.140 --> 01:26:24.789
+Omar Mansour: But we still have a lot to cover today, so please come back at 7.45.
+
+952
+01:26:44.580 --> 01:26:45.910
+Omar Mansour: That actually looks good.
+
+953
+01:26:54.350 --> 01:26:55.020
+Omar Mansour: Mac.
+
+954
+01:27:03.570 --> 01:27:06.950
+Omar Mansour: I'm gonna put, poster written.
+
+955
+01:27:07.190 --> 01:27:08.260
+Omar Mansour: explanation?
+
+956
+01:27:10.760 --> 01:27:14.800
+Omar Mansour: The weights are… Rakuten.
+
+957
+01:27:15.270 --> 01:27:18.799
+Omar Mansour: That's the best way. Yeah, I truly believe.
+
+958
+01:27:19.980 --> 01:27:21.430
+Omar Mansour: Correct.
+
+959
+01:27:22.830 --> 01:27:29.709
+Omar Mansour: Sorry, you got more than what?
+
+960
+01:27:30.180 --> 01:27:30.930
+Omar Mansour: Great.
+
+961
+01:27:31.630 --> 01:27:32.820
+Omar Mansour: I thought it's hot for me.
+
+962
+01:27:33.150 --> 01:27:36.580
+Omar Mansour: 80 and 10. That means you got, 40 out of 40.
+
+963
+01:27:37.310 --> 01:27:42.600
+Omar Mansour: Yes, 40 out of 40, which is 35%.
+
+964
+01:28:15.140 --> 01:28:16.190
+Omar Mansour: Right?
+
+965
+01:28:17.140 --> 01:28:18.250
+Omar Mansour: Yes.
+
+966
+01:28:21.650 --> 01:28:25.890
+Omar Mansour: Like, 3.
+
+967
+01:28:26.900 --> 01:28:28.650
+Omar Mansour: Like, active in Florida.
+
+968
+01:28:28.880 --> 01:28:29.690
+Omar Mansour: Oh.
+
+969
+01:28:30.180 --> 01:28:31.750
+Omar Mansour: Well, 3 blocked itself.
+
+970
+01:28:31.860 --> 01:28:34.590
+Omar Mansour: In the example we gave, so it blocked itself by
+
+971
+01:28:34.990 --> 01:28:40.370
+Omar Mansour: It block blocks itself, meaning it is not active. Yeah, but…
+
+972
+01:28:41.360 --> 01:28:58.710
+Omar Mansour: You mean after it signaled? Yeah, before it signaled, it was not active inside the monitor. After it gets signaled, it became active. So you raise a good question, that's one of the reading assignments. If it signals it, then does 4 remain active until the meeting, or does it really get preempted?
+
+973
+01:28:59.180 --> 01:29:02.029
+Omar Mansour: And whatever is suitable. Most implementations are possible.
+
+974
+01:29:02.820 --> 01:29:06.790
+Omar Mansour: I don't want to confuse everybody else, so I left that as one of those
+
+975
+01:29:07.210 --> 01:29:12.720
+Omar Mansour: That's one of the five slides that I skipped. I'm going to explain it if you're interested.
+
+976
+01:29:13.060 --> 01:29:14.900
+Omar Mansour: Most implementations are possible.
+
+977
+01:29:15.980 --> 01:29:18.289
+Omar Mansour: And they both have two different names, by the way.
+
+978
+01:29:18.930 --> 01:29:19.900
+Omar Mansour: Right? Yep.
+
+979
+01:29:20.030 --> 01:29:22.960
+Omar Mansour: That's a good remark, that means you're alert. Thank you, Celaine.
+
+980
+01:29:23.220 --> 01:29:25.930
+Omar Mansour: Yeah, and then the CPU first.
+
+981
+01:29:26.370 --> 01:29:27.519
+Omar Mansour: Thank you, Seth.
+
+982
+01:29:28.080 --> 01:29:33.920
+Omar Mansour: beginning of CPU first, is the changing from blocked waiting to rescue?
+
+983
+01:29:36.050 --> 01:29:36.750
+Omar Mansour: Back?
+
+984
+01:29:38.790 --> 01:29:45.419
+Omar Mansour: Well, Because you typically… You're blocked waiting for an IO operation.
+
+985
+01:29:45.540 --> 01:29:49.919
+Omar Mansour: Typically, when it completes, You don't really…
+
+986
+01:29:50.140 --> 01:29:52.280
+Omar Mansour: You mean, why is it not running back to ready?
+
+987
+01:29:52.910 --> 01:29:56.179
+Omar Mansour: No, I mean just the picking of the CPU first time.
+
+988
+01:29:57.280 --> 01:30:06.390
+Omar Mansour: Because it comes after an IOB. You got, you got the IRL, you got the IRL.
+
+989
+01:30:07.250 --> 01:30:19.519
+Omar Mansour: You are not waiting for ready. It's into the ready queue, you don't go in a wait queue to run a meeting with match.
+
+990
+01:30:19.900 --> 01:30:23.080
+Omar Mansour: They can order you to the very queue, and then you can get dispatched.
+
+991
+01:30:23.800 --> 01:30:25.660
+Omar Mansour: Lute, still…
+
+992
+01:30:32.770 --> 01:30:37.149
+Omar Mansour: Right? If it's in the wait queue, it's not… the wait queue is not…
+
+993
+01:30:38.030 --> 01:30:46.159
+Omar Mansour: Then, doesn't… does the beginning of CPU first time is when process change… they change to running? No, it changes to ready.
+
+994
+01:30:46.810 --> 01:30:49.439
+Omar Mansour: You cannot change to running from waiting.
+
+995
+01:30:49.720 --> 01:31:05.840
+Omar Mansour: Typically, this doesn't happen. When your I.O. completes, you're trying to read the packet, the packet is ready, it came, arrived, the review being blocked, waiting, you're going to be dispatched into the CPU.
+
+996
+01:31:06.110 --> 01:31:23.800
+Omar Mansour: Gonna go back into a ready queue, and then the scheduler will take you into account 70 other processes, and decide which one to run next. First go to the ready list, you arrive to the ready list, why not for the slow purpose? Of the CPU first.
+
+997
+01:31:23.920 --> 01:31:28.770
+Omar Mansour: Oh, okay. We're not executing the CPU burst, it's the arrival.
+
+998
+01:31:29.400 --> 01:31:32.700
+Omar Mansour: Martha arrival time.
+
+999
+01:31:33.180 --> 01:31:35.570
+Omar Mansour: CPU burst is meaning you're running.
+
+1000
+01:31:36.190 --> 01:31:39.149
+Omar Mansour: Martha, our Bible time.
+
+1001
+01:32:14.660 --> 01:32:22.160
+Omar Mansour: Okay, well… Web search, yeah.
+
+1002
+01:32:22.400 --> 01:32:24.910
+Omar Mansour: I put the demo for next Monday.
+
+1003
+01:32:25.310 --> 01:32:32.030
+Omar Mansour: Monday. Next month. Yeah, this coming month.
+
+1004
+01:32:32.320 --> 01:32:43.830
+Omar Mansour: I think… And I was, like, not happy with it, because I don't like…
+
+1005
+01:32:44.100 --> 01:32:51.309
+Omar Mansour: entire day. I redid everything. I did everything again, and then I was just adding my own.
+
+1006
+01:32:51.480 --> 01:32:52.200
+Omar Mansour: Picked.
+
+1007
+01:32:52.990 --> 01:32:53.650
+Omar Mansour: Okay.
+
+1008
+01:32:53.800 --> 01:32:54.680
+Omar Mansour: I will.
+
+1009
+01:32:54.880 --> 01:32:58.039
+Omar Mansour: Oh, this is weird. Yeah.
+
+1010
+01:32:58.360 --> 01:33:05.720
+Omar Mansour: She doesn't remember myself, she just needs to do two parts.
+
+1011
+01:33:06.690 --> 01:33:17.039
+Omar Mansour: She works, she works. She's also… That's just…
+
+1012
+01:33:18.050 --> 01:33:22.210
+Omar Mansour: Second wind, you're listening to me?
+
+1013
+01:33:22.470 --> 01:33:29.239
+Omar Mansour: No, go to the bathroom now. Only one Veterans Day a year, you'll understand.
+
+1014
+01:33:30.610 --> 01:33:34.189
+Omar Mansour: All right, everybody, let us reconvene.
+
+1015
+01:33:35.370 --> 01:33:39.720
+Omar Mansour: We have a lot of good things to talk about, to continue talking about.
+
+1016
+01:33:40.080 --> 01:33:42.259
+Omar Mansour: Let's talk about the shortage drop first.
+
+1017
+01:33:43.410 --> 01:33:55.999
+Omar Mansour: Because of the convoy effect, On how it can actually make… The wait time significantly increased.
+
+1018
+01:33:56.190 --> 01:34:00.200
+Omar Mansour: If all the processes are held behind a very long process.
+
+1019
+01:34:00.400 --> 01:34:02.709
+Omar Mansour: That's why it's called the convoy effect.
+
+1020
+01:34:03.200 --> 01:34:05.140
+Omar Mansour: We want to avoid that effect.
+
+1021
+01:34:06.070 --> 01:34:14.750
+Omar Mansour: and minimize We want to minimize the average waiting time. So, first come, first serve, minimizes
+
+1022
+01:34:15.260 --> 01:34:17.920
+Omar Mansour: The scheduler processing time.
+
+1023
+01:34:19.410 --> 01:34:29.059
+Omar Mansour: to maximize the CPU utilization, now we're going to change that. Now, we want to avoid the convoy effect. We want to minimize
+
+1024
+01:34:29.700 --> 01:34:34.040
+Omar Mansour: the average waiting time. Waiting… where in the ready queue?
+
+1025
+01:34:34.950 --> 01:34:39.379
+Omar Mansour: How do we do it? It's very intuitive, and you can see here.
+
+1026
+01:34:39.720 --> 01:34:45.920
+Omar Mansour: what I picked… shortest… Process.
+
+1027
+01:34:46.350 --> 01:34:49.940
+Omar Mansour: the shortest… the process with the shortest CPU burst.
+
+1028
+01:34:50.350 --> 01:34:52.350
+Omar Mansour: I'm gonna call that the shortest job.
+
+1029
+01:34:52.650 --> 01:34:56.000
+Omar Mansour: When I picked that, I was able to minimize.
+
+1030
+01:34:56.840 --> 01:35:02.180
+Omar Mansour: The average waiting time, because The average waiting time is the sum
+
+1031
+01:35:02.680 --> 01:35:05.859
+Omar Mansour: Of the waiting time of all processes divided by the number of processes.
+
+1032
+01:35:07.610 --> 01:35:10.609
+Omar Mansour: So the waiting time of every process is minimized.
+
+1033
+01:35:11.850 --> 01:35:14.770
+Omar Mansour: then I would have minimized the average wait time.
+
+1034
+01:35:15.010 --> 01:35:16.040
+Omar Mansour: Which…
+
+1035
+01:35:16.170 --> 01:35:24.490
+Omar Mansour: The wait time of every process depends on the drop time, the CPU burst time of prior processes that were selected.
+
+1036
+01:35:24.940 --> 01:35:31.370
+Omar Mansour: If I always select processes with the shortest job, then you can easily prove that this is the optimal
+
+1037
+01:35:31.900 --> 01:35:35.329
+Omar Mansour: Scheduling algorithm to minimize the wait time.
+
+1038
+01:35:35.800 --> 01:35:41.350
+Omar Mansour: And that is called the shortest drop first. It is optimal. Absolutely optimal. And it pertains…
+
+1039
+01:35:41.800 --> 01:35:51.729
+Omar Mansour: to picking the shortest job, running that job all the way to the completion of its CPU burst. So this immediately involves running on
+
+1040
+01:35:51.850 --> 01:36:08.279
+Omar Mansour: an unpreemptive operating system. So this algorithm is suitable for non-preemptive operating systems. However, there is a preemptive version, it's called the shortest, not the shortest job.
+
+1041
+01:36:08.640 --> 01:36:12.250
+Omar Mansour: Running the whole job. The shortest remaining time first.
+
+1042
+01:36:12.390 --> 01:36:16.429
+Omar Mansour: So we're gonna study both of them very, very soon. Do you have a question? Yeah.
+
+1043
+01:36:16.700 --> 01:36:19.105
+Omar Mansour: So… Listen
+
+1044
+01:36:20.250 --> 01:36:25.279
+Omar Mansour: The length, is that calculated when it enters the ready queue? It's plank to the next queue verse?
+
+1045
+01:36:25.420 --> 01:36:29.219
+Omar Mansour: That's a good question. How do you compute the length of the CPU burst?
+
+1046
+01:36:34.460 --> 01:36:38.819
+Omar Mansour: I don't know. Well, let's take a look at that. That's a good question. But if you have…
+
+1047
+01:36:39.150 --> 01:36:46.959
+Omar Mansour: a long process, and then you keep getting short ones coming in. Well, the wrong one… the long one will never run until…
+
+1048
+01:36:47.280 --> 01:36:48.629
+Omar Mansour: It will run last.
+
+1049
+01:36:49.360 --> 01:37:02.860
+Omar Mansour: it will get a chance to run after all of them, yeah. Can it be starved? Yes, it can be starved, 100%. We're gonna talk about that as well, that's a good question. So your colleague is saying, oh, so this means if I'm a long CPU burst process.
+
+1050
+01:37:03.250 --> 01:37:05.710
+Omar Mansour: Heck, I may never ever get a chance to run.
+
+1051
+01:37:05.830 --> 01:37:11.630
+Omar Mansour: Because other shorter processes will come in and out, in and out, and I'll be lingering in the queue
+
+1052
+01:37:11.750 --> 01:37:14.639
+Omar Mansour: never be selected, because I'm the longest process.
+
+1053
+01:37:15.200 --> 01:37:29.449
+Omar Mansour: That's called starvation. So a long process may be starved. That's not a desirable thing, and we're going to solve that problem, okay? So we have a few problems here to talk about. We're going to solve them one by one, rest assured we will.
+
+1054
+01:37:30.760 --> 01:37:38.189
+Omar Mansour: First things first, let's first of all demonstrate, very briefly and very quickly… oh, I never told you what that is. That's called a Gantt chart.
+
+1055
+01:37:38.660 --> 01:37:42.900
+Omar Mansour: Again, chart, on the x-axis, We have the time.
+
+1056
+01:37:43.450 --> 01:37:49.689
+Omar Mansour: in standard time units, could be milliseconds, seconds, I don't care, we just call them time units.
+
+1057
+01:37:50.600 --> 01:37:54.640
+Omar Mansour: And on the y-axis, we have equal height bars.
+
+1058
+01:37:55.760 --> 01:38:04.050
+Omar Mansour: that tell us which process is currently running. That is the Gantt chart, if you haven't seen it before, you probably did see it a million times, but just for completion.
+
+1059
+01:38:04.560 --> 01:38:12.460
+Omar Mansour: So, demonstrating the shortest job first, if I have four processes, again, I don't have a column for arrival times, means they all arrive at the same time, zero.
+
+1060
+01:38:12.660 --> 01:38:16.939
+Omar Mansour: in the sequence P1, 2, 3, and 4, the sequence from top to bottom.
+
+1061
+01:38:17.040 --> 01:38:19.619
+Omar Mansour: First time, 6, 8, 7, and 3.
+
+1062
+01:38:20.470 --> 01:38:24.789
+Omar Mansour: The shortest drop first is the one with the burst time of 3 days before.
+
+1063
+01:38:24.980 --> 01:38:27.750
+Omar Mansour: Then sticks, that is P1, then…
+
+1064
+01:38:28.230 --> 01:38:31.939
+Omar Mansour: A first time of 7, that is speed 3. Finally, a first time of 8, that is P2.
+
+1065
+01:38:33.560 --> 01:38:36.119
+Omar Mansour: And average wait time is optimal.
+
+1066
+01:38:36.380 --> 01:38:39.589
+Omar Mansour: 100% optimal, guaranteed, and provable.
+
+1067
+01:38:40.380 --> 01:38:44.359
+Omar Mansour: That's why this is an optimal algorithm in terms of the wait time.
+
+1068
+01:38:48.080 --> 01:38:54.919
+Omar Mansour: Okay, now, here's the problem. The first problem your colleague said, you compute the burst time and the process arrives.
+
+1069
+01:38:55.060 --> 01:39:01.009
+Omar Mansour: How would you know? How would you, being the scheduler, you're inside the kernel, you are the scheduler.
+
+1070
+01:39:01.270 --> 01:39:06.160
+Omar Mansour: You have 5 separate processes in the ready queue. In fact, typically.
+
+1071
+01:39:06.320 --> 01:39:08.789
+Omar Mansour: Like, in my computer, or roughly have.
+
+1072
+01:39:08.900 --> 01:39:20.649
+Omar Mansour: 400 processes, 8 CPUs, 50 processes in every CPU, ready to run. 50 processes, How does my kernel know
+
+1073
+01:39:20.820 --> 01:39:23.850
+Omar Mansour: the CPU burst of every Meaning…
+
+1074
+01:39:24.740 --> 01:39:26.769
+Omar Mansour: How can it look into the future?
+
+1075
+01:39:30.080 --> 01:39:31.749
+Omar Mansour: Let's take a look at this eye graph.
+
+1076
+01:39:32.970 --> 01:39:37.899
+Omar Mansour: how does… A scheduler making a decision at this point.
+
+1077
+01:39:37.970 --> 01:39:45.269
+Omar Mansour: jump into the future, to the end of the CPU burst, compute the time, and then go back in time, travel backwards in time, and say, oh.
+
+1078
+01:39:45.310 --> 01:39:59.049
+Omar Mansour: this CPU burst is such, now I'm gonna make the decision. Oh, that's not gonna be enough. It needs to know the CPU burst of every one of those 50 processes in the ready queue. So it's going to jump back and forth in time 50 times.
+
+1079
+01:39:59.390 --> 01:40:02.090
+Omar Mansour: to figure out the CPU burst time of every process.
+
+1080
+01:40:03.150 --> 01:40:08.330
+Omar Mansour: Now, why is it that we don't know the CPU burst time? Because it's unpredictable.
+
+1081
+01:40:08.470 --> 01:40:09.709
+Omar Mansour: First of all.
+
+1082
+01:40:10.260 --> 01:40:16.890
+Omar Mansour: Rest assured, the kernel doesn't have the source code of every process that is running on the system. Even if it did have the source code.
+
+1083
+01:40:17.150 --> 01:40:18.710
+Omar Mansour: How can it predict?
+
+1084
+01:40:19.970 --> 01:40:23.680
+Omar Mansour: the time in which your process requests an oil operation.
+
+1085
+01:40:23.940 --> 01:40:28.010
+Omar Mansour: Your process is gonna have logic, A lot of logic.
+
+1086
+01:40:28.250 --> 01:40:34.600
+Omar Mansour: Some of it is… You know, written by some people with convoluted ideas, convoluted way of thinking.
+
+1087
+01:40:34.750 --> 01:40:38.309
+Omar Mansour: And the kernel can't really predicts when the heck you're going to make an I.O. operation.
+
+1088
+01:40:38.970 --> 01:40:40.190
+Omar Mansour: He just comes out.
+
+1089
+01:40:40.680 --> 01:40:44.120
+Omar Mansour: So, we do not know, absolutely do not know.
+
+1090
+01:40:44.250 --> 01:40:49.030
+Omar Mansour: the burst time of processes, so how are you going to schedule them? Using shortage job first?
+
+1091
+01:40:49.390 --> 01:40:50.910
+Omar Mansour: How do we schedule?
+
+1092
+01:40:51.020 --> 01:40:54.539
+Omar Mansour: We will not know the birth times. It's an important thing.
+
+1093
+01:40:56.280 --> 01:41:00.780
+Omar Mansour: So how do we get it? Well, we have to estimate. That's why we talk about probability.
+
+1094
+01:41:00.900 --> 01:41:06.179
+Omar Mansour: That's why we talked about expected values, and now we're gonna have to put that to usage.
+
+1095
+01:41:10.520 --> 01:41:12.660
+Omar Mansour: We have to estimate.
+
+1096
+01:41:12.840 --> 01:41:14.940
+Omar Mansour: The first time of every process.
+
+1097
+01:41:15.040 --> 01:41:22.539
+Omar Mansour: We have to estimate. How do we estimate? Well, we're gonna use the history of the process.
+
+1098
+01:41:23.170 --> 01:41:26.069
+Omar Mansour: We're gonna use historical data to predict the future.
+
+1099
+01:41:27.300 --> 01:41:30.199
+Omar Mansour: We're gonna use something that is called linear prediction.
+
+1100
+01:41:31.230 --> 01:41:35.019
+Omar Mansour: That's what, for example, machine learning does. It uses prior knowledge
+
+1101
+01:41:35.720 --> 01:41:38.330
+Omar Mansour: To try and predict the next token, or what happened.
+
+1102
+01:41:39.190 --> 01:41:46.019
+Omar Mansour: We're not gonna do something that sophisticated, I assure you, we won't. We're just gonna have a very simple, almost trivial equation.
+
+1103
+01:41:46.620 --> 01:41:58.020
+Omar Mansour: Because, again, the scheduler is not gonna get a cloud, a huge data center, just to predict the CPU burst time of your process. You're not that important.
+
+1104
+01:41:58.860 --> 01:42:00.690
+Omar Mansour: We're gonna do this little equation.
+
+1105
+01:42:01.260 --> 01:42:06.100
+Omar Mansour: So we're gonna use the prior history, in fact, we're gonna use the expected value.
+
+1106
+01:42:07.030 --> 01:42:08.570
+Omar Mansour: You're gonna lose the average.
+
+1107
+01:42:10.240 --> 01:42:12.580
+Omar Mansour: Not… and to get the average.
+
+1108
+01:42:13.220 --> 01:42:20.930
+Omar Mansour: I need to get the prior readings, or the prior, Recordings of your process.
+
+1109
+01:42:21.830 --> 01:42:23.039
+Omar Mansour: There's times.
+
+1110
+01:42:23.240 --> 01:42:25.470
+Omar Mansour: Maybe for the prior thousand cycles.
+
+1111
+01:42:26.660 --> 01:42:29.199
+Omar Mansour: The prior 1,000 scheduling cycles.
+
+1112
+01:42:30.000 --> 01:42:33.400
+Omar Mansour: And based on that, I can predict what the next
+
+1113
+01:42:33.580 --> 01:42:37.499
+Omar Mansour: you know, based on the behavior of your process, maybe I can predict the future.
+
+1114
+01:42:38.210 --> 01:42:41.180
+Omar Mansour: Based on that historical behavior.
+
+1115
+01:42:42.150 --> 01:42:43.590
+Omar Mansour: That's not even.
+
+1116
+01:42:43.820 --> 01:42:48.670
+Omar Mansour: we're not even gonna do that. I mean, recording and saving a thousand
+
+1117
+01:42:49.480 --> 01:42:52.840
+Omar Mansour: prior values for your CPU burst is even too much.
+
+1118
+01:42:53.380 --> 01:42:56.059
+Omar Mansour: We're not gonna do that. We're gonna save only one value.
+
+1119
+01:42:57.050 --> 01:42:59.579
+Omar Mansour: Only one value is going to be saved per process.
+
+1120
+01:42:59.900 --> 01:43:02.629
+Omar Mansour: And we're gonna call that value the prior estimate.
+
+1121
+01:43:04.830 --> 01:43:07.569
+Omar Mansour: So in every scheduling cycle.
+
+1122
+01:43:07.740 --> 01:43:15.139
+Omar Mansour: We want to predict the next estimate of your CPU burst. The next X estimate, I'm gonna call it.
+
+1123
+01:43:16.120 --> 01:43:20.240
+Omar Mansour: house of n plus 1, that is the next. N plus 1 meaning next.
+
+1124
+01:43:20.850 --> 01:43:25.260
+Omar Mansour: The current reading, of your actual CPU bursts.
+
+1125
+01:43:26.780 --> 01:43:29.850
+Omar Mansour: And the prior estimate is tau subn.
+
+1126
+01:43:30.520 --> 01:43:34.459
+Omar Mansour: Or actually the current estimate, the current reading, and the next estimate.
+
+1127
+01:43:35.980 --> 01:43:40.839
+Omar Mansour: Tau is an estimate, T is an actual reading of your CPU burst.
+
+1128
+01:43:45.680 --> 01:43:46.779
+Omar Mansour: Very good.
+
+1129
+01:43:47.590 --> 01:44:00.869
+Omar Mansour: And we're gonna use an alpha value that is somewhere between 0 and 1. So alpha could be 0, could be 0.2, could be 0.7, could be 0.9, could be 0.5, and we're gonna be using 0.5.
+
+1130
+01:44:01.770 --> 01:44:04.939
+Omar Mansour: The prior estimate tells us all about the history.
+
+1131
+01:44:05.200 --> 01:44:19.790
+Omar Mansour: the current value of your CPU burst is T sub N. So if alpha is 0.5, that means I'm putting 50% weight on the current value of your CPU burst, and 50% weight on the prior history.
+
+1132
+01:44:20.450 --> 01:44:24.030
+Omar Mansour: Now, this is not… an equal…
+
+1133
+01:44:24.230 --> 01:44:37.369
+Omar Mansour: weighted average. It is called exponential average. I'm going to show you why it's called exponential average very, very soon. Do you have a question? Yeah, does the scheduler have to use a separate process to do this calculation? No.
+
+1134
+01:44:37.630 --> 01:44:40.749
+Omar Mansour: No, it does it, when it's doing the scheduling.
+
+1135
+01:44:41.110 --> 01:44:44.030
+Omar Mansour: I mean, at the end of the day,
+
+1136
+01:44:44.880 --> 01:44:52.949
+Omar Mansour: you know, every time you do the scheduling means some process just finished. You only have to do it, you know, for the process that finished.
+
+1137
+01:44:53.180 --> 01:44:56.450
+Omar Mansour: And then you can, you know, there's the process he's already done.
+
+1138
+01:44:58.990 --> 01:45:03.170
+Omar Mansour: So every process, when it finishes, that is the current CPU burst.
+
+1139
+01:45:04.470 --> 01:45:07.009
+Omar Mansour: Finisher, what does finishing mean?
+
+1140
+01:45:08.270 --> 01:45:10.180
+Omar Mansour: Just an alertness, a weakness test.
+
+1141
+01:45:10.820 --> 01:45:13.140
+Omar Mansour: What does finishing the CPU burst mean?
+
+1142
+01:45:13.720 --> 01:45:15.849
+Omar Mansour: Means you requested an IO operation.
+
+1143
+01:45:16.570 --> 01:45:17.570
+Omar Mansour: I am.
+
+1144
+01:45:17.930 --> 01:45:21.920
+Omar Mansour: the moment… You request an I.O. operation.
+
+1145
+01:45:23.440 --> 01:45:25.339
+Omar Mansour: That scheduler is gonna be invoked.
+
+1146
+01:45:25.760 --> 01:45:30.749
+Omar Mansour: So the process that just finished, meaning a process that just finished its CPU burst.
+
+1147
+01:45:31.000 --> 01:45:37.659
+Omar Mansour: signified by requesting an I operation, that is the T sub N, that is the CPU burst of that process.
+
+1148
+01:45:38.240 --> 01:45:45.050
+Omar Mansour: Okay? So for that process, immediately, we estimate the next burst, so now we have it ready for that process.
+
+1149
+01:45:45.240 --> 01:45:48.209
+Omar Mansour: By the same armament to do it through every process in the system.
+
+1150
+01:45:48.390 --> 01:45:51.879
+Omar Mansour: So, you have them all ready by the time you make the decision.
+
+1151
+01:45:55.970 --> 01:46:03.359
+Omar Mansour: Going back to the estimate. Why are we calling this exponential averaging? Because we're going to be using this equation
+
+1152
+01:46:03.460 --> 01:46:05.690
+Omar Mansour: The next estimate is…
+
+1153
+01:46:05.890 --> 01:46:14.500
+Omar Mansour: 1 minus alpha, by the current estimate, plus the current actual reading, the current measurement of the CPU burst.
+
+1154
+01:46:15.230 --> 01:46:17.380
+Omar Mansour: The current measurement, how does it happen?
+
+1155
+01:46:17.760 --> 01:46:25.830
+Omar Mansour: When a process ends its CPU burst by requesting an IO operation, this is going to then invoke the scheduler. The scheduler
+
+1156
+01:46:26.230 --> 01:46:33.429
+Omar Mansour: measures the CPU burst time, and then immediately it computes the next estimate for your burst time.
+
+1157
+01:46:34.730 --> 01:46:42.390
+Omar Mansour: Every process that does that will then have its own estimate for the first time, and then the scheduler can make the next decision.
+
+1158
+01:46:44.010 --> 01:46:50.060
+Omar Mansour: Why am I saying this is exponential averaging of all the prior burst times?
+
+1159
+01:46:51.010 --> 01:46:55.660
+Omar Mansour: Because I'm presenting you with an equation…
+
+1160
+01:46:55.930 --> 01:47:01.040
+Omar Mansour: That is very peculiar. Who has seen an equation of such a type before, and what did we call it?
+
+1161
+01:47:05.300 --> 01:47:07.889
+Omar Mansour: It had a name and methodics.
+
+1162
+01:47:08.240 --> 01:47:09.399
+Omar Mansour: No, no, no.
+
+1163
+01:47:17.530 --> 01:47:20.880
+Omar Mansour: Well, let's examine what we have here. What is this?
+
+1164
+01:47:20.990 --> 01:47:22.689
+Omar Mansour: Tau sub n, what is that?
+
+1165
+01:47:23.770 --> 01:47:25.580
+Omar Mansour: Tau sub n plus 1.
+
+1166
+01:47:25.840 --> 01:47:30.810
+Omar Mansour: What type of equation do we have? Recursion? Recursive equation. This is recursion.
+
+1167
+01:47:30.960 --> 01:47:32.770
+Omar Mansour: That's a recursive equation.
+
+1168
+01:47:34.110 --> 01:47:35.959
+Omar Mansour: That's a recursive equation.
+
+1169
+01:47:36.120 --> 01:47:36.990
+Omar Mansour: Okay?
+
+1170
+01:47:37.150 --> 01:47:40.469
+Omar Mansour: So, a recursive equation can be broken down.
+
+1171
+01:47:41.350 --> 01:47:45.820
+Omar Mansour: All the way, until… The first term ever at time zero.
+
+1172
+01:47:46.370 --> 01:47:50.930
+Omar Mansour: So let's actually do it briefly to kind of demonstrate the whole idea.
+
+1173
+01:47:52.560 --> 01:47:57.019
+Omar Mansour: Well, if I say tau sum of n plus 1, Dial 7N plus 1.
+
+1174
+01:48:08.930 --> 01:48:15.330
+Omar Mansour: equal to alpha C sub n plus 1 minus alpha tau sub n.
+
+1175
+01:48:16.640 --> 01:48:20.629
+Omar Mansour: How can I break that? How can I expand it further? One step further?
+
+1176
+01:48:20.960 --> 01:48:31.879
+Omar Mansour: It's a recursive equation. I can keep expanding it, and that's the… that's the goal here. Why do I want to expand it? Demonstrate to him that it is exponential averaging, because he doesn't believe it.
+
+1177
+01:48:32.220 --> 01:48:33.479
+Omar Mansour: So let's do it.
+
+1178
+01:48:35.840 --> 01:48:39.260
+Omar Mansour: So that's equal to alpha tn, nothing I can do with that term.
+
+1179
+01:48:39.500 --> 01:48:42.310
+Omar Mansour: Which term can I do here? Which term can I expand?
+
+1180
+01:48:42.680 --> 01:48:45.790
+Omar Mansour: thousand I can expand.
+
+1181
+01:48:46.270 --> 01:48:48.070
+Omar Mansour: How do I expand to L sub n?
+
+1182
+01:48:48.950 --> 01:48:59.480
+Omar Mansour: It's a recursive formula. Exactly, so I'm gonna say plus 1 minus alpha, Weird brackets.
+
+1183
+01:48:59.790 --> 01:49:06.069
+Omar Mansour: Okay, tau sub n is, I use this formula, alpha, Tau sub n minus 1.
+
+1184
+01:49:06.670 --> 01:49:14.110
+Omar Mansour: Plus 1 minus alpha, tau, so T sub n minus 1, and then tau sub n minus… What?
+
+1185
+01:49:15.180 --> 01:49:16.090
+Omar Mansour: Okay.
+
+1186
+01:49:17.940 --> 01:49:19.700
+Omar Mansour: Can I clean this up a little?
+
+1187
+01:49:20.950 --> 01:49:22.929
+Omar Mansour: I make it into 3 terms.
+
+1188
+01:49:23.040 --> 01:49:23.990
+Omar Mansour: Yes.
+
+1189
+01:49:24.300 --> 01:49:26.250
+Omar Mansour: I'm not gonna expand again.
+
+1190
+01:49:26.360 --> 01:49:28.749
+Omar Mansour: Make it all fought to eat the head.
+
+1191
+01:49:29.360 --> 01:49:36.089
+Omar Mansour: Plus 1 minus alpha, alpha t sub n minus 1.
+
+1192
+01:49:36.670 --> 01:49:37.850
+Omar Mansour: You all agree?
+
+1193
+01:49:38.050 --> 01:49:39.559
+Omar Mansour: What is the third term?
+
+1194
+01:49:43.600 --> 01:49:48.240
+Omar Mansour: Is it just 1 minus alpha? 1 minus alpha squared. 1 minus alpha squared…
+
+1195
+01:49:48.550 --> 01:49:50.729
+Omar Mansour: tau sub n minus 1, okay?
+
+1196
+01:49:51.370 --> 01:49:56.409
+Omar Mansour: Can I make this into 4 turns? Can I expand this tau sub alpha minus 1?
+
+1197
+01:49:56.870 --> 01:50:02.410
+Omar Mansour: Sorry, tau sum, n minus 1, can I expand that further? I want to make this 4 terms.
+
+1198
+01:50:02.680 --> 01:50:06.320
+Omar Mansour: Sure. Okay, let me find a better pen first.
+
+1199
+01:50:06.650 --> 01:50:12.600
+Omar Mansour: This pen is not, there's a marker on the floor. Yeah.
+
+1200
+01:50:14.020 --> 01:50:15.940
+Omar Mansour: Okay, see if it's better.
+
+1201
+01:50:16.890 --> 01:50:18.449
+Omar Mansour: A lot better.
+
+1202
+01:50:19.000 --> 01:50:23.080
+Omar Mansour: Thank you. Alright, so now, I want to make this into four terms.
+
+1203
+01:50:23.580 --> 01:50:28.639
+Omar Mansour: Alpha t sub n, that's going to remain the same, plus… can I expand this?
+
+1204
+01:50:31.030 --> 01:50:32.040
+Omar Mansour: No.
+
+1205
+01:50:33.210 --> 01:50:41.299
+Omar Mansour: Okay, so it's going to be alpha t sub n minus 1. Which one can I expand? I can expand that, 1 minus alpha squared.
+
+1206
+01:50:42.410 --> 01:50:44.020
+Omar Mansour: Big fat brackets.
+
+1207
+01:50:44.860 --> 01:50:47.530
+Omar Mansour: What did I put in there? I want to expand this.
+
+1208
+01:50:49.580 --> 01:50:53.349
+Omar Mansour: So I'm gonna put it in terms of tau sub n minus 2.
+
+1209
+01:50:54.430 --> 01:51:03.890
+Omar Mansour: So that's alpha t sub n minus 2 plus 1 minus alpha tau sub n minus 2. Can I cleaned this up a little?
+
+1210
+01:51:04.180 --> 01:51:05.120
+Omar Mansour: Yes.
+
+1211
+01:51:05.470 --> 01:51:11.520
+Omar Mansour: alpha t sub n plus alpha T sub n minus 1,
+
+1212
+01:51:12.940 --> 01:51:14.739
+Omar Mansour: Oh, I think I missed the term.
+
+1213
+01:51:32.180 --> 01:51:39.769
+Omar Mansour: Here's the deal. That's going to be alpha, 1 minus alpha, Let me clean this up.
+
+1214
+01:51:43.120 --> 01:51:44.150
+Omar Mansour: Weird.
+
+1215
+01:51:44.680 --> 01:51:53.940
+Omar Mansour: So that's 1 minus alpha squared, multipot by alpha t sub n minus 2, Plus… 1 minus alpha cubed.
+
+1216
+01:51:57.260 --> 01:51:59.400
+Omar Mansour: tau sub n minus 2.
+
+1217
+01:52:01.920 --> 01:52:03.629
+Omar Mansour: For the middle terms.
+
+1218
+01:52:06.340 --> 01:52:14.129
+Omar Mansour: If I keep expanding this all the way to time zero, meaning all the way until I get into tau sub zero.
+
+1219
+01:52:15.630 --> 01:52:19.590
+Omar Mansour: Really, the power here Three.
+
+1220
+01:52:22.840 --> 01:52:25.079
+Omar Mansour: It's going to be N plus 1.
+
+1221
+01:52:26.390 --> 01:52:27.690
+Omar Mansour: The number of terms.
+
+1222
+01:52:28.450 --> 01:52:31.750
+Omar Mansour: And the middle terms are going to be alpha.
+
+1223
+01:52:33.290 --> 01:52:37.950
+Omar Mansour: 1 minus alpha, the part of G, You would notice…
+
+1224
+01:52:38.990 --> 01:52:45.659
+Omar Mansour: 1 minus alpha squared t sub n minus 2. So it's 1 minus alpha part of J, T sub n minus squared.
+
+1225
+01:52:47.480 --> 01:52:50.100
+Omar Mansour: These are the middle terms, and this is the final term.
+
+1226
+01:52:50.400 --> 01:52:54.779
+Omar Mansour: Wouldn't you all agree? Based on this, The expansion that we have.
+
+1227
+01:52:55.060 --> 01:53:02.849
+Omar Mansour: Okay, now we have already established that alpha is a fraction that is smaller than 1. It could be 0.2, could be 0.5.
+
+1228
+01:53:03.340 --> 01:53:11.689
+Omar Mansour: Typically, you would use a 0.5, but does it have to be? Could be 0.7. It's smaller than 1. What happens when you have a value smaller than 1,
+
+1229
+01:53:12.240 --> 01:53:14.820
+Omar Mansour: And you make it to the power of 27.
+
+1230
+01:53:15.310 --> 01:53:17.650
+Omar Mansour: It's pretty small. Pretty small.
+
+1231
+01:53:18.410 --> 01:53:27.960
+Omar Mansour: Okay, very good. So the term J, every term in the middle starts from J equals 0 until J equals 27, if I'm in the 27th cycle.
+
+1232
+01:53:28.540 --> 01:53:34.399
+Omar Mansour: So this tells me… that I have, exponentially decaying.
+
+1233
+01:53:36.390 --> 01:53:46.420
+Omar Mansour: prior estimates, or prior actual measurement. So I'm reading, I'm summing, this recursive formula means I'm summing the current measurement
+
+1234
+01:53:46.770 --> 01:53:55.580
+Omar Mansour: With prior measurements, such that the deeper I go in my history, The smaller the wheat.
+
+1235
+01:53:56.900 --> 01:53:58.650
+Omar Mansour: Which is actually desirable.
+
+1236
+01:53:58.820 --> 01:54:03.620
+Omar Mansour: Because the more I go back in history, the more irrelevant the measurement is.
+
+1237
+01:54:03.730 --> 01:54:13.290
+Omar Mansour: Mostly, the more recent history is the more relevant history for predicting the next estimate of the CPU. So this is actually, if you look here.
+
+1238
+01:54:13.640 --> 01:54:18.949
+Omar Mansour: This recursive formula is a single addition, a couple of subtractions.
+
+1239
+01:54:19.430 --> 01:54:22.789
+Omar Mansour: So I'm still not spending a lot of time for every process.
+
+1240
+01:54:22.890 --> 01:54:29.299
+Omar Mansour: And it happens once in every scheduling cycle. I do it for the process that just finished its CPU burst.
+
+1241
+01:54:29.450 --> 01:54:35.620
+Omar Mansour: delineate it by requesting an eye operation. Immediately, I estimate the next burst. Immediately.
+
+1242
+01:54:36.170 --> 01:54:47.129
+Omar Mansour: Every time a process does it, I estimate the next burst for the process, and the next time I make a scheduling decision, I make it based on the estimated shortest job first.
+
+1243
+01:54:48.310 --> 01:54:51.640
+Omar Mansour: The algorithm is still the same, it is called the shortage drop first.
+
+1244
+01:54:51.760 --> 01:54:53.929
+Omar Mansour: Except that we estimate.
+
+1245
+01:54:54.060 --> 01:54:55.299
+Omar Mansour: And we use that.
+
+1246
+01:54:56.790 --> 01:54:58.630
+Omar Mansour: Let's demonstrate how it works.
+
+1247
+01:54:58.830 --> 01:55:00.190
+Omar Mansour: And how it behaves?
+
+1248
+01:55:00.350 --> 01:55:01.760
+Omar Mansour: So, in this case.
+
+1249
+01:55:02.030 --> 01:55:11.469
+Omar Mansour: If I have a measurement of CPU burst of 6, I have to start with an initial estimate, a random value, an educated guess. We start with a 10.
+
+1250
+01:55:11.630 --> 01:55:16.169
+Omar Mansour: Then the next, immediately after the process finishes, finishes the CPU burst.
+
+1251
+01:55:16.450 --> 01:55:19.390
+Omar Mansour: delineated by making an IO request, as I mentioned.
+
+1252
+01:55:19.900 --> 01:55:29.229
+Omar Mansour: 100 times, and sick and tired of saying it, but I'm saying it repeatedly so you can remember. What is the end of the CPU burst? It's when you make an I.O. request.
+
+1253
+01:55:29.490 --> 01:55:37.820
+Omar Mansour: What happens when you make an I.O. request? The kernel, the scheduler is invoked. What happens when the scheduler is invoked? You compute this formula, okay?
+
+1254
+01:55:38.800 --> 01:55:44.160
+Omar Mansour: Because we're studying the internals of the kernel at this point, we're studying what it does in the scheduler.
+
+1255
+01:55:45.190 --> 01:55:49.410
+Omar Mansour: So the next estimate is 8, the actual measurement ended up being 4.
+
+1256
+01:55:49.860 --> 01:56:01.139
+Omar Mansour: Assuming alpha is a 0.5, 0.5 by 4 is 2, 0.5 by 8 is 4, so the next estimate is 6, the next guess is 6, the actual ended up being 6.
+
+1257
+01:56:01.400 --> 01:56:08.589
+Omar Mansour: If I draw the estimate in blue, the actual in black, you would see that it does track it pretty well. Not perfect.
+
+1258
+01:56:08.750 --> 01:56:16.100
+Omar Mansour: Not identical to the actual value, because we cannot predict the future. We're just doing our best guess.
+
+1259
+01:56:16.460 --> 01:56:22.499
+Omar Mansour: And it does track reasonably okay. So we can actually use this to then be able to do our scheduling.
+
+1260
+01:56:22.630 --> 01:56:38.240
+Omar Mansour: And if we have a preemptive operating system, then we are not going to use the fortress drop burst. To its completion. The completion of the CPU burst means you request an IOP operation. We're not going to allow that.
+
+1261
+01:56:38.400 --> 01:56:47.479
+Omar Mansour: We may be preempting the process if we have a preemptive operating system, and thus we use remaining shortest time
+
+1262
+01:56:47.820 --> 01:56:52.230
+Omar Mansour: First, shortest remaining time. Remaining time of what? Of your CPU burst.
+
+1263
+01:56:53.020 --> 01:56:55.890
+Omar Mansour: How does it work? Let's take a look at an example.
+
+1264
+01:56:56.320 --> 01:57:09.939
+Omar Mansour: I have four processes, 1, 2, 3, and 4, arrival times, so there I am stating the arrival time, so you have to take that into account. If I give you a column of arrival times, you take it into account. If I don't, arrival time is zero in the sequence from top to bottom.
+
+1265
+01:57:10.890 --> 01:57:27.950
+Omar Mansour: 3, 1, 2, 3, burst times 8, 4, 9, and 5. Which one has the shortest? Well, at the beginning, there's only one process that arrived. You have one process in your queue, the decision is really easy. You select that process, P1 runs, it wants to run for 8, however.
+
+1266
+01:57:28.070 --> 01:57:33.419
+Omar Mansour: At time number one, another process arrived, and this is a preemptive operating system.
+
+1267
+01:57:34.230 --> 01:57:36.570
+Omar Mansour: So then, we're gonna be preempting
+
+1268
+01:57:36.690 --> 01:57:42.590
+Omar Mansour: process number one, because we are a preemptive operating system. We're not gonna allow it to continue.
+
+1269
+01:57:42.710 --> 01:57:46.789
+Omar Mansour: It's CPU burst. It is ready to run, it wants to run, but we won't let it.
+
+1270
+01:57:47.710 --> 01:58:00.479
+Omar Mansour: So at this point, P1 is going to be taken out and placed back into the ready list. The running process is going to be P2, because it has a burst time of 4, or an estimated burst time of 4.
+
+1271
+01:58:01.060 --> 01:58:02.490
+Omar Mansour: We're on P2,
+
+1272
+01:58:02.620 --> 01:58:09.330
+Omar Mansour: And at time 2… at time 3, 2 other processes arrived, but they have longer burst time.
+
+1273
+01:58:09.490 --> 01:58:18.019
+Omar Mansour: So the selection stays with 2 all the way until time unit number 5. Then we select 4,
+
+1274
+01:58:18.140 --> 01:58:24.780
+Omar Mansour: The shortest remaining. Followed by that, when it is done, we have two options, we have 7 remaining.
+
+1275
+01:58:24.950 --> 01:58:32.440
+Omar Mansour: First time here, and we have 9, we picked the 7, so P1 is resuscitated here, is taken back from ready to running.
+
+1276
+01:58:33.200 --> 01:58:44.399
+Omar Mansour: And then so on. So you would notice here, P1 was of particular interest. P1 is in the ready queue from time unit 1 all the way to time unit 10. What did we say that time is? Waiting time.
+
+1277
+01:58:44.540 --> 01:58:52.590
+Omar Mansour: P1 is waiting in the ready queue. It is the time a process stands in the ready queue. P1 arrived at time zero.
+
+1278
+01:58:52.920 --> 01:58:54.820
+Omar Mansour: Started running for a little bit.
+
+1279
+01:58:55.080 --> 01:59:09.039
+Omar Mansour: That is back into the ready queue. It is ready to run, wanting to run, it never made an I.O. request. If it made an I.O. request, that would have been the end of the SPQ burst. It didn't. It makes an I.O. request way after 8 time units of running.
+
+1280
+01:59:09.290 --> 01:59:13.400
+Omar Mansour: We didn't get a chance to run them, so it is in the ready list.
+
+1281
+01:59:13.540 --> 01:59:16.260
+Omar Mansour: From Time Unit 1 all the way!
+
+1282
+01:59:16.530 --> 01:59:18.820
+Omar Mansour: 2 times you're at 10. That's a 9.
+
+1283
+01:59:19.040 --> 01:59:36.160
+Omar Mansour: time units of weighted. I can compute the weighting for every process visually, pictorially, by looking at the Gantt chart. P1 weighted for a total of 9, that is 10 minus 1. So pictorially, this is the weight. What about P2? P2 arrived at 1. PP2 did not wait at all, that's a 0.
+
+1284
+01:59:36.550 --> 01:59:39.699
+Omar Mansour: What about P3? P3 arrived at 2.
+
+1285
+01:59:40.690 --> 01:59:42.260
+Omar Mansour: Easily arrived here.
+
+1286
+01:59:43.040 --> 02:00:00.760
+Omar Mansour: But it started running at 17. So P3 arrived at time unit 2, right here. P3 kept waiting, waiting, waiting, waiting, waiting, all the way until time unit 17. P3 waited quite a long time in the ready list. It's ready to run, it wants to run, it's anxious to run, but it's still waiting in the ready queue.
+
+1287
+02:00:01.180 --> 02:00:02.459
+Omar Mansour: That's a wait time.
+
+1288
+02:00:03.520 --> 02:00:21.869
+Omar Mansour: And I compute the average wait time, it ends up being 65… 6.5 milliseconds. Now, that is one way of computing. The better way of computing, which is the way I recommend that you do in your exams and your assignments, is to do it algebraically. Don't try to visually do it, you're gonna make mistakes, especially if the problem is more difficult than this, which it will.
+
+1289
+02:00:22.460 --> 02:00:26.070
+Omar Mansour: In the exam. Slightly more difficult. It's gonna be one point, multiple choice.
+
+1290
+02:00:26.520 --> 02:00:30.490
+Omar Mansour: Still, you can finish very quickly, but just do it algebraically. How do you do it?
+
+1291
+02:00:31.380 --> 02:00:38.700
+Omar Mansour: Well, we go back to a formula. Go back to the important definitions we've talked about. The waiting time is…
+
+1292
+02:00:38.860 --> 02:00:41.939
+Omar Mansour: The turnaround time minus the burst time.
+
+1293
+02:00:42.130 --> 02:00:45.180
+Omar Mansour: That is the definition of the time you wait in the ready list.
+
+1294
+02:00:46.540 --> 02:00:50.300
+Omar Mansour: The turnaround time, I have to expand it, it is the completion minus arrival.
+
+1295
+02:00:50.570 --> 02:00:53.299
+Omar Mansour: So this means the waiting time is completion time.
+
+1296
+02:00:53.750 --> 02:00:56.400
+Omar Mansour: Minus arrival time, minus the burst time.
+
+1297
+02:00:56.630 --> 02:00:59.590
+Omar Mansour: Now, gladly for us, the completion time
+
+1298
+02:01:00.830 --> 02:01:05.470
+Omar Mansour: So the arrival time and the burst time are both in the table, to go back to the example.
+
+1299
+02:01:07.440 --> 02:01:10.110
+Omar Mansour: Oh, the arrival time is here, the burst time is there.
+
+1300
+02:01:10.300 --> 02:01:30.180
+Omar Mansour: So all I have to do is to visually find the completion time. For that, I go from right to left. For P1, I go from right to left. The moment I find… the first time, the first instance I find P1, that is the completion time. So P1 has a completion time of 17, minus arrival time of 0 minus 8.
+
+1301
+02:01:31.200 --> 02:01:32.290
+Omar Mansour: Mechanically.
+
+1302
+02:01:32.800 --> 02:01:39.069
+Omar Mansour: Crunch some numbers without thinking. What about P2? I go from right to left. The moment I see P2,
+
+1303
+02:01:39.620 --> 02:01:55.569
+Omar Mansour: right here. It's… the completion time is 5. The P2 has a 5, minus the arrival, minus the burst, 5 minus 1 minus 4 is 0. What about P3? I go from right to left, the moment I find P3 is at 26.
+
+1304
+02:01:56.430 --> 02:02:04.360
+Omar Mansour: So there's 26, minus the arrival of 2 minus the burst of 9. So that's how you have to do it if you don't want to be making mistakes.
+
+1305
+02:02:05.180 --> 02:02:13.310
+Omar Mansour: You don't try to visually look at where every process was waiting, too confusing, too cumbersome, you're gonna make mistakes, you're not gonna make it.
+
+1306
+02:02:13.550 --> 02:02:16.399
+Omar Mansour: Do it algebraically using the second method, okay?
+
+1307
+02:02:19.290 --> 02:02:20.850
+Omar Mansour: Priority scheduling.
+
+1308
+02:02:22.860 --> 02:02:35.770
+Omar Mansour: What is priority scheduling? What's it for? What do we need it for? What are we trying to optimize? We talked about metrics, so we can talk about what are we trying to optimize in every scheduling algorithm. Priority scheduling.
+
+1309
+02:02:35.880 --> 02:02:48.369
+Omar Mansour: You're giving priority to a small subset of processes, giving them the high priority. Why is that? Because for some processes, I want them to have a very, very, very short response time.
+
+1310
+02:02:48.610 --> 02:03:01.230
+Omar Mansour: Did we talk about response time? Well, let's talk about it briefly. What is a response time? It's a metric that is very important. The response time, the amount of time it takes from when a request or an event happens.
+
+1311
+02:03:02.210 --> 02:03:03.790
+Omar Mansour: At external events.
+
+1312
+02:03:04.710 --> 02:03:10.470
+Omar Mansour: Maybe internal to the system, from whatever, from when an event, be it external or internal, when an event happens.
+
+1313
+02:03:12.840 --> 02:03:20.799
+Omar Mansour: Through the time, the… Event handler, in the process, starts responding.
+
+1314
+02:03:22.220 --> 02:03:27.779
+Omar Mansour: What could be an event? The event could be the reception of a packet. For example.
+
+1315
+02:03:28.760 --> 02:03:41.030
+Omar Mansour: Who has had a Tesla before? I never had one. Oh, you had one? Wow, rich guy. I've rented one. That's all I could do. Alright, so let's say you have a Tesla with a self-driving car.
+
+1316
+02:03:41.660 --> 02:03:43.910
+Omar Mansour: You know, it has a couple of computers.
+
+1317
+02:03:44.080 --> 02:03:51.799
+Omar Mansour: Actually, a typical car today has 50. I kid you not. 50 computers, possibly even more and growing.
+
+1318
+02:03:52.800 --> 02:03:58.810
+Omar Mansour: There's one computer, Because I worked in self-driving cars, didn't own one, but I worked with them.
+
+1319
+02:03:59.810 --> 02:04:18.530
+Omar Mansour: working in the software for, you know, vision. Avoid buying one because of the… I don't even have a car at this point, which is good. I don't have to bother with cars. You can't have a car in the city. So, every time I drove it, I got a ticket. Every time I saw it, I just said, okay.
+
+1320
+02:04:20.210 --> 02:04:28.350
+Omar Mansour: every time I part, I gotta take it, put it that way, so… said it's enough. But anyways, so the deal here is that you have a computer.
+
+1321
+02:04:28.850 --> 02:04:31.680
+Omar Mansour: That is looking at a bunch of cameras.
+
+1322
+02:04:31.900 --> 02:04:44.409
+Omar Mansour: And sometimes other sensors, like what we worked with was working with cameras, radars, and LiDARs. Tesla doesn't like radars, for whatever reason, so they rely heavily on cameras.
+
+1323
+02:04:45.960 --> 02:04:49.870
+Omar Mansour: Mercedes uses LiDARs, radars, and cameras.
+
+1324
+02:04:50.300 --> 02:04:51.450
+Omar Mansour: It depends.
+
+1325
+02:04:51.630 --> 02:04:54.460
+Omar Mansour: But you have a computer that is doing all the vision.
+
+1326
+02:04:55.900 --> 02:05:03.669
+Omar Mansour: And it's producing something that is called an object list. That object list is being sent by messages into another computer.
+
+1327
+02:05:04.200 --> 02:05:06.720
+Omar Mansour: That other computer has a process
+
+1328
+02:05:07.280 --> 02:05:14.209
+Omar Mansour: That is real-time, and it needs to respond very fast. Why? Because if it gets an object that it deems
+
+1329
+02:05:14.360 --> 02:05:16.890
+Omar Mansour: And it deems that that object is too close.
+
+1330
+02:05:17.250 --> 02:05:26.660
+Omar Mansour: it has to respond very fast, or you're gonna hit an… you're gonna have an accident. For example, if it sees that it's about to hit a wall, or maybe a pedestrian.
+
+1331
+02:05:26.920 --> 02:05:29.880
+Omar Mansour: It needs to hit the brakes before killing the pedestrian.
+
+1332
+02:05:30.390 --> 02:05:37.930
+Omar Mansour: Now, the process that is going to be responding to that object that's arrival, a packet arrival, that is, with an object list.
+
+1333
+02:05:38.260 --> 02:05:45.299
+Omar Mansour: That needs to be a real-time process with a very, very high priority, so it can respond in time and hit the brakes before killing the pedestrian.
+
+1334
+02:05:45.650 --> 02:05:51.179
+Omar Mansour: So we want to give a very short response time to some processes.
+
+1335
+02:05:52.470 --> 02:05:57.969
+Omar Mansour: We want to allow processes to run their CPU burst.
+
+1336
+02:05:58.250 --> 02:06:15.520
+Omar Mansour: immediately when there's an event that happens for them. For example, it's trying to read a packet that's an IO operation, that packet is ready, I want the process to run and handle that packet. That packet is a message, an object list, in a self-driving car. I hope you appreciate the importance of that.
+
+1337
+02:06:16.410 --> 02:06:22.949
+Omar Mansour: So, going back here… We're gonna talk about real-time processing, but not today, next week.
+
+1338
+02:06:27.260 --> 02:06:32.760
+Omar Mansour: We optimize the response time by optimizing, by giving very high priority to some processes.
+
+1339
+02:06:33.050 --> 02:06:36.450
+Omar Mansour: So, every process is given an integer value.
+
+1340
+02:06:36.680 --> 02:06:45.940
+Omar Mansour: The smaller the integer value, the highest the priority. So the highest priority is priority zero. Keep that in mind. It just goes a little bit in a convoluted manner.
+
+1341
+02:06:46.390 --> 02:06:50.490
+Omar Mansour: This works with both preemptive as well as non-preemptible trading systems.
+
+1342
+02:06:51.650 --> 02:06:55.360
+Omar Mansour: And typically, that integer value is given to the process.
+
+1343
+02:06:56.470 --> 02:06:58.160
+Omar Mansour: But it is a static value.
+
+1344
+02:07:00.220 --> 02:07:08.439
+Omar Mansour: However, Shortest job first can be viewed as a dynamic priority scheduler. Why is that?
+
+1345
+02:07:08.760 --> 02:07:15.460
+Omar Mansour: Because the shortest job, or the shortest remaining time, Or even the shortest job.
+
+1346
+02:07:18.570 --> 02:07:21.829
+Omar Mansour: 6. I can imagine that this is the priority of the process.
+
+1347
+02:07:22.460 --> 02:07:28.760
+Omar Mansour: Except that it's dynamic. It changes every scheduling cycle, because the prediction changes every scheduling cycle.
+
+1348
+02:07:28.940 --> 02:07:35.860
+Omar Mansour: But for every scheduling cycle, that is a priority, because the shortest drop is P1, Or, sorry, P4.
+
+1349
+02:07:36.690 --> 02:07:38.649
+Omar Mansour: That is the priority integer.
+
+1350
+02:07:39.000 --> 02:07:55.609
+Omar Mansour: The lower the integer, the higher the priority. So shortage structures can be also visualized as a priority scheduler, except it is dynamic priority. In fact, even in a static priority scheduler, to avoid the problem of starvation that your colleague has mentioned before.
+
+1351
+02:07:56.110 --> 02:08:03.989
+Omar Mansour: especially in shortage offers, which is a dynamic priority. I want to avoid the starvation in which a low priority process, the one with a long job.
+
+1352
+02:08:04.320 --> 02:08:05.730
+Omar Mansour: maybe starved.
+
+1353
+02:08:06.000 --> 02:08:13.680
+Omar Mansour: So, no matter what happens, whether it is static priority or dynamic priority, you want to introduce some dynamism into it.
+
+1354
+02:08:13.960 --> 02:08:18.590
+Omar Mansour: Some aging factor, meaning It's the process
+
+1355
+02:08:18.870 --> 02:08:22.389
+Omar Mansour: With a high priority integer value, meaning low priority.
+
+1356
+02:08:23.440 --> 02:08:32.080
+Omar Mansour: is waiting for too long. I want to keep shrinking its integer value, keep cranking. The more it waits in every scheduling cycle.
+
+1357
+02:08:32.440 --> 02:08:35.290
+Omar Mansour: I want to multiply, or sorry, shrink.
+
+1358
+02:08:35.980 --> 02:08:41.379
+Omar Mansour: They enter the value by a bit of an amount, by a little bit, maybe 1%.
+
+1359
+02:08:41.680 --> 02:08:43.799
+Omar Mansour: Or maybe 5%. Why?
+
+1360
+02:08:44.150 --> 02:08:46.559
+Omar Mansour: So that way, at some point.
+
+1361
+02:08:47.150 --> 02:08:55.999
+Omar Mansour: The aging, every time it ages, it… we bump its priority a little bit. Every time it ages, we bump its priority, meaning reduce its integer value.
+
+1362
+02:08:56.260 --> 02:09:02.319
+Omar Mansour: Until it gets the chance to run, if it's been waiting for very, very, very long, to avoid starvation.
+
+1363
+02:09:02.720 --> 02:09:10.679
+Omar Mansour: Okay? So avoiding starvation by multiplying, or actually multiplying by an aging factor that is smaller than 1.
+
+1364
+02:09:10.940 --> 02:09:13.620
+Omar Mansour: for the priority integer. Any questions?
+
+1365
+02:09:15.850 --> 02:09:18.119
+Omar Mansour: This is actually, commonly used.
+
+1366
+02:09:19.230 --> 02:09:22.730
+Omar Mansour: and Linux, which we're going to be getting to next.
+
+1367
+02:09:22.840 --> 02:09:23.650
+Omar Mansour: weak.
+
+1368
+02:09:23.930 --> 02:09:31.970
+Omar Mansour: uses… some sort of that behavior, a scheduler that is called Completely Free Scheduler, CFS,
+
+1369
+02:09:32.520 --> 02:09:38.900
+Omar Mansour: It's a name. It doesn't really mean it is that fair. It's as fair as they think it is, which we're going to discuss next week.
+
+1370
+02:09:39.710 --> 02:09:42.840
+Omar Mansour: But let's take a look at an example of priority scheduling.
+
+1371
+02:09:43.540 --> 02:09:53.369
+Omar Mansour: I have 5 processes, 1, 2, 3, 4, 5, all arriving at time 0 in that sequence. If I don't have a time column, arrival time, arrival where? To the ready list.
+
+1372
+02:09:54.690 --> 02:10:03.220
+Omar Mansour: Meaning, the end of the I.O. burst, meaning the end, meaning the start of the request, and the fulfillment of an I.O. operation.
+
+1373
+02:10:05.850 --> 02:10:08.859
+Omar Mansour: Fulfillment of an operation means arrival to our ready list.
+
+1374
+02:10:10.760 --> 02:10:16.809
+Omar Mansour: times 0, I have burst signs of 10, 1, 2, 1, and 5, priorities, and in this case.
+
+1375
+02:10:16.970 --> 02:10:21.429
+Omar Mansour: We're not gonna take care of the burst time, we're gonna schedule based on priority.
+
+1376
+02:10:21.730 --> 02:10:28.819
+Omar Mansour: The highest priority is the lowest integer value, so P2 is the highest priority, that's the one we pick all the way until it finishes its burst.
+
+1377
+02:10:29.250 --> 02:10:30.279
+Omar Mansour: The next…
+
+1378
+02:10:30.450 --> 02:10:39.470
+Omar Mansour: is approach value number 2, that is the next highest priority. B5 runs all the way until it's first, and the next is…
+
+1379
+02:10:40.700 --> 02:10:41.740
+Omar Mansour: P1.
+
+1380
+02:10:41.850 --> 02:10:44.630
+Omar Mansour: Runs all the way until it finishes burst, and so on.
+
+1381
+02:10:45.180 --> 02:11:00.810
+Omar Mansour: We compute the average wait time, it's 8.2. This is not the optimal average wait time. Absolutely not the optimal, but we're not optimizing the wait time. We're optimizing the response time for some of the processes, for the high priority process, not everyone.
+
+1382
+02:11:01.780 --> 02:11:04.820
+Omar Mansour: A problem that is very famous called priority inversion.
+
+1383
+02:11:04.990 --> 02:11:09.729
+Omar Mansour: This problem actually happened Like, 28, 29 years ago.
+
+1384
+02:11:10.160 --> 02:11:12.090
+Omar Mansour: It happened in real life.
+
+1385
+02:11:12.370 --> 02:11:21.040
+Omar Mansour: in a Mars Pathfinder, which is actually a space vehicle, It was debugged remotely.
+
+1386
+02:11:21.800 --> 02:11:23.480
+Omar Mansour: Fixed remotely.
+
+1387
+02:11:23.700 --> 02:11:28.889
+Omar Mansour: The software was updated remotely, and it started behaving properly remotely.
+
+1388
+02:11:30.540 --> 02:11:35.890
+Omar Mansour: I don't know how far away from Earth it was, but it did happen, it was actually fixed. So what happened here?
+
+1389
+02:11:37.080 --> 02:11:41.700
+Omar Mansour: What happened here is a problem, a glitch, called priority inversion.
+
+1390
+02:11:41.820 --> 02:11:45.309
+Omar Mansour: So clearly, this pertains to priority scheduling.
+
+1391
+02:11:45.700 --> 02:11:51.530
+Omar Mansour: For that problem to happen, we need to have at least 3 processes.
+
+1392
+02:11:52.070 --> 02:11:53.250
+Omar Mansour: Possibly more.
+
+1393
+02:11:53.540 --> 02:11:57.659
+Omar Mansour: Two processes will not cause this problem to happen. I have to have three processes.
+
+1394
+02:11:58.470 --> 02:12:06.459
+Omar Mansour: At least. Or more. One with high priority, one with low priority, and one with medium priority. And I need to have one resource
+
+1395
+02:12:06.910 --> 02:12:08.619
+Omar Mansour: That they're trying to acquire.
+
+1396
+02:12:08.920 --> 02:12:11.090
+Omar Mansour: A resource could be a semaphore.
+
+1397
+02:12:11.240 --> 02:12:13.239
+Omar Mansour: A resource could be a mutex.
+
+1398
+02:12:15.160 --> 02:12:16.839
+Omar Mansour: It could be a read-write lock.
+
+1399
+02:12:17.540 --> 02:12:19.939
+Omar Mansour: Read-write musics. It doesn't matter.
+
+1400
+02:12:20.350 --> 02:12:23.400
+Omar Mansour: I have a resource that is not shareable.
+
+1401
+02:12:23.670 --> 02:12:25.219
+Omar Mansour: Mutix is.
+
+1402
+02:12:25.510 --> 02:12:29.380
+Omar Mansour: The musics cannot be acquired by two processes at the same time.
+
+1403
+02:12:30.620 --> 02:12:33.750
+Omar Mansour: Only one process acquires the mutix at a time.
+
+1404
+02:12:34.750 --> 02:12:38.720
+Omar Mansour: So we have a resource, we're gonna call that R, and that resource is not shareable.
+
+1405
+02:12:39.330 --> 02:12:47.720
+Omar Mansour: If we get into a situation which the low priority process L acquired the mutex, Elle acquired the mutex.
+
+1406
+02:12:48.120 --> 02:12:50.750
+Omar Mansour: And then immediately after that age.
+
+1407
+02:12:51.660 --> 02:12:56.630
+Omar Mansour: Wants to acquire the music, so they share a critical section, Elle acquired it first.
+
+1408
+02:12:57.340 --> 02:13:00.260
+Omar Mansour: H now wants to acquire it. H will be blocked.
+
+1409
+02:13:01.050 --> 02:13:03.689
+Omar Mansour: Because that's how mutex blocks work.
+
+1410
+02:13:04.580 --> 02:13:09.050
+Omar Mansour: The first process that acquires the mutex goes into the clinical section.
+
+1411
+02:13:09.490 --> 02:13:12.839
+Omar Mansour: The one that came in second, it cannot take that away.
+
+1412
+02:13:13.960 --> 02:13:20.400
+Omar Mansour: It cannot preempt… a music slot cannot be preempted. There's a process, L, that's already in the critical section.
+
+1413
+02:13:20.890 --> 02:13:22.320
+Omar Mansour: So now H…
+
+1414
+02:13:22.690 --> 02:13:36.040
+Omar Mansour: What happens when he cannot acquire the mutex? Or what happens when he cannot acquire the binary semaphore, as we said before? What happens to the process? It's blocked, which means it's in a wait queue. So now H is blocked.
+
+1415
+02:13:37.930 --> 02:13:44.430
+Omar Mansour: And then comes another crisis, M, that is medium priority. It's not acquiring any resources, it doesn't want to acquire any resources.
+
+1416
+02:13:45.090 --> 02:13:47.640
+Omar Mansour: But it came in. It arrived into the rescue.
+
+1417
+02:13:48.300 --> 02:13:54.549
+Omar Mansour: M doesn't need no resources, it is ready to run, and it has higher priority than L.
+
+1418
+02:13:55.360 --> 02:13:58.619
+Omar Mansour: So what did we say? When a process arrives.
+
+1419
+02:13:59.780 --> 02:14:01.930
+Omar Mansour: with a higher priority, like P5,
+
+1420
+02:14:02.810 --> 02:14:14.659
+Omar Mansour: It's gonna pre… well, actually, I don't see preemption here, but in all cases, a process with higher priority arriving, it's actually going to preempt the lower priority, so M is going to preempt L, now M is going to start driving.
+
+1421
+02:14:15.610 --> 02:14:23.430
+Omar Mansour: So this means M… has higher priority than L, that's true, but it has lower priority than H.
+
+1422
+02:14:23.970 --> 02:14:26.200
+Omar Mansour: And M is running before age.
+
+1423
+02:14:26.890 --> 02:14:28.440
+Omar Mansour: Because H is blocked.
+
+1424
+02:14:29.060 --> 02:14:30.869
+Omar Mansour: So that is called priority inversion.
+
+1425
+02:14:31.420 --> 02:14:32.240
+Omar Mansour: Yes.
+
+1426
+02:14:32.650 --> 02:14:38.130
+Omar Mansour: Well, I was just gonna ask, because… So a higher priority gets…
+
+1427
+02:14:38.300 --> 02:14:50.030
+Omar Mansour: the… the R, whatever it's called. The source, the mutex. Yeah, mutex block. And why, originally, would H be blocked? I didn't get it.
+
+1428
+02:14:50.190 --> 02:14:53.239
+Omar Mansour: It did not get… did not acquire the music.
+
+1429
+02:14:54.400 --> 02:15:00.109
+Omar Mansour: So we said the L, the low priority process, came in first, and it acquired the mutex lock first.
+
+1430
+02:15:01.300 --> 02:15:03.900
+Omar Mansour: So age cannot acquire the mutex lock.
+
+1431
+02:15:05.100 --> 02:15:08.640
+Omar Mansour: The mutant slot can only be acquired by one process, you're aware of that.
+
+1432
+02:15:09.200 --> 02:15:16.779
+Omar Mansour: Sorry, but you said M came in and… I said MT&M came in last. So Elle came in first, acquired the Mutex Lock.
+
+1433
+02:15:16.960 --> 02:15:18.690
+Omar Mansour: H came in second.
+
+1434
+02:15:19.810 --> 02:15:21.930
+Omar Mansour: Unable to acquire the mutex lock.
+
+1435
+02:15:22.600 --> 02:15:28.240
+Omar Mansour: M came in last, but it doesn't… it's not requesting Alibutix lock, it doesn't have a critical section, it just wants to run.
+
+1436
+02:15:30.590 --> 02:15:34.400
+Omar Mansour: So, M is going to preempt L, because it has higher priority.
+
+1437
+02:15:34.560 --> 02:15:37.840
+Omar Mansour: And as a result, M is running and H is not running.
+
+1438
+02:15:38.290 --> 02:15:46.909
+Omar Mansour: So M, that is medium priority is running at age that is high priority is not running. That's a problem. We don't want that to happen. So how do we fix it?
+
+1439
+02:15:47.560 --> 02:15:56.900
+Omar Mansour: Whenever a high priority arrives, high priority process arrives, and it requests a resource that is held by a lower priority process, we bump
+
+1440
+02:15:57.460 --> 02:15:59.890
+Omar Mansour: The priority of the lower priority process.
+
+1441
+02:16:00.170 --> 02:16:03.179
+Omar Mansour: I make it… The same as age.
+
+1442
+02:16:04.750 --> 02:16:08.520
+Omar Mansour: Then it gets to a chance to go through its critical section.
+
+1443
+02:16:11.260 --> 02:16:14.880
+Omar Mansour: And then it gets out of the critical section and releases the Butrix block.
+
+1444
+02:16:15.240 --> 02:16:23.710
+Omar Mansour: The moment it releases the music slot, it goes back to normal, which is a low priority, and H now can acquire the music slot.
+
+1445
+02:16:23.900 --> 02:16:27.279
+Omar Mansour: And it's not blocked no more, it is actually of higher protein than am.
+
+1446
+02:16:28.170 --> 02:16:34.599
+Omar Mansour: That's called priority. The problem is called priority inversion, and the solution is called priority inheritance.
+
+1447
+02:16:35.290 --> 02:16:40.910
+Omar Mansour: Process L inherits the priority of H, whenever…
+
+1448
+02:16:41.160 --> 02:16:44.040
+Omar Mansour: H is blocked on the same music log.
+
+1449
+02:16:45.850 --> 02:16:48.519
+Omar Mansour: It's called the Protein Harrison's Protocol. Any questions?
+
+1450
+02:16:49.020 --> 02:16:52.350
+Omar Mansour: Okay, so finally, I want to talk about round drop and scheduling.
+
+1451
+02:16:53.219 --> 02:16:57.590
+Omar Mansour: This is used for preemptive… operating systems.
+
+1452
+02:16:59.250 --> 02:17:05.489
+Omar Mansour: Every time slice, we preempt a process, and we put it at the end of the ready list.
+
+1453
+02:17:09.230 --> 02:17:10.770
+Omar Mansour: The way this works.
+
+1454
+02:17:11.389 --> 02:17:14.949
+Omar Mansour: A preemptive operating system, round robin. Every time slice.
+
+1455
+02:17:15.360 --> 02:17:19.040
+Omar Mansour: A process is preempted, and it's placed at the end.
+
+1456
+02:17:19.219 --> 02:17:20.990
+Omar Mansour: And then we pick another process.
+
+1457
+02:17:21.180 --> 02:17:28.110
+Omar Mansour: And then it runs for a bit of time, then it gets preempted, and it's placed at the back of the ready list. As a result.
+
+1458
+02:17:28.260 --> 02:17:34.449
+Omar Mansour: Every process gets a chance to run. This is almost, almost the same as first come, first serve.
+
+1459
+02:17:34.690 --> 02:17:39.100
+Omar Mansour: Except that it is for preemptive operating systems.
+
+1460
+02:17:39.730 --> 02:17:43.500
+Omar Mansour: So every process, Does have the convoy effect.
+
+1461
+02:17:43.680 --> 02:17:49.030
+Omar Mansour: Every process runs for a very small amount of time. It is called a time slice.
+
+1462
+02:17:49.260 --> 02:17:51.969
+Omar Mansour: And then it gets to the end of the ready queue.
+
+1463
+02:17:52.910 --> 02:18:00.229
+Omar Mansour: And then the peddler picks the one at the head of the ready queue, that's why it's called a round robin. Round robin. Round robin.
+
+1464
+02:18:00.379 --> 02:18:02.360
+Omar Mansour: Going around, drop it, okay?
+
+1465
+02:18:08.500 --> 02:18:12.180
+Omar Mansour: As a result, every process waits in the queue.
+
+1466
+02:18:13.870 --> 02:18:20.179
+Omar Mansour: And it waits for a maximum of n minus 1, types license. Why? Because…
+
+1467
+02:18:20.549 --> 02:18:24.569
+Omar Mansour: it waits for a maximum, like, if I have 10 processes.
+
+1468
+02:18:25.320 --> 02:18:31.570
+Omar Mansour: Every process waits for a maximum of 9 processes, each executing their Time slice.
+
+1469
+02:18:32.490 --> 02:18:37.890
+Omar Mansour: So we have 10 processes, each one meets for a maximum of 9 time slices.
+
+1470
+02:18:38.290 --> 02:18:39.590
+Omar Mansour: Timer ticks.
+
+1471
+02:18:39.740 --> 02:18:41.070
+Omar Mansour: 1 millisecond.
+
+1472
+02:18:41.240 --> 02:18:51.200
+Omar Mansour: So that's a very intriguing way of scheduling, because it guarantees that every process can respond to outside events.
+
+1473
+02:18:51.809 --> 02:18:53.979
+Omar Mansour: Imagine that self-driving car example.
+
+1474
+02:18:54.370 --> 02:19:02.399
+Omar Mansour: Because maybe I don't have a single process with high priority. Maybe I have a bunch of processes interacting with a user.
+
+1475
+02:19:03.360 --> 02:19:10.700
+Omar Mansour: Maybe I have 4 windows that are open, and I want to see updates in all 4 windows, or maybe 5 windows. Imagine I'm a trading guy.
+
+1476
+02:19:11.030 --> 02:19:23.430
+Omar Mansour: In Wall Street, I'm trading, and I want to see a lot. Maybe I have 4 or 5 windows open with 4 or 5 graphs. I want to use that while I'm trading. I want to see the updates happen all the time. So, this one optimizes
+
+1477
+02:19:24.820 --> 02:19:28.700
+Omar Mansour: The response time, the average response time for all processes.
+
+1478
+02:19:29.420 --> 02:19:35.959
+Omar Mansour: Not the response time for a select high-priority processes, optimizes the average response time for all processes.
+
+1479
+02:19:36.180 --> 02:19:37.589
+Omar Mansour: And the performance
+
+1480
+02:19:37.870 --> 02:19:42.649
+Omar Mansour: Well, actually, let's take a look at an example. How does this work? Let's say I have processes P1, P2, P3.
+
+1481
+02:19:43.100 --> 02:19:46.730
+Omar Mansour: Arriving at time zero, in that order, into the ready queue.
+
+1482
+02:19:47.250 --> 02:20:04.890
+Omar Mansour: First times 24, 3, and 3. P1 runs for a time slice, assuming the time slice is for quantum. We can also call it time quantum. Time quantum is exactly the same as time slice, exactly the same as the timer stick. All three terms mean the same exact thing. For scheduling algorithms.
+
+1483
+02:20:04.890 --> 02:20:08.240
+Omar Mansour: You don't say the time slice, they say the time quantum.
+
+1484
+02:20:08.970 --> 02:20:11.750
+Omar Mansour: If you read a paper about scheduling, that's what they use.
+
+1485
+02:20:12.200 --> 02:20:13.219
+Omar Mansour: That's fine.
+
+1486
+02:20:13.760 --> 02:20:16.390
+Omar Mansour: You know, a time quantum is a time slice.
+
+1487
+02:20:17.310 --> 02:20:19.300
+Omar Mansour: So the time slice is 4.
+
+1488
+02:20:21.360 --> 02:20:25.989
+Omar Mansour: Process 1 runs for 4 time units, and it gets preempted by the timer tick.
+
+1489
+02:20:26.500 --> 02:20:28.010
+Omar Mansour: Then the scheduler.
+
+1490
+02:20:28.990 --> 02:20:33.900
+Omar Mansour: Again, P1 is preempted, it's taken from the ready queues, from the running state.
+
+1491
+02:20:34.000 --> 02:20:43.599
+Omar Mansour: to the back of the ready queue. Now I have P2, then P3, then back to P1. P2 runs for 3 time units, that is smaller than the timer tick.
+
+1492
+02:20:44.600 --> 02:20:52.589
+Omar Mansour: So, the timer tick is not going to happen. It's going to finish its CPU burst. How does it finish the CPU burst? It means it requests an IO operation.
+
+1493
+02:20:53.460 --> 02:20:55.300
+Omar Mansour: It's done with the CPU burst.
+
+1494
+02:20:55.430 --> 02:21:05.349
+Omar Mansour: So then the scheduler is invoked, it picks P3, and then back again to P1, and then a timer interrupts, P1 again, a timer interrupts P1 remains, P1 remains, P1 remains.
+
+1495
+02:21:05.590 --> 02:21:09.940
+Omar Mansour: So, this is how it works. Typically,
+
+1496
+02:21:10.310 --> 02:21:14.460
+Omar Mansour: The average, it's really there to optimize the average response time.
+
+1497
+02:21:15.450 --> 02:21:17.550
+Omar Mansour: This has a lot to do with the performance.
+
+1498
+02:21:19.990 --> 02:21:26.269
+Omar Mansour: Meaning it has a lot to do with the CPU utilization, but the time slice is, or the timer tick, the timer interrupt.
+
+1499
+02:21:26.690 --> 02:21:30.840
+Omar Mansour: If I have too many timer interrupts, Every one of them.
+
+1500
+02:21:31.080 --> 02:21:34.779
+Omar Mansour: invokes the… Scheduler and the dispatcher.
+
+1501
+02:21:36.000 --> 02:21:37.840
+Omar Mansour: And it may do context switching.
+
+1502
+02:21:38.390 --> 02:21:40.320
+Omar Mansour: If the dispatcher chooses to.
+
+1503
+02:21:40.770 --> 02:21:47.080
+Omar Mansour: then that's an overhead. Then an overhead, then an overhead, then an overhead. If I have a process, with…
+
+1504
+02:21:48.450 --> 02:21:54.519
+Omar Mansour: If I have a process with a CPU burst of 10,
+
+1505
+02:21:55.200 --> 02:22:03.980
+Omar Mansour: If the time quantum, the timer tick is 1 millisecond, like you guys have it, and the CPU bursts at 10 milliseconds, I would interrupt the process 9 times.
+
+1506
+02:22:05.540 --> 02:22:08.420
+Omar Mansour: I would interrupt your CPU burst 9 times.
+
+1507
+02:22:09.270 --> 02:22:14.800
+Omar Mansour: 9 overheads, whereas… If the burst time is 10,
+
+1508
+02:22:15.360 --> 02:22:29.920
+Omar Mansour: and the timer take is 6, I would have interrupted it only once versus 0. So how many times you interrupt your CPU burst has a lot to do, with the overhead, and thus the CPU utilization that you have, so keep that in mind.
+
+1509
+02:22:30.760 --> 02:22:35.099
+Omar Mansour: Finally, before we finish today, I want to talk about proportional share scheduling.
+
+1510
+02:22:36.210 --> 02:22:41.769
+Omar Mansour: And this is a scheduling in which I say there are total number of shares in my system.
+
+1511
+02:22:41.880 --> 02:22:43.620
+Omar Mansour: And every process gets…
+
+1512
+02:22:43.790 --> 02:22:50.539
+Omar Mansour: a certain fraction of that. So if I say T is the total number of shares, Every process gets…
+
+1513
+02:22:50.720 --> 02:22:51.720
+Omar Mansour: And…
+
+1514
+02:22:52.220 --> 02:23:03.559
+Omar Mansour: which is a subset of T, something evaluated smaller than T, so T could be 1,000. I can say my system has 1,000 shares, just like you buy shares in a company. My system has 1,000 shares.
+
+1515
+02:23:04.200 --> 02:23:09.920
+Omar Mansour: and I have 100 processes, I may be able to give 10 shares to every process.
+
+1516
+02:23:10.330 --> 02:23:15.820
+Omar Mansour: That means every process funds For 10 out of the thousand, Times.
+
+1517
+02:23:16.810 --> 02:23:25.200
+Omar Mansour: In fact, I don't have to be giving equal shares to all processes. I may be… I may be giving more shares to one process, and less to other processes.
+
+1518
+02:23:25.870 --> 02:23:27.599
+Omar Mansour: And we're using that.
+
+1519
+02:23:28.210 --> 02:23:35.140
+Omar Mansour: in a multi-level queue. A multi-level queue is when I have two scheduling algorithms.
+
+1520
+02:23:35.710 --> 02:23:41.130
+Omar Mansour: I have a ready queue for foreground processes, another ready queue for background processes.
+
+1521
+02:23:41.280 --> 02:23:46.339
+Omar Mansour: You recall, foreground processes are ones that have a user interface.
+
+1522
+02:23:46.590 --> 02:23:48.040
+Omar Mansour: They're interactive.
+
+1523
+02:23:49.270 --> 02:23:54.860
+Omar Mansour: background processes like daemon's, Do not have a user interface, they are not interactive.
+
+1524
+02:23:55.610 --> 02:24:02.830
+Omar Mansour: And I could put them in another scheduling queue. Why that? Because if I wish to have all interactive processes.
+
+1525
+02:24:03.080 --> 02:24:08.320
+Omar Mansour: with an optimized average response time, I would use round-robin scheduling.
+
+1526
+02:24:10.140 --> 02:24:18.310
+Omar Mansour: But if I wish to minimize the overhead and maximize the CPU utilization, I would take the background processes and use first-come, first-served.
+
+1527
+02:24:18.590 --> 02:24:32.460
+Omar Mansour: So I can have two different scheduling algorithms based on the two different types of processes that I have by placing them in two different queues, and then using proportional shared… sorry, proportional scheduling, proportional shared scheduling.
+
+1528
+02:24:32.460 --> 02:24:40.589
+Omar Mansour: To maybe give 80% of the time, 80% of the shares to the round-robin queue, and only 20% of the shares to the background queue.
+
+1529
+02:24:40.870 --> 02:24:56.550
+Omar Mansour: So proportional shared scheduling can be used at the process level, but they can be used also at the queue level to organize the scheduling between the two different queues. And Linux actually uses something similar, which we're going to be discussing in complete details next week.
+
+1530
+02:24:58.120 --> 02:25:01.169
+Omar Mansour: I'm gonna stop here, actually. Any questions?
+
+1531
+02:25:02.650 --> 02:25:06.760
+Omar Mansour: Please do not, do not forget, next week, you're gonna have a quiz.
+
+1532
+02:25:08.180 --> 02:25:10.090
+Omar Mansour: 5 minutes, 5 questions.
+
+1533
+02:25:11.210 --> 02:25:13.160
+Omar Mansour: You need to set up Responders.
+
+1534
+02:25:13.430 --> 02:25:23.059
+Omar Mansour: lockdown browser during the weekend, or tomorrow, or after tomorrow. I'm gonna put the quiz tomorrow. Not a quiz, sorry, I'm gonna put a trial run
+
+1535
+02:25:23.160 --> 02:25:24.930
+Omar Mansour: Responders for you tomorrow.
+
+1536
+02:25:25.370 --> 02:25:39.220
+Omar Mansour: So you have to run it before you come to next week's quiz, okay? Yes? Is the rest of the slide gonna be in the quiz? Scheduling and the scheduling? Everything's gonna be… everything's gonna be in the quiz from the end
+
+1537
+02:25:39.550 --> 02:25:40.970
+Omar Mansour: of the midterm.
+
+1538
+02:25:41.110 --> 02:25:46.500
+Omar Mansour: Until we finish here to multi-level hearing. So, this lecture and last week's lecture.
+
+1539
+02:25:47.580 --> 02:25:48.450
+Omar Mansour: Yes.
+
+1540
+02:25:48.560 --> 02:25:55.650
+Omar Mansour: So, final… is it gonna be cumulative? I'm gonna post, I'm gonna post an announcement about that next week.
+
+1541
+02:25:55.990 --> 02:25:58.499
+Omar Mansour: Go for it. I'll let you know.
+
+1542
+02:25:58.900 --> 02:26:04.189
+Omar Mansour: I feel like I'll start studying now, so… I'm gonna post… okay, I'm gonna post an announcement in the weekend.
+
+1543
+02:26:04.520 --> 02:26:05.200
+Omar Mansour: Okay.
+
+1544
+02:26:07.390 --> 02:26:08.160
+Omar Mansour: Oh.
+

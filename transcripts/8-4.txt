@@ -1,0 +1,487 @@
+CS-GY 6233 - Introduction to Operating Systems (I)
+Wed, Nov 4, 2026
+
+0:01 - Participant 1
+synchronization objects used to protect also a critical section, possibly, but it's actually a lot more powerful than that. We can use it to protect a critical section, but you can use it for many other things as well, and we're going to see them all today. And a big difference from music slots is that they contain an integer inside the object. As opposed to a bullion inside the object. Okay, how do we use how do we use a semaphore?
+
+ We use a semaphore using a weight and then use it with a signal.
+
+0:57 - Participant 2
+These are these rectangles indicate atomic operations, meaning unbreakable.
+
+1:09 - Participant 1
+The weight and the signal are not the same as the weight and the signal system calls in units. Who remembers the weight system call in units? What did it do? What did we use the win system goal for? They can see score points? No. Waiting for a process to wait for a child process to finish. Wait a bit and make it wait for a particular process. We wait child process to act it. That's not that. That's a theoretical name.
+
+ We have to distinguish between theoretical names and names of actual products. Linux is a product, Unix is another product. This is not a name used in a product, this is a theoretical name. It is not the same Unix weight. Signal, we use signal to register a signal handler in Unix. That's not a set signal. There is something else. This is a signal on a semaphore and it's another theoretical name. Let's not confuse the two, okay?
+
+ That's why I put this in bread. Don't confuse that with the Unix weight and the Unix signal. The Unix weight and the signal do very different things. So how does this work? Well, first of all, I can use them to protect the critical section.
+
+2:33 - Unidentified Speaker
+How do I do it?
+
+2:34 - Participant 1
+I initialize the semaphore to a one. Not to a false like I did with the lock, with the mutants lock. No. I'm gonna initialize the semaphore to a one. And then I'm gonna use the weight. And then go into the critical section and then use the signal. So I exit the critical section. So how does this work? Okay, so I mean, we know how to use this lock, how the lock variable works. How does this one work?
+
+ Well, what does the weight do? The weight, well, before we talk about the weight, we need to establish one thing. A semaphore is available. When it's valued, when the integer that's inside the semaphore. When the integer is one or above, that means the semaphore is available. So the semaphore integer has a value of two, that means it's available. If it has a value, if it has a value of seventeen, it means it's available.
+
+ It has to be one or above for the semaphore to be available. So that's all we check for. When we wait, we're waiting for the semaphore to be available.
+
+3:46 - Participant 1
+We're waiting for the value to be one or above.
+
+3:50 - Participant 1
+How do we wait for the sample to be available? Well, we keep checking the value. I check the value. If it's bigger than zero, I exit the weight. It has to be bigger than zero. And as I exit the weight, I'm going to decrement. So give the value. 101 as we initialize it to and I wait. If I'm the winner, again, always have to remember: multiple processes, let's say 10, are trying to go through the critical sections.
+
+ The winner is the first one that takes it loose away. The winner is going to see that the semaphore was available, because it had a value of one.
+
+4:34 - Unidentified Speaker
+And as a side effect, that happens atomically, that means no other.
+
+4:39 - Unidentified Speaker
+process will be able to check or do anything until this one finishes.
+
+4:44 - Unidentified Speaker
+The semaphore is a side effect.
+
+4:47 - Unidentified Speaker
+And then we exit the weight.
+
+4:51 - Unidentified Speaker
+So immediately, atomically, the semaphore is checked.
+
+4:56 - Participant 1
+It was not to be available for the winner. Atomically, it was decremented to a zero. And then we exit the weight.
+
+5:04 - Participant 2
+So the winner is going to go to the critical section.
+
+5:08 - Participant 1
+Any other loser, any other process is a loser, it's going to find out, because we decremented, the same before, it's going to find out that it's a deal. Any questions about the weight and how it works? When we're done, we're going to say, what does the signal do? Ah, it just increments. So what will be the value after the signal? Two?
+
+5:39 - Unidentified Speaker
+No, one. Who's saying one?
+
+5:42 - Participant 1
+It's gonna be a one. Why? Because we decremented. Oh. So the weight, so we started with a one. The weight decremented it, made it unavailable. Just protecting a critical section. The cell phone is unavailable. Every loser won't be able to go through. Every loser is gonna be stuck in this loop. Unavailable, so this if statement is not true, so every loser will keep waiting, keep looping and looping and looping.
+
+ Every loser sees the value of zero, and then when the winner is out of the critical section, it signals, so the value becomes a one again, hopefully another winner is gonna surface and go in. Okay, any questions about how semaphores work? Work. They still suffer from the loop. The busy weight loop is atomic. It's almost a spin block. It is not a spin block, but we still have a busy weight loop. That's not a spin block.
+
+ A spin block requires a log variable. That's not a lock variable, that's an integer. A log variable is a boogeyman. That's an integer. We're going to call that a busy weight.
+
+6:56 - Participant 2
+So it still suffers from a busy weight issue. But we're going to improve the implementation.
+
+7:03 - Participant 1
+But before we do it, I want to talk about another usage for a semaphore. So we can use it to protect a critical section. But because we have an integer, it could be actually a lot more powerful than just protecting a critical section. We can use it to synchronize between two processes, two single-threaded processes, or two threads within a process, or what have you, such that if I have process one and another process process two, I have a statement in the in this process and another statement in that process process two.
+
+ And I wish to guarantee, absolutely guarantee 100%, that S one in this process on the left process executes prior to S two on the right process. And given that I cannot tell the scheduler how fast how many time slots, to which time slots are assigned to every process. I cannot do that. The scheduler detects. Then, one way to guarantee that S1 in the left process executes prior to S2 is to use a semaphore.
+
+ In this case, you will initialize the semaphore to a value of zero. That means the semaphore is available, or does it mean the semaphore is unavailable? Who wants to help me with this? Does the value of the mean the semaphore is available or unavailable? Given it all what Yes? Unavailable, because it has to be one or above. So the semaphore is unavailable. So if the scheduler starts executing P2 first, it's going to be waiting on the semaphore sync.
+
+ And it's unavailable, so it's gonna be weight. Whereas at some point P1 will get a chance to execute, it will execute the first statement S1, and then it's gonna signal the semifer. What value do we get after that signal? Just review. What does the signal do? Increment. So what value do we get after the signal here? One. It's gonna be a one. Is that available or unavailable? Available. Okay, so then it allows P2 to get out of its weight.
+
+ Okay? So this guarantees that P1 executes its statement, signals, making the setup work available, just unleashing P2. So P2 now wants to see. So more powerful than mutex locks. A mutex lock can only be used for a critical section. A semaphore can be actually used to send or unleash one process that is waiting on a particular event. It can be used as a signaling of an event. To synchronize between two processes, for example.
+
+ It's as if process two is waiting for some event, and that event is being signaled by the first process. So this means process two has to wait until it gets signaled, then it can execute its particular statement. Any questions about this usage? So both the critical section solution and the synchronization usage, they are both binary usage of a semaphore. Binary usage means the value of the integer that is inside the semaphore object is binary, meaning 0, 1.
+
+ It doesn't have to be the only usage. In fact, I'm going to present you with a usage that is called accounting semaphore usage. I'm going to present you with that very soon, very soon, more important than anything, in which I'm going to be using an actual integer value inside a semaphore, a value that would be possibly 5 or 10 or 15, to implement something that is even more powerful that I couldn't have implemented with a new design.
+
+ But before I do that, I need to emphasize you still have a problem with the busy weight loop. This is not a spring lock. A spring lock requires a lock. This is not a lock. That's an integer. But we have a busy weight loop and we want to avoid that. It's time to start avoiding it right now in weight queues. If you recall from prior discussions, every process in the system exists in a tree because it has a pair, it's as a child.
+
+
+
+11:37 - Unidentified Speaker
+possibly, maybe zero or more children, zero or more children.
+
+11:41 - Unidentified Speaker
+So they exist in a list of siblings, a tree of ancestry.
+
+11:47 - Unidentified Speaker
+But also, a process exists in a queue.
+
+11:51 - Participant 1
+The most famous of them is the ready queue. What would be the state of the process in the ready queue? Ready? Ready. Ready, thank you. Very intuitive, isn't it? Okay, what other states can a process be in? Waiting. Waiting, okay. What else? Running. Running, could be running. Okay, the process, these are the main states. Huh? Yes, locked out, that's right. But that's not a main state, so that's why the main core states are ready.
+
+ Running on the CPU actually being dispatched. Its registers are loaded in the CPU and it's actually, you know, CPU stretching and executing machine instruction with that process. That's fine. But it could be waiting, meaning block waiting. Some operating systems call it a waiting state, others call it a block state. Some texts call it a block, other ones call it waiting.
+
+12:55 - Participant 2
+Some are called block waiting state.
+
+12:57 - Participant 1
+Okay, very good. And we did say that if a process is block weighting on something, it needs to be in a wave queue. That's what happened. And we said that wave queues are of many, many, many different types. And one very famous type of wave queues is called device queues. Every device in your system should have a wait queue that's a device queue. So it's a subcategory of way queues called device cues.
+
+ For example, I have a magnetic tape, like hard drive, another magnetic tape. These are device queues because you might be trying to read from the tape.
+
+13:40 - Participant 2
+I might be trying to send a packet. So there is a device queue for sending a packet.
+
+13:44 - Participant 1
+There also is a terminal. Maybe I'm trying to read from the keyboard or the web. These are all device queues. It could be a virtual device queue as well. But now we're present a different type of OAQ. We're going to create a queue for a semaphore. We're going to create a queue for a semaphore, and you may have it's a linked list queue, as we have emphasized, but about this buffer queue. It's a second implementation, the linked list queue implementation.
+
+ And what do we have here? Well, we need to have two operations. Two operations are inside the kernel. All that is inside the kernel. Studying kernel design, but also how to use those facilities provided to the processes for running the environment provided for the processes. So these two operations are inside the kernel. They are not accessible directly to user-mode applications. They don't need. They're going to be used here inside the semaphore implementation.
+
+ These two operations for subroutines.
+
+14:59 - Unidentified Speaker
+One of them is called block.
+
+15:02 - Participant 1
+Whenever you involve a block subroutine, you have to give it a particular process. And block does is it takes the process from the ready list and it shoves it to the back of the semaphore key. So this operates on a particular process and a particular semaphore. And in the process of doing so, simultaneously, we change the state of the process from ready into block ready. Another operation inside the kernel is called wake up.
+
+ We're use it very soon. The wake-up operation is take a process from the head of the semaphore queue.
+
+15:46 - Unidentified Speaker
+Clearly, I can have many, many semaphores in my system.
+
+15:49 - Unidentified Speaker
+There's not one semaphore.
+
+15:50 - Participant 1
+I can create one, two, three, ten semaphores in my process, and every process can do that. So you have hundreds of semaphores at any given point running in your system.
+
+16:03 - Participant 2
+Keep that in mind.
+
+16:06 - Participant 1
+Every one of them is going to have a semaphore queue. And wake-up is going to take, wake-up clearly operates on a semaphore. It's going to take the process that is at the head of the queue, it's going to take it and shove it into the tail of the ready list. And simultaneously, it flips the state of the process from duct waiting back into ready. Okay? These are the two operations. So this tells us that the semaphore object is not merely an integer, it does contain a linkless queue.
+
+ Alright? So now every semaphore you create, every time you create a semaphore, be aware that you're also creating a queue inside a kernel. And these operations are be used inside a kernel object, okay? Sorry, inside the semaphore object.
+
+17:06 - Unidentified Speaker
+Fantastic.
+
+17:08 - Participant 1
+How do we use this? Now we're going to change and tweak the implementation of the weight and the signal. Because we wish to avoid the ball here, the target here is to avoid the busy weight loop. How do we do it? Well, the first thing we do is we decrement the semaphore. So the weight is always going to decrement the semaphore. Unlike the prior implementation, the weight will only be incremented. If it is available.
+
+ Now no, this is a different implementation. We decrement the semaphore no matter what. And then we check if the semaphore is available, we don't do anything, we return, that means we can go into the critical section. If the wait returns, then you know that means we'll go into the critical section.
+
+18:06 - Unidentified Speaker
+Very good.
+
+18:08 - Unidentified Speaker
+What happens if the semaphore is not available?
+
+18:12 - Participant 1
+We're not going to be doing a while loop. If the semaphore is not available, unlike the prior implementation, we're not going to be doing a while loop that keeps checking on that integer until it finds it to be available, meaning a value of one or above.
+
+18:26 - Unidentified Speaker
+We're not going to do that.
+
+18:27 - Participant 1
+What do we do then? Well, we're going to take the process and block it.
+
+18:32 - Participant 2
+Who remembers what the blocking does? Victorially.
+
+18:36 - Participant 1
+We take the process from the ready, we shove it to the back of a semaphore queue. That is what block does. And we flip the state of the process so it becomes block waiting on that semaphore. So if the semaphore is not available, the process is blocked. What happens to a block process will be able to execute code?
+
+18:58 - Unidentified Speaker
+No, why not?
+
+19:02 - Participant 1
+Because the scheduler will never take it and will never dispatch it. Why is that? Because the scheduler operates only on the ready list. The scheduler picks a process from the ready queue. The scheduler doesn't look here, it doesn't pick a process to execute from here. Every timer tick, the scheduler picks the next process in the ready list. Another timer tick, it picks another process in the ready list.
+
+ Which scheduler are we talking about? We talked about three schedulers. Which one of them is going to be picking the process from the ready list? The short-term scheduler, thank you so much. The short-term scheduler. Not the swap scheduler, also referred to as the medium term. Not the swap scheduler, not at all. So the scheduler is never going to pick the process, it's never going to run, it's not going to execute any lines of code, which tells you exactly why we have to decrease minutes first.
+
+ Because the moment we're blocked, we can't execute code. If we're blocked in here, we're not executed. We're not alive. We're going to come back to life and execute code when out of a block state. So the first thing is we decrement the semaphore and then we check whether it's available or not. Now available means one or above. Why are we comparing it to smaller than zero? So not available will be smaller than one.
+
+ Why are we saying smaller than zero? Who wants to help me?
+
+20:38 - Participant 2
+By looking at the code, not by looking at me.
+
+20:49 - Participant 1
+Let's take a few seconds. We've indicated a semaphore is available if it's one or zero. Oh, sorry, if it's one or above. So that means I should check to see if smaller than one, that means unavailable. Why are we checking if it's smaller than zero? Is that a contradiction? Well, take a note of that. It's not a contradiction. It's because I already decremented the semaphore. So really, I'm checking the value when we invoke the weight, not the value after I decrement it.
+
+ So after I decrement it, I'm not be checking G is smaller than one. I'm checking to see if it's smaller than zero, which means it was smaller than one at this point prior to that. Okay? Any questions about the weight? Okay, very good. Now we take a look at the signal. The signal is always going to increment the semaphore. That's what it did before. No issues there. But we're going to do something more.
+
+ Now we have possibly have some processes that are laid on the semaphore unlike what we did before. We never had a wait queue before. Before every process that wants to wait will be in a busy weight. Busy while loop, busy wait while loop. We don't have that now. A process that is waiting on the semaphore is not able to run at all. It's not going be able to execute. It's not be able to wake up on its own.
+
+ So we increment the semaphore, that is what happened in the signal, and then we look to see if the semaphore has become available. And not only that, we see if there's a in fact, will it become available or not. It would have become available. All we have to do is to find the process that is waiting on the semaphore. Two ways of finding if there's a process the semaphore. One of them is to look at the size of the queue.
+
+ Or to see, I don't need the size of the queue, I just need to know if the queue is empty or not. If the queue is empty, that means I don't need to wake up many processes. If the few has at least one process, I need to wake up the process that is at the head of the semaphore queue. How do I detect a condition in which there are no processes in the fee? What would that condition be?
+
+23:42 - Unidentified Speaker
+Also, think of a way.
+
+23:44 - Participant 1
+If head equals tail? No. A good condition for the fixed buffer queue, a bounded buffer queue.
+
+23:52 - Unidentified Speaker
+That's a linked list queue.
+
+23:54 - Participant 1
+Head will be equal to tail. Maybe I can have, if you remember our discussion of linked lists, I can have one process in the list, in the queue, and that would be the head and the tail. So the head will be equal to tail. That doesn't work, yes? It doesn't point towards a null? Head equals null. Head equals null means it's an empty linkless queue, okay? I can check for that. So if it is empty, that means I need to wake up.
+
+ I cannot. Who would I wake up? It's not gonna work. But if it's not empty, then I need to wake up a process that is at the head of the queue.
+
+24:34 - Participant 2
+Alright?
+
+24:36 - Unidentified Speaker
+You all agree? Okay.
+
+24:41 - Participant 1
+That's one way. Another way to detect whether the queue is empty or not would be even simpler. Simpler to implement in coding difficult, possibly more difficult, not more difficult, but slightly involved in understanding. So if I say, if I compare actually the value of the semaphore, because every semaphore has a value that is integer. If I compare the value and see that it is smaller than zero, then that means there's at least one process that is weak.
+
+ Why is that? Well, let's take a look at this. Initially, the semaphore starts at some value. Bigger than zero means the semaphore was available. And at some point, the cell of four kef keeps decrementing, decrementing, and at some point it's going be equal to a zero. That means it's not available, but it means it switched from a one to a zero using a wait. The moment it switched from a one to a zero, that means it was available just before it became zero.
+
+ That means no one is waiting on it. It has to be a negative value to indicate that some process is waiting on the cell. In fact, the magnitude of the negative value tells you how many processes are waiting on the semaphore. Because the next weight is going the first weight is going to make it unavailable, no processes are waiting. Minus one means one process is waiting. The next process that issues the weight will make it a minus two.
+
+ That means two processes are waiting. The third process that issues the weight is going make it minus three. That means three processes are waiting. So in fact I can take a look at the magnitude. And use that to tell me whether the Q is empty or not. So that Q is empty or not, meaning whether it is smaller than zero or not. Smaller than zero means not empty. Then I wake up somewhere. So why am I comparing to smaller than or equal?
+
+ Because I already incremented the zero. So it needs to be smaller than zero at this point, so I increment it so it becomes smaller than equal. Any questions? Now we have an ultra now we have an efficient implementation of semaphores that uses wave cues and it uses a block and a wake-up routines that operate on the semaphore. And that way we have completely uploaded any of the busy weights or spin blocks or what have you.
+
+ And it is now that we have achieved we have given, we have achieved the two goals, giving an environment for applications to run while managing the system resources efficiently and securely.
+
+27:38 - Unidentified Speaker
+What do we have?
+
+27:42 - Unidentified Speaker
+Again, weight and signal are theoretical names.
+
+27:45 - Participant 1
+Actual names in Linux, actually in any Unix-like system, actual names and politics, they're going to be s well. I have two types of semaphores. I have name semaphores. These are semaphores that do have a name, not a name out of the sky, we don't have names out of the sky in a UNIX file system, every name has to belong to a node in the file system. Or every resource that is exposed to applications, every resource exposed to applications need to have needs to have a name.
+
+ On the file system at some node in the tree, the file system tree. It's not just a name out of nowhere, in the middle of nowhere, it's a name in the file system tree. So the first thing is you can create a sema fork using the open, just like you open a file, except that it's going to be sem underscore open. And you give it a name of your choosing, and it's going to be in And you can see it in the dev directory as well.
+
+ And you give it any of your choosing, and you say whether you want to open it for whichever access. From that point, you can use semWait because you get back a file ID, a file descriptor. And you can use a weight, you can use a post, and eventually you have to close the cell. And yet you can delete this node using the set on link. Because you don't want leaving that node lingering around. Your process might exit.
+
+ But it's just it's a virtual file. It's not an actual file. But stay there. Just like you have created an actual file. You create a file. Your process exits and the file will resist. Sorry, it will still exist. The file will persist. Anytime you create a file, a brand new file and give it a name in your application, when you exit, the file remains. By the same argument, you create a virtual file, when you exit, the file remains.
+
+ So you have to delete that mode of the file system and you delete that node on the file system, not using delete. Delete of that command on the shell. You use sem unlink that is similar to delete that you would type on the shell. Okay? Any questions for named semaphores? Now we can also have unnamed semaphores. Semaphores that do not have a name. You just have an object without a name. So we have to create that one in shared memory.
+
+ If I'm synchronizing between two friends, which is what you will be doing in assignment number seven, then threads always share all the memory. All the global variables are shared.
+
+30:43 - Participant 2
+So you just create a semo-poord a global variable.
+
+30:49 - Participant 1
+Now, if I'm having two single-threaded processes, then I need to create shared memory, and in that shared memory, I would have to then use the after creating the semaphore, I would have to initialize it. I'll have to place the semaphore in the shared memory as a global variable inside the shared memory. I will have to initialize it, and then again I can use the weight and the post. The weight is the same as the weight, the send post is the same as the signal, theoretical name.
+
+ Semweight is the same as the weight theoretical name, send post is the signal. Theoretically. And eventually I need to destroy that semaphore from the shared memory when I'm done.
+
+31:37 - Unidentified Speaker
+Any questions?
+
+31:41 - Participant 2
+Because we are going to be using this in assignment number seven.
+
+31:49 - Participant 1
+So now I can use the power of semaphores to solve well let's revisit the valid buffer problem and try to solve it using semaphores as opposed to the approach that we did earlier. And after we do that, we're talk about the reader's advisor's problem. Not today, but then we're going to talk about the dining philosophers problem and devlogs. Of course there are lots of funny names, dining philosophers, sleepy barber, you know.
+
+ Stuff like that. They're fine, but the good thing about fine aims is that you remember them forever. So let's talk about take a look at the first problem. Let's remind ourselves what we did before. We used an almost full flag and used an almost use an actual empty flag. What is an empty flag? That equals to tail, like you call you said earlier, but that works for bounded buffers, not for linked lists.
+
+ Head equals to tail. In linked lists, the head and the tail are pointers. Pointers on a model for an entry list. If the head and the tail are pointing to something, that means you only have one entry. That entry is the head and that entry is also the tail. Not the same here. Okay. The almost full flag. We remember. Tail plus one is equal to head. That means we're almost full. And we never used the buffer to its full capacity.
+
+
+
+33:25 - Participant 2
+That was a little bit of inefficiency that we're going to be fixing now.
+
+33:30 - Participant 1
+So the consumer, clearly, if the buffer is empty, if the queue is empty, meaning the head is equal to the tail, that means the queue is empty. In that case, I cannot DQ.
+
+33:42 - Participant 2
+I'm going to be stuck waiting. Oh, that's another crazy wait.
+
+33:45 - Participant 1
+Now in this chapter we're fixing all of those inefficiencies. That busy wait has to be fixed. We're going to fix it, that's assured. And we're busy waiting in here in a while loop. And once the condition is false, The head is not equal to the tail, meaning there's one entry that came in. Then we exit this while loop and then we start reading from the buffer and that is what we return. But prior to returning we have to increment the head, which is where we read from We always read from the head, we write to the table.
+
+ This does things in reverse. So the first thing, I want to handle the inefficiency of missing one entry in the buffer. I'm handle that. Remember, the reason why in the past the almost full flag is because tail equals to head was the empty flag. So I had to use an almost full. Today, we don't need to do that. We're actually going to be using a counter. Every time I enqueue, I increment the counter.
+
+ Every time I dequeue, I decrement the counter. So what is the initial value for the counter? Zero, because I start with an empty queue. So if the counter is zero, that means I have an empty Q. If the counter is equal to the buffer size, that means I have a full queue. So then I can use my Q to its full capacity. I will have a full flag instead of an almost full flag. And that is what we need to do.
+
+ A full flag instead of an almost full flag. I compare the counter. If it's equal to the buffer size, I'm in the while loop, still inefficient. If the Q is empty, that means that the counter is zero, I'm stuck in the while loop.
+
+35:45 - Unidentified Speaker
+Until somehow counter is not equal to empty.
+
+35:51 - Participant 1
+And every time I in queue, I increment the counter. Every time I dq, I decrement the counter. That counter increment and counter decrement reminds me of something that is called a critical section. You have to recognize a critical section. That's why I'm telling you, this is incorrect.
+
+36:07 - Participant 2
+This is a critical section that is not protected. How do we protect this critical section?
+
+36:12 - Participant 1
+I have two options. I can use a semaphore initialized to a one. I insert the weight and the signal, theoretical names, or I can use a mutex lock initialized to false. I can acquire the mutex and release and mute it. So I'm going to do acquire and release, acquire, and release, and voila. Now I protected my critical section. So now I have a correct solution that is inefficient. I achieved a little bit of efficiency because now I'm using the entire size of the buffer.
+
+ I'm using the full flag instead of the almost full. But I need to improve on that. I need to achieve more efficiency by avoiding the wild loop. How do I do it? I don't use semaphores. Here's the trick. How do I do it? What is the duty? Meaning, I want to block the process. Some people might say, Okay, you know, first of all, um how do you block your own process? You cannot. You have to block it by waiting for some something, maybe some time, some events.
+
+ I mean, as a user-mode application, people don't just say block me because you have to provide some event that's going to wake you up. There's no such thing. So I can say, oh, sleep for 10 microseconds. Sleep for 10 milliseconds. Have you used the sleep before?
+
+37:42 - Participant 2
+We've used it. Where? Which assignment? What's assignment number.
+
+37:46 - Participant 1
+Number one. Number one.
+
+37:47 - Participant 1
+Number one.
+
+37:49 - Unidentified Speaker
+So you remember.
+
+37:51 - Participant 1
+well maybe if you don't remember, let's actually emphasize this. When you sleep, you're blocked. You're actually awake for a particular event that is a timer. You're waiting for a timer event. If you sleep for a second, your the timer event wakes you up after one second, okay? Fantastic. The time heard actually because I swore to everyone who's waiting, you know, from the one who's due to wake up first to the one who's due to wake up last.
+
+ It's going to organize its own queue, and it's going to start waking processes up. So I can say, okay, instead of just making a while loop for this counter, maybe I can sleep maybe for 10 milliseconds and wake up after 10 milliseconds and check for the counter. That might be slightly more efficient. But it's not there still. Because I still have to keep checking, keep waking up and checking, waking up and checking, waking up and checking.
+
+ It's just not quite right. There must be a better solution, and yes, there is. We're going to use semaphores. I'm use two semaphores, one of them, keeping track of my buffer, how many entries do I have that are empty, and how many entries do I have that are full? If I start with a buffer like this with n entries, then from starting point, from a starting point, how many of these elements are full?
+
+ Full of valid data? N. If I start from scratch, how many elements are full of validated? Zero. Zero. So the number of full elements, I'm gonna say, is zero. Okay? How many elements are empty? N. N. So that's exactly what I'm gonna do, okay? I'm going to keep track of that using semaphores. I'm going to have a semaphore keeping track of the empty, a semaphore keeping track of the full. Okay, that's half the solution, but how do we now convert this weight into something on a semaphore?
+
+ Now, a weight on a semaphore, which one do we wait for? I'm going to wait. Till the full is false. Which telephone do I use? The full telephone or the empty telephone? Huh? Why? Because exactly, because I need it to be one or above. I need to have at least one empty empty. One entry that is empty and that lends itself nicely to the definition of semaphore. What did we say about one or above? What did we call that?
+
+ We said that's available. A semaphore is available if it's one or above. The number of empty elements has to be one or above to make me proceed. So that's exactly what we implement here. I'm wait on the empty counts. Because that's when I have a full count and an empty count. If the empty count is one or above, that means the semaphore is available. I will pass the waiter. That's precisely what I want.
+
+ So what happens when I'm done? I filled, I did fill an entry. If I filled an entry, I want a signal. The signal is going to increment the trade count. So initially, the full was zero. At this point, the full became one. The DQ is going to wait until there's at least one entry that is full. Two entries that are full of sign, three entries that are full of sign, zero elements that are full means it's empty.
+
+ So I want to wait until the full set of ports is one or above. So I wait for the full cap. When I'm done, I've consumed that entry. I want to decrement, so I want to use it, sorry, I want to increment because I made one entry empty, so I want to signal the empty cat. So this solution completely avoids busy waiting, completely avoids the while loop. I'm not going to need to sleep and wake up, sleep and wake up, sleep and wake up a million times.
+
+ That is still inefficient. This is the most efficient way of implementing the bounded buffer problem correctly and efficiently, using semaphores. As you can see, I couldn't have done that with mutex locks. Semaphores are a lot more powerful than mutex locks because they are backed meaning they contain an integer value. So they can be used for doing many, many powerful things. Any questions? Okay, so now the next problem I wish to solve here is the leaders and I was problem.
+
+ This is a very common problem if you're designing the internals of a database. Not if you're using a database from the outside. Let's not confuse things. We are systems engineers. We are developing the system. We're developing the this is called a systems course, just like computer networks and stuff. We're developing the operating system. We're not doing applications that are using a database. We're developing inside the system, okay?
+
+ So this is a common problem if you're designing the internals of a database system, not if you're using a database. Why is that? Because in every database you have records.
+
+43:59 - Unidentified Speaker
+A record could be a struct, that means multiple fields, multiple data members.
+
+44:04 - Participant 1
+And you wish to allow as many threads as you possibly can to read the same exact record simultaneously at the same exact time. But if you are modifying a record, only one process should be modifying that record.
+
+44:24 - Participant 2
+Everybody else should be kicked out.
+
+44:26 - Participant 1
+So that's a critical section that is a bit peculiar, because I want to provide mutual exclusion, like a traditional critical section. I don't want that. I want to have as many readers as you wish, but only one writer to access it exclusively. Many readers simultaneously, one writer exclusively. That is the problem, and it's called the reader's writers problem. This is actually typically does not need to be in cyber terminal.
+
+ Not going to be into manual communication cyber terminal, but it is going to be in a library. That is still a part of the operating system, but it's going to be an implementation that's outside the kernel in user mode. Okay? That library is be built on top of semaphores that are provided by the kernel.
+
+45:15 - Unidentified Speaker
+Not every part of the operating system is a kernel.
+
+45:18 - Participant 1
+Other parts of the operating system could be outside of the kernel. There's a system program that could be inside a database, for example. But actually, the library that contains V Linux and BITOS problems is the V thread. It does contain RW mutex locks, if you wish, that have that same exact behavior. An RW mutex lock allows you to read. Many threads to read, but only one thread to be doing the modification of a record.
+
+ So what do we have here? We have a data set, a bunch of data members inside a record, inside a struct. I have a semaphore, RW text. This is a semaphore to protect the record. And this semaphore has to open up for as many readers, it has to lock up and give exclusive access to a single writer.
+
+46:15 - Unidentified Speaker
+Not two writers, one writer.
+
+46:18 - Participant 1
+So, for that, the implementation we're going to be working on right now. We're going to keep track of the read count because we want to allow as many readers as possible. I still want to keep track of how many readers are accessing the critical section, which is the data set. And because this is a count initialized at a zero, modifying the count itself becomes another critical section. So now I have two critical sections.
+
+ One critical section to access the data set. Another critical section to modify, update, meaning incremental increment, the number of reading threads or the number of reading processes that are accessing the critical section. So the read count is a critical section in its own right. I'm going to call this the yellow critical section. I'm going to call that any access to the data record. I'm going to call that the blue critical section.
+
+ So for the writing thread, it's very easy. All we have to do is to say, okay, given that the data set is protected by RWTEX, all I have to do is to wait for RWU text. If it's available, I lock it up. I'm in my critical section. If I'm done, then I actually signal the RW. So, for the writers, it gets exclusive access. Our writing process. Gets exclusive access. It's going to be modifying a record that has multiple, multiple data members, one data member at a time.
+
+
+
+47:54 - Unidentified Speaker
+And when it's done, it can release the RWTX.
+
+47:59 - Participant 1
+So clearly, RWTX must be initialized into a value of one, as we have mentioned before. By the same argument, the recount also is initialized to a one because it's used used to lock up a critical session. Now for the readers it's a bit more involved. I want to allow as many readers so the reader can't be locking the critical session.
+
+48:27 - Unidentified Speaker
+Okay?
+
+48:28 - Participant 1
+In fact maybe it can lock the critical session to prevent any writers from getting in. So for the reader the first thing it wants to do is update the read count. The read count starts with a zero. The first feeder is going to increment. To increment it, because the read count is a critical section in Scotland, right? I'm going to call that the yellow critical section. We're going to have to lock up that yellow critical section.
+
+ We have to increment the read count. If I am the first feeder, only if I am the first feeder, then I'm going to lock up the blue critical section. Okay? I'm going to have to wait until I can access and lock off the blue critical section. That is the one for accessing the record, the database record. And then I'm going to unlock the yellow critical section using the signal of musics so that other readers can increment their read count.
+
+ So what happens if there is a second reader.
+
+49:38 - Unidentified Speaker
+A second reader arriving, a second reader trying to go into a critical section.
+
+49:44 - Participant 1
+The second reader is wait on mutex, but gladly the first reader has released mutex. So the second reader can access the vcron. What's going be the vcron for the second reader after the increments? Two.
+
+50:07 - Unidentified Speaker
+It's gonna be a two.
+
+50:08 - Unidentified Speaker
+So is the second reader gonna execute this inside the if?
+
+50:12 - Participant 2
+No. No, it's not.
+
+50:14 - Participant 1
+So the second reader is not gonna be waiting for the semaphore to be available. I tell you, the semaphore is not available because the first reader waited on the semaphore, it was available, it had a value of one, the wait results of the value being zero, the semaphore is locked up already. This prevents the writer from getting in. But the second and subsequent readers are never going to be waiting on the RW unit.
+
+ They're just going to go in too immediately. They're just going into the blue critical section. Okay. And when they are done, they're going to decrement the read count.
+
+51:05 - Unidentified Speaker
+But to decrement their read count, this yellow stuff is a yellow critical section.
+
+51:10 - Participant 1
+That means it has to be protected by the mutex lock. Only the final reader that has a read count of zero is going to signal and release the blue critical section, that is the critical section where we're accessing the database server. Bottom line is, the first reader locks up the database record, the final reader releases the database record. So let's observe and talk about this for a few seconds.
+
+ How about if I have a number of readers that's a hundred and they go in one at a time and some of them are going to be releasing By reducing the read count, so those hundred can decrease all the way to twenty and then five, but then another set of readers come in. So now from five we keep increasing all the way to fifteen and twenty and three, and then some readers are exiting the axis, we go down all the way to three and we go back up.
+
+ So we're locking the blue critical section for a very long time. It will only be locked when all the readers. Who can keep coming and leaving, coming and leaving, at some point all the readers have to be zero to unlock the blue critical section allowing a writer.
+
+52:42 - Unidentified Speaker
+Doesn't this mean the writing processes may be starved?
+
+52:46 - Unidentified Speaker
+So we have a data-based record and every time we try to write, you cannot get access with thousands of readers?
+
+52:53 - Unidentified Speaker
+That really sucks, wouldn't it?
+
+52:56 - Unidentified Speaker
+I mean, you're trying to update a record and you're unable to update that record.
+
+53:00 - Unidentified Speaker
+That would really be annoying.
+
+53:02 - Unidentified Speaker
+So database systems are not implemented that way.
+
+53:06 - Unidentified Speaker
+So we have to fix another thing, which is I'm not going to implement here tonight, because it becomes nightmare to me complicated.
+
+53:15 - Unidentified Speaker
+Not nightmares, maybe slightly more.
+
+53:17 - Unidentified Speaker
+I'm just going to give you a hint of it.
+
+53:19 - Unidentified Speaker
+Maybe the moment we realize that a writing thread is waiting to get in, block waiting right here, at this point maybe we're not going to be allowing any more readers to come in because we don't we don't want to be starting the writers.
+
+53:40 - Unidentified Speaker
+Okay?
+
+53:43 - Unidentified Speaker
+That would be the second implementation of the second variation.
+
+53:49 - Unidentified Speaker
+Actually we finished just in time for the first time ever.
+
+53:54 - Unidentified Speaker
+Any questions?
+
+53:57 - Unidentified Speaker
+No questions at all.
+
+53:59 - Unidentified Speaker
+All right.
+
+54:00 - Unidentified Speaker
+Homework number six has been posted.
+
+54:02 - Unidentified Speaker
+It due next week.
+
+54:04 - Unidentified Speaker
+Thank you so much.
+
+54:05 - Unidentified Speaker
+I'll see you next week.
