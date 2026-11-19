@@ -2,14 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
-#include <errno.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
-
-#define NUM_THREADS 4
-#define NUM_POINTS 1000000
 
 struct simulation
 {
@@ -22,7 +18,7 @@ static struct simulation *shared;
 static void *compute_area(void *arg)
 {
   unsigned int seed = *(unsigned int *)arg;
-  for (int k = 0; k < NUM_POINTS; k = k + 1)
+  for (int k = 0; k < 1000000; k = k + 1)
   {
     double x = 2.0 * rand_r(&seed) / RAND_MAX - 1.0;
     double y = 2.0 * rand_r(&seed) / RAND_MAX - 1.0;
@@ -32,11 +28,6 @@ static void *compute_area(void *arg)
     {
       while (sem_wait(&shared->lock) == -1)
       {
-        if (errno != EINTR)
-        {
-          perror("sem_wait");
-          return arg;
-        }
       }
       shared->count = shared->count + 1;
       sem_post(&shared->lock);
@@ -50,7 +41,6 @@ int main(void)
   shared = mmap(NULL, sizeof(*shared), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   if (shared == MAP_FAILED)
   {
-    perror("mmap");
     return 1;
   }
 
@@ -59,7 +49,6 @@ int main(void)
   // pshared = 1 means shared among proc
   if (sem_init(&shared->lock, 1, 1) == -1)
   {
-    perror("sem_init");
     munmap(shared, sizeof(*shared));
     return 1;
   }
@@ -68,7 +57,6 @@ int main(void)
   pid_t p = fork();
   if (p < 0)
   {
-    perror("fork");
     sem_destroy(&shared->lock);
     munmap(shared, sizeof(*shared));
     return 1;
@@ -112,7 +100,7 @@ int main(void)
 
   if (result == 0)
   {
-    double area = 4.0 * shared->count / (NUM_THREADS * NUM_POINTS);
+    double area = 4.0 * shared->count / (4 * 1000000);
     printf("Estimated area (pi): %.6f\n", area);
   }
   sem_destroy(&shared->lock);

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
-#include <errno.h>
 #include <pthread.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
@@ -24,7 +23,7 @@ static void pause_ms(int ms)
   struct timespec delay;
   delay.tv_sec = ms / 1000;
   delay.tv_nsec = (ms % 1000) * 1000000L;
-  while (nanosleep(&delay, &delay) == -1 && errno == EINTR)
+  while (nanosleep(&delay, &delay) == -1)
   {
   }
 }
@@ -43,7 +42,6 @@ int main(int argc, char *argv[])
   struct queue *queue = mmap(NULL, sizeof(*queue), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   if (queue == MAP_FAILED)
   {
-    perror("mmap");
     return 1;
   }
 
@@ -112,10 +110,6 @@ int main(int argc, char *argv[])
       printf("%f\n", value);
     }
     waitpid(p, NULL, 0);
-  }
-  else
-  {
-    perror("fork");
   }
 
   pthread_cond_destroy(&queue->not_empty);

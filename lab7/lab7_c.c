@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
-#include <errno.h>
 #include <semaphore.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
@@ -22,7 +21,7 @@ static void pause_ms(int ms)
   struct timespec delay;
   delay.tv_sec = ms / 1000;
   delay.tv_nsec = (ms % 1000) * 1000000L;
-  while (nanosleep(&delay, &delay) == -1 && errno == EINTR)
+  while (nanosleep(&delay, &delay) == -1)
   {
   }
 }
@@ -35,27 +34,23 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  errno = 0;
   int n = atoi(argv[1]);
   double d = atof(argv[2]);
 
   struct queue *queue = mmap(NULL, sizeof(*queue), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   if (queue == MAP_FAILED)
   {
-    perror("mmap");
     return 1;
   }
 
   // The buffer starts with five empty slots and no values to read.
   if (sem_init(&queue->empty, 1, BUF_SZ) == -1)
   {
-    perror("sem_init");
     munmap(queue, sizeof(*queue));
     return 1;
   }
   if (sem_init(&queue->full, 1, 0) == -1)
   {
-    perror("sem_init");
     sem_destroy(&queue->empty);
     munmap(queue, sizeof(*queue));
     return 1;
@@ -76,11 +71,6 @@ int main(int argc, char *argv[])
 
       while (sem_wait(&queue->empty) == -1)
       {
-        if (errno != EINTR)
-        {
-          perror("sem_wait");
-          exit(1);
-        }
       }
       queue->buffer[k % BUF_SZ] = value;
       sem_post(&queue->full);
@@ -97,21 +87,12 @@ int main(int argc, char *argv[])
     {
       while (sem_wait(&queue->full) == -1)
       {
-        if (errno != EINTR)
-        {
-          perror("sem_wait");
-          exit(1);
-        }
       }
       double value = queue->buffer[k % BUF_SZ];
       sem_post(&queue->empty);
       printf("%f\n", value);
     }
     waitpid(p, NULL, 0);
-  }
-  else
-  {
-    perror("fork");
   }
 
   sem_destroy(&queue->full);
